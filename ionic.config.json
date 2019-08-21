@@ -1,0 +1,8 @@
+{
+  "name": "devdacticLogin",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular",
+  "app_id": ""
+}

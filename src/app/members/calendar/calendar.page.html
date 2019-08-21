@@ -1,0 +1,122 @@
+<ion-content padding class="custom-background">
+
+  <ion-toolbar class="custom-background-transparent">
+    <ion-buttons slot="start">
+      <ion-button (click)="dashboardGo()">
+        <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>    
+    <ion-title text-center color="light">MI CALENDARIO</ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="logout()">
+          <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>     
+  </ion-toolbar>
+  
+  <div class="custom-padding-left-right custom-white center">
+
+    <!-- left right button start -->    
+    <ion-grid>
+      <ion-row>
+
+        <ion-col size="1" offset="2">
+          <ion-icon *ngIf="leftCount" name="arrow-dropleft" color="light" size="large" (click)="leftSchedule()" class="custom-p-t-md"></ion-icon>
+        </ion-col>
+
+        <ion-col size="7">          
+          <ion-img [src]="my_calendar_page" class="custom-img-7 custom-margin-auto"></ion-img>
+        </ion-col>
+
+        <ion-col size="1">
+          <ion-icon *ngIf="rightCount" name="arrow-dropright" color="light" size="large" (click)="rightSchedule()" class="custom-p-t-md custom-p-r-sm"></ion-icon>
+        </ion-col>
+
+        <ion-col size="1"></ion-col>
+
+      </ion-row>
+    </ion-grid>
+    <!-- left right button end -->    
+
+    <div *ngIf="employeeScheduleLeftRight">
+      
+      <div padding-top padding-bottom>
+
+        <ion-text color="light" text-uppercase>
+          <span>Semana {{ employeeScheduleLeftRight.WeekNumber }} &nbsp; &bull; &nbsp;</span>
+        </ion-text>
+
+        <ion-text color="light" text-uppercase>
+          <span>{{ dateConvertFrom[0] }} </span>
+        </ion-text> 
+        
+        <ion-text color="light" text-uppercase>
+          <span *ngIf="dateConvertFrom[1] == 1">{{ allMonthName[0] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 2">{{ allMonthName[1] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 3">{{ allMonthName[2] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 4">{{ allMonthName[3] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 5">{{ allMonthName[4] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 6">{{ allMonthName[5] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 7">{{ allMonthName[6] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 8">{{ allMonthName[7] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 9">{{ allMonthName[8] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 10">{{ allMonthName[9] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 11">{{ allMonthName[10] }}</span>
+          <span *ngIf="dateConvertFrom[1] == 12">{{ allMonthName[11] }}</span>
+        </ion-text>
+        
+        <ion-text>
+          <span>&nbsp;&nbsp; A &nbsp;&nbsp;</span>
+        </ion-text>
+
+        <ion-text color="light" text-uppercase>
+          <span>{{ dateConvertTo[0] }} </span>
+        </ion-text> 
+        
+        <ion-text color="light" text-uppercase>
+          <span *ngIf="dateConvertTo[1] == 1">{{ allMonthName[0] }}</span>
+          <span *ngIf="dateConvertTo[1] == 2">{{ allMonthName[1] }}</span>
+          <span *ngIf="dateConvertTo[1] == 3">{{ allMonthName[2] }}</span>
+          <span *ngIf="dateConvertTo[1] == 4">{{ allMonthName[3] }}</span>
+          <span *ngIf="dateConvertTo[1] == 5">{{ allMonthName[4] }}</span>
+          <span *ngIf="dateConvertTo[1] == 6">{{ allMonthName[5] }}</span>
+          <span *ngIf="dateConvertTo[1] == 7">{{ allMonthName[6] }}</span>
+          <span *ngIf="dateConvertTo[1] == 8">{{ allMonthName[7] }}</span>
+          <span *ngIf="dateConvertTo[1] == 9">{{ allMonthName[8] }}</span>
+          <span *ngIf="dateConvertTo[1] == 10">{{ allMonthName[9] }}</span>
+          <span *ngIf="dateConvertTo[1] == 11">{{ allMonthName[10] }}</span>
+          <span *ngIf="dateConvertTo[1] == 12">{{ allMonthName[11] }}</span>
+        </ion-text>        
+
+      </div>      
+
+      <ion-grid>
+
+        <ion-row *ngFor="let weekDataItem of employeeScheduleLeftRight.Days">
+
+          <ion-col>
+            <ion-button *ngIf="currentday != weekDataItem.Name" shape="round" expand="block" color="light">{{ weekDataItem.Name }}</ion-button>
+
+            <ion-button *ngIf="currentday == weekDataItem.Name && leftCount == 0" shape="round" expand="block" color="success">{{ weekDataItem.Name }}</ion-button>
+
+            <ion-button *ngIf="currentday == weekDataItem.Name && leftCount > 0" shape="round" expand="block" color="light">{{ weekDataItem.Name }}</ion-button>              
+
+          </ion-col>
+          
+          <ion-col padding>{{ weekDataItem.Letter }} {{ weekDataItem.Hour }}</ion-col>
+
+        </ion-row>     
+
+      </ion-grid>     
+
+    </div>        
+
+    <!-- <ion-button (click)="EmployeeScheduleList()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large">Check service</ion-button> -->
+
+  </div>
+
+</ion-content>
+
+<!-- footer start -->
+<app-footer></app-footer>
+<!-- footer end -->

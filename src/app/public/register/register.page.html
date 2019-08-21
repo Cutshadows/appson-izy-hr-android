@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="center">
+
+  <ion-img [src]="logoUrl" class="custom-max-width custom-margin"></ion-img> 
+
+  <ion-list>
+    <ion-item>
+      <ion-input type="text" placeholder="Username" [(ngModel)]="username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="password" placeholder="Password" [(ngModel)]="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="Code" [(ngModel)]="code"></ion-input>
+    </ion-item>    
+  </ion-list>
+  
+  <ion-button (click)="login()" expand="block">Login</ion-button>
+
+  <ion-button (click)="clearStorage()" expand="block">clear</ion-button>
+
+  <!-- <div *ngFor="let storag of codeArray">
+    <h6>{{ storag }}</h6>
+  </div> -->
+
+  <div *ngFor="let code of codeArray">
+    <h6>{{ code }}</h6>
+  </div>
+
+</ion-content>

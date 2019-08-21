@@ -1,0 +1,98 @@
+<ion-content padding class="custom-background">
+
+  <ion-toolbar class="custom-background-transparent">
+    <ion-buttons slot="start">
+      <ion-button (click)="dashboardGo()">
+        <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>    
+    <ion-title text-center color="light">MARCAS</ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="logout()">
+          <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>     
+  </ion-toolbar>
+  
+  <div class="custom-padding-left-right custom-weight">
+
+    <!-- <ion-button (click)="showLocalLatLong()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large">Show lat long</ion-button>
+
+    <ion-button (click)="testParams()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large">testParams</ion-button> -->
+
+    <!-- <ion-button *ngIf="false" (click)="getCurrentLocation()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large">MARCA</ion-button>
+
+    <ion-button (click)="enableLocation()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large" disabled="{{buttonDisabled}}">MARCA</ion-button>    
+
+    <ion-button (click)="dashboardGo()" class="custom-m-margin" shape="round" fill="outline" expand="block" color="light" size="large">VOLVER</ion-button>    -->
+    
+    <div>
+
+      <ion-img [src]="entermark_page" class="custom-img-7 custom-margin-auto custom-p-t-sm"></ion-img>       
+    </div> 
+
+    <ion-grid>
+
+      <!-- first row start -->      
+      <ion-row class="custom-m-margin">     
+        
+        <ion-col size="1"></ion-col>
+
+        <ion-col size="10" class="custom-border-button" (click)="enableLocation()">
+
+          <ion-row>
+
+            <ion-col size="2">
+              <ion-img [src]="mark_button_page" class="custom-button-img custom-margin-auto"></ion-img>
+            </ion-col>
+
+            <ion-col size="10">
+              <h5 class="custom-white center">MARCAR</h5>
+            </ion-col>            
+
+          </ion-row>             
+
+        </ion-col>  
+        
+        <ion-col size="1"></ion-col>
+
+      </ion-row>
+      <!-- first row end -->
+
+      <!-- second row start -->      
+      <ion-row class="custom-s-margin">     
+        
+        <ion-col size="1"></ion-col>
+
+        <ion-col size="10" class="custom-border-button" (click)="dashboardGo()">
+
+          <ion-row>
+
+            <ion-col size="2">
+              <ion-img [src]="back_button_mark_page" class="custom-button-img custom-margin-auto"></ion-img>
+            </ion-col>
+
+            <ion-col size="10">
+              <h5 class="custom-white center">SALIR</h5>
+            </ion-col>            
+
+          </ion-row>             
+
+        </ion-col>  
+        
+        <ion-col size="1"></ion-col>
+
+      </ion-row>
+      <!-- second row end -->      
+
+    </ion-grid>
+
+    
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <app-footer></app-footer>
+</ion-footer>

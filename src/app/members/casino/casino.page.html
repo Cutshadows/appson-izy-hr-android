@@ -1,0 +1,66 @@
+<ion-content padding class="custom-background">
+
+  <ion-toolbar class="custom-background-transparent">
+    <ion-buttons slot="start">
+      <ion-button (click)="dashboardGo()">
+        <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>    
+    <ion-title text-center color="light">CASINO</ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="logout()">
+          <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>     
+  </ion-toolbar>
+    
+  <div class="custom-padding-left-right">
+
+    <div>
+
+      <ion-img [src]="casino_page" class="custom-img-7 custom-margin-auto custom-p-t-sm"></ion-img>       
+    </div>
+
+    <ion-grid>
+
+      <!-- first row start -->      
+      <ion-row class="custom-m-margin center">     
+
+        <ion-col size="12" *ngFor="let getCasinoItem of getCasinoItems" padding-bottom>
+
+          <ion-row (click)="getCasinoItemDetail(getCasinoItem)">
+
+            <ion-col size="6" no-padding>
+              <div class="custom-back-color-white custom-border-left custom-p-top-bottom-md">
+                {{ getCasinoItem.Date | date: 'dd/MM/yyyy' }}
+              </div>
+            </ion-col>
+
+            <ion-col size="6" no-padding>
+
+              <div *ngIf="getCasinoItem.Status" class="custom-back-color-green custom-border-right custom-p-top-bottom-md">
+                SELECCIONADO
+              </div>
+
+              <div *ngIf="!getCasinoItem.Status" class="custom-back-color-yello custom-border-right custom-p-top-bottom-md">
+                PENDIENTE
+              </div>              
+
+            </ion-col>            
+
+          </ion-row> 
+
+        </ion-col>  
+
+      </ion-row>
+      <!-- first row end -->        
+
+    </ion-grid>  
+
+  </div>
+
+</ion-content>
+
+<!-- footer start -->
+<app-footer></app-footer>
+<!-- footer end -->
