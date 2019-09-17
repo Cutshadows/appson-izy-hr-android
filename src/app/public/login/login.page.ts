@@ -175,14 +175,11 @@ export class LoginPage implements OnInit {
       this.requireAlert()
     } else if(isNaN(this.password)) {
       this.passwordValid()
-    } else if(this.code == undefined) {
-      this.requireAlert()
-    } else if(this.code == '') {
+    } else if(this.code == undefined || this.code == '') {
       this.requireAlert()
     }
     else {
       this.loginLoaderOn()
-      
       let url = 'https://demo.izytimecontrol.com/api/external/ValidateEmployee';
 
       let params = {
