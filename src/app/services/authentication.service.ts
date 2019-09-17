@@ -31,7 +31,6 @@ export class AuthenticationService {
 
   logout() { 
     return this.storage.remove(TOKEN_KEY).then(() => {
-
       this.storage.remove('casinoItem').then(() => {
       })
 

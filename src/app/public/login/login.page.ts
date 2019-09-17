@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
 import { Storage } from '@ionic/storage';
 
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
+import { FunctionsService } from '../../services/functions.service';
+import {DatabaseService} from '../../services/database.service';
+
 
 @Component({
   selector: 'app-login',
@@ -25,22 +28,14 @@ export class LoginPage implements OnInit {
   password: number
   code: string
   codeLowerCase: any
-
   userLoginResDetail: string = 'userLoginResDetail'
-  
   data: Observable<any>
   loadingElement: any
-
   logoUrl: string = 'assets/img/logo.png'
-
   storageData: any
-
   codeArray: any = []
-
   addNewCodeButton: boolean = false
-
   userPreviousCode: any
-
   deviceId: any
 
   constructor(
@@ -51,7 +46,9 @@ export class LoginPage implements OnInit {
     public loadingController: LoadingController,
     public toastController: ToastController,
     public platform: Platform,
-    private uniqueDeviceID: UniqueDeviceID
+    private uniqueDeviceID: UniqueDeviceID,
+    private _function:FunctionsService,
+    private _services:DatabaseService
     ) {     
 
   }
@@ -63,7 +60,6 @@ export class LoginPage implements OnInit {
         for(let j = 0; j < val.length; j++) {
           this.codeArray.push(val[j])
         }
-        
       }      
     })
 
@@ -72,13 +68,11 @@ export class LoginPage implements OnInit {
         this.userPreviousCode = val
       }            
     })
-
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
         this.username = val['Rut']
       }            
     })
-
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
         this.deviceId = val
@@ -167,7 +161,7 @@ export class LoginPage implements OnInit {
     })    
   }
 
-  login() {
+  async login() {
 
     if(this.username == undefined && this.password == undefined && this.code == undefined) {
       this.requireAlert()   
@@ -177,9 +171,14 @@ export class LoginPage implements OnInit {
       this.passwordValid()
     } else if(this.code == undefined || this.code == '') {
       this.requireAlert()
-    }
-    else {
-      this.loginLoaderOn()
+    }else {
+      //this.loginLoaderOn()
+      this.loadingElement = await this.loadingController.create({
+        message: 'Por favor espera...',
+        spinner: 'crescent'
+      });
+      this.loadingElement.present()
+      //MOVER A UN SERVICIO
       let url = 'https://demo.izytimecontrol.com/api/external/ValidateEmployee';
 
       let params = {
@@ -187,49 +186,71 @@ export class LoginPage implements OnInit {
         password: this.password
       }
 
-      this.data = this.http.post(url, params, this.header);
+      //this.data = this.http.post(url, params, this.header);
 
-      this.data.subscribe((response) => {
+      //this.data.subscribe((response) => {
+        
+      this._services.validateLogin(url, params).then(response=>{
+        console.log(response);
+        // var responseData = response.data
 
-        var responseData = response.data
+        // this.loginLoaderOff()
 
-        this.loginLoaderOff()
-
-        if(response.status) {
+        // if(response.status) {
           
-          this.storage.set(this.userLoginResDetail, responseData)
+        //   this.storage.set(this.userLoginResDetail, responseData)
 
-          this.codeArray.push(this.code)
+        //   this.codeArray.push(this.code)
 
-          this.storage.set('userCode', this.codeArray)
+        //   this.storage.set('userCode', this.codeArray)
 
-          this.authService.login()
-        } else {
-          this.wrongInputAlert(response.Message)
-        }        
-      }, (err) => {
+        //   this.authService.login()
+        // } else {
+        //   this.wrongInputAlert(response.Message)
+        // } 
+        //SI ES ERROR
+        // this.loginLoaderOff()
+
+        // let userLoginData = {
+        //   FirstName: 'Hello',
+        //   LastName: 'test',
+        //   Rut: 'rut',
+        //   Department: 'department',
+        //   EmployeeId: 'employeeId'
+        // }
+        
+        // this.storage.set(this.userLoginResDetail, userLoginData)
+
+        // this.codeArray.push(this.code)
+
+        // this.storage.set('userCode', this.codeArray)        
+
+        // this.authService.login() 
+      })
+              
+      //}, (err) => {
         /*this.loginLoaderOff()
         this.badRequestAlert()*/
 
-        this.loginLoaderOff()
+        // this.loginLoaderOff()
 
-        let userLoginData = {
-          FirstName: 'Hello',
-          LastName: 'test',
-          Rut: 'rut',
-          Department: 'department',
-          EmployeeId: 'employeeId'
-        }
+        // let userLoginData = {
+        //   FirstName: 'Hello',
+        //   LastName: 'test',
+        //   Rut: 'rut',
+        //   Department: 'department',
+        //   EmployeeId: 'employeeId'
+        // }
         
-        this.storage.set(this.userLoginResDetail, userLoginData)
+        // this.storage.set(this.userLoginResDetail, userLoginData)
 
-        this.codeArray.push(this.code)
+        // this.codeArray.push(this.code)
 
-        this.storage.set('userCode', this.codeArray)        
+        // this.storage.set('userCode', this.codeArray)        
 
-        this.authService.login()
+        // this.authService.login()
 
-      })
+      //})
     }
   }
 
@@ -260,7 +281,8 @@ export class LoginPage implements OnInit {
       this.loginLoaderOn()
       
       var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
-
+      console.log("O ESTOY ACA?  ");
+      console.log("O ESTOY ACA?  "+this.deviceId);
       let params = {
         "rut": this.username,
         "password": this.password,
@@ -337,7 +359,8 @@ export class LoginPage implements OnInit {
       this.loginLoaderOn()
     
       var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
-
+      console.log("ESTOY AQUI");
+      console.log(this.deviceId);
       let params = {
         "rut": this.username,
         "password": this.password,
@@ -391,7 +414,7 @@ export class LoginPage implements OnInit {
     }
     else {
       this.loginLoaderOn()
-      
+      console.log("UNA PASADA POR ACA PARECE");
       var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
 
       let params = {
