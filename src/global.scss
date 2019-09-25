@@ -254,3 +254,45 @@
 .custom-back-color-sky-light {
   background-color: #b9eeee;
 }
+//clase de las alertas
+.classAlert{
+  --background:rgb(255, 255, 255);
+  color:rgb(215, 36, 66)!important;
+  
+}
+.cssAlert{
+background-color: rgb(215, 36, 66)!important;
+color:rgb(255, 255, 255)!important;
+--ion-text-color: rgb(0, 0, 0);
+}
+//Clase de los toast
+.my-custom-toast{
+  --background:rgb(248, 248, 248);
+  --border-color:rgb(255, 255, 255);
+  --border-radius:10px;
+  --border-style:solid;
+  --border-width:4px;
+  --button-color:#FFDD00;
+  --color:#000000;
+  --font-weight:"bold";
+  --font-style:"normal";
+}
+ion-loading.transparent {
+background-color: rgba(200, 200, 200, 0.5);
+.loading-wrapper {
+  background: rgb(255, 255, 255);
+  height: 2px;
+  position: absolute;
+  top: 150px;
+  box-shadow: #FFDD00;
+  --spinner-color:rgb(215, 36, 66)!important;
+  .spinner-crescent circle {
+    stroke-width: 80px;
+    
+  }
+  
+}
+}
+.custom-background-red{
+background: rgb(215, 36, 66)!important;
+}
