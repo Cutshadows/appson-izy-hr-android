@@ -22,7 +22,7 @@ export class EventsPage implements OnInit {
   }  
 
   userLoginResDetail: string = 'userLoginResDetail'
-
+  currentVal=2;
   employeeId: any
   liveUserCode: any   
 

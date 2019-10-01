@@ -22,7 +22,7 @@ export class CalendarPage implements OnInit {
   }  
 
   userLoginResDetail: string = 'userLoginResDetail'
-
+  currentVal=2;
   employeeId: any
   liveUserCode: any   
 

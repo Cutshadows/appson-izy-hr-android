@@ -101,21 +101,18 @@ export class LoginPage implements OnInit {
       // save code start        
      this.loadingElement = await this.loadingController.create({
       message: 'Por favor espera...',
-      spinner: 'crescent'
+      spinner: 'crescent',
+      cssClass: 'transparent'
     });
     this.loadingElement.present();
     var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
-    //var url = 'https://'+this.code+'.izytimecontrol.com/external/ValidateEmployee';
       console.log(this.deviceId);
       let params = {
         "rut": this.username,
         "password": this.password,
         "imei": this.deviceId
       }
-      //this.data = this.http.post(url, params, this.header);
-      //this.data.subscribe((response) => {
         this._services.validateLogin(url, params).then(response=>{
-        console.log(response['status']);
         switch(response['status']){
           case '200':
             var responseData = response['response']['data'];
@@ -159,7 +156,8 @@ export class LoginPage implements OnInit {
     }else {
       this.loadingElement = await this.loadingController.create({
         message: 'Por favor espera...',
-        spinner: 'crescent'
+        spinner: 'crescent',
+        cssClass: 'transparent'
       });
       this.loadingElement.present();
       //MOVER A UN SERVICIO
@@ -172,6 +170,27 @@ export class LoginPage implements OnInit {
       //this.data.subscribe((response) => {
       this._services.validateLogin(url, params).then(response=>{
         console.log(response);
+        console.log(response['status']);
+        switch(response['status']){
+          case '200':
+            var responseData = response['response']['data'];
+            this.storage.set(this.userLoginResDetail, responseData);
+            this.codeArray.push(this.codeLowerCase);
+            this.storage.set('userCode', this.codeArray);       
+            this.storage.set('liveUserCode', this.codeLowerCase);
+            this.authService.login();
+            this.resetInput();
+            this.loadingElement.dismiss();
+          break;
+          case '400':
+              this.loadingElement.dismiss();
+              this.wrongInputAlert(response['response']['Message']);
+          break;
+          case '0':
+              this.loadingElement.dismiss();
+              this.badRequestAlert();  
+          break;
+        }
         // var responseData = response.data
 
         // this.loginLoaderOff()
@@ -233,6 +252,9 @@ export class LoginPage implements OnInit {
       //})
     }
   }
+  /**
+ * LOGIN CREADO PARA LA MUESTRA NOSE PESCA PARECE
+ */
   addNewCodeHideShow() {
     this.addNewCodeButton = !this.addNewCodeButton
     this.password = undefined
@@ -252,11 +274,11 @@ export class LoginPage implements OnInit {
     }else {
       this.loadingElement = await this.loadingController.create({
         message: 'Por favor espera...',
-        spinner: 'crescent'
+        spinner: 'crescent',
+        cssClass: 'transparent',
       });
       this.loadingElement.present();
       var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
-      console.log("O ESTOY ACA?  ");
       let params = {
         "rut": this.username,
         "password": this.password,
@@ -265,31 +287,24 @@ export class LoginPage implements OnInit {
       //this.data = this.http.post(url, params, this.header);
       this._services.validateLogin(url, params).then(response=>{
         console.log(response);
-        this.loadingElement.dismiss();
         switch(response['status']){
           case '200':
-          console.log("HOLA 200 WITH SELECTED CODE");
+              var responseData = response['response']['data'];
+              this.storage.set(this.userLoginResDetail, responseData);
+              this.storage.set('liveUserCode', this.code);
+              this.authService.login();
+              this.resetInput();
+              this.loadingElement.dismiss();
           break;
           case '400':
-          console.log("HOLA 400 WITH SELECTED CODE");
+              this.loadingElement.dismiss();
+              this.wrongInputAlert(response['response']['Message']);
           break;
-          case '0':break;
+          case '0':
+              this.loadingElement.dismiss();
+              this.badRequestAlert();   
+          break;
         }
-
-      //this.data.subscribe((response) => {
-        /* var responseData = response.data
-
-        if(response.status) {
-          this.storage.set(this.userLoginResDetail, responseData)
-          this.storage.set('liveUserCode', this.code)
-          this.authService.login()
-          this.resetInput()
-        } else {
-          this.wrongInputAlert(response.Message)
-        }        
-      }, (err) => {
-        this.loginLoaderOff()
-        this.badRequestAlert() */
       }) 
     }
   }  
@@ -307,7 +322,9 @@ export class LoginPage implements OnInit {
     else {
       this.loadingElement = await this.loadingController.create({
         message: 'Por favor espera...',
-        spinner: 'crescent'
+        spinner: 'crescent',
+        cssClass: 'transparent',
+
       });
       this.loadingElement.present();
       console.log("UNA PASADA POR ACA PARECE");
@@ -319,30 +336,24 @@ export class LoginPage implements OnInit {
         "imei": this.deviceId
       }
       this._services.validateLogin(url, params).then(response=>{
-        console.log(response);
-        this.loadingElement.dismiss();
+        console.log(response['status']);
         switch(response['status']){
           case '200':
-          console.log("HOLA 200 CODIGO PREVIO")
+            var responseData = response['response']['data'];
+            this.storage.set(this.userLoginResDetail, responseData);
+            this.authService.login();
+            this.resetInput();
+            this.loadingElement.dismiss();
           break;
           case '400':
-              console.log("HOLA 400 CODIGO PREVIO")
+              this.loadingElement.dismiss();
+              this.wrongInputAlert(response['response']['Message']);
           break;
-          case '0':break;
+          case '0':
+              this.loadingElement.dismiss();
+              this.badRequestAlert();  
+          break;
         }
-      //this.data = this.http.post(url, params, this.header);
-     // this.data.subscribe((response) => {
-        /* var responseData = response.data
-        if(response.status) {
-          this.storage.set(this.userLoginResDetail, responseData)
-          this.authService.login()
-          this.resetInput()
-        } else {
-          this.wrongInputAlert(response.Message)
-        }        
-      }, (err) => {
-        this.loginLoaderOff()
-        this.badRequestAlert()   */  
       })
     }
   }  
@@ -381,7 +392,6 @@ export class LoginPage implements OnInit {
       }
 
     }).catch((error: any) => {
-      console.log('uuid', error)
       if(error == 'cordova_not_available') {
         this.deviceId = 'personal_computer_login'
         this.setDeviceLocal()

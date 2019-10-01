@@ -26,7 +26,7 @@ export class EntermarkPage implements OnInit {
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
     } 
   }  
-
+  currentVal=2;
   locationData: string = ''
 
   loadingElement: any

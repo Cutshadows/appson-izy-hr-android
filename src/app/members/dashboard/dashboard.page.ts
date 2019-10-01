@@ -16,7 +16,7 @@ import { Network } from '@ionic-native/network/ngx';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-
+ currentVal=1;
   header: any = { 
     "headers": {
       "Content-Type": "application/json",

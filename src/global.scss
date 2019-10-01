@@ -120,7 +120,7 @@
 }
 
 .custom-background-transparent {
-  --background: transparent;
+  --background: rgba(2, 1, 1, 0.224);
 }
 
 .footer-background-color {
@@ -295,4 +295,113 @@ background-color: rgba(200, 200, 200, 0.5);
 }
 .custom-background-red{
 background: rgb(215, 36, 66)!important;
+}
+
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+.animated.fast {
+  -webkit-animation-duration: 800ms;
+  animation-duration: 800ms;
+}
+
+.animated.slow {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+}
+@-webkit-keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0.5;
+  }
+}
+
+.flash {
+  -webkit-animation-name: flash;
+  animation-name: flash;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  33% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+//EFECTO DE LOS BOTONES EN EL DASHBOARD
+.button-pulse {
+  display: inline-flex;
+  box-shadow: 0 3px 2px 0 rgba(0,0,0,0.1);
+  border-width: 100%!important;
+  border-radius: 100%!important;
+  color: #fff;
+  font-family: Lato, Arial, sans-serif;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .3s, transform .3s, box-shadow .3s;
+   will-change: transform;
+  
+  &:hover {
+    background: darken(rgba(29, 27, 28, 0.353),10%);
+    transform: translate3d(0, -4px, 0);
+  }
+  &:active {
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+    transform: translate3d(0, 4px, 0);
+  }
+}
+
+.pulse-button {
+  position: relative;
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-width: 100%!important;
+    border-radius: 100%!important;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    margin: auto;
+  }
+  &:before {
+    animation: pulse 1.5s infinite linear;
+  }
+  &:after {
+    animation: pulse 2s .4s infinite linear;
+  }
+  &:hover:before, &:hover:after {
+    display: none;
+  }
 }

@@ -20,7 +20,7 @@ export class ChangepasswordPage implements OnInit {
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
     } 
   }  
-
+  currentVal=2;
   oldPassword: number
   newPassword: number
   rePassword: number

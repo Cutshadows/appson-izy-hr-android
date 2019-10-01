@@ -1,13 +1,14 @@
+  <app-header titulo="MENU">
+  </app-header>
 <ion-content fullscreen="true" padding class="custom-background">
-
-  <ion-toolbar class="custom-background-transparent">
+  <!-- <ion-toolbar class="custom-background-transparent">
     <ion-title text-center color="light">MENÚ</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
         <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
       </ion-button>
       </ion-buttons>    
-  </ion-toolbar>
+  </ion-toolbar> -->
   
   <div class="custom-padding-left-right center custom-white" *ngIf="userInfoItems">
 
@@ -102,4 +103,8 @@
 <!-- footer start -->
 <app-footer></app-footer>
 <!-- footer end -->
-
+<app-menu-footer 
+id="dashboardPage" 
+[valCapa]="currentVal" 
+(logout)="logout()">
+</app-menu-footer>

@@ -13,7 +13,8 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
 export class ProfilePage implements OnInit {
 
   userInfoItems:any
-  
+  currentVal=2;
+ 
   userLoginResDetail: string = 'userLoginResDetail'
 
   my_profile_page: string = 'assets/img/page/my_profile_page.png'
