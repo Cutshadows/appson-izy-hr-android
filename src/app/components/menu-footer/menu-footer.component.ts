@@ -11,9 +11,10 @@ export class MenuFooterComponent implements OnInit {
   @Input() id: string; 
   @Input() valCapa: number;
   @Output() goDashboard = new EventEmitter<string>();
-  @Output() attendanceView = new EventEmitter<string>();
+  @Output() profileEmployed = new EventEmitter<string>();
+  /* @Output() attendanceView = new EventEmitter<string>();
   @Output() attendanceDetail = new EventEmitter<string>();
-  @Output() goInformation = new EventEmitter<string>();
+  @Output() goInformation = new EventEmitter<string>(); */
   @Output() logout = new EventEmitter<string>();
   constructor(
     private nativePageTransitions: NativePageTransitions,
@@ -27,21 +28,27 @@ export class MenuFooterComponent implements OnInit {
 }
   clickBack() {
     switch (this.id) {
-      case 'selectSucursal':
+      case 'calendar':
         this.goDashboard.emit();
         break;
-      case 'attendanceView':
-        this.attendanceView.emit();
-        break;
-      case 'attendanceDetail':
-        this.attendanceDetail.emit();
-        break;
-      case 'information':
-         this.goInformation.emit();
-         break;
-      case  'mydevices':
+      case 'casino':
+        this.goDashboard.emit();
+      break;
+      case 'events':
+          this.goDashboard.emit();
+      break;
+      case 'mymark':
+        this.goDashboard.emit();
+      break;
+      case  'myprofile':
         this.goDashboard.emit();
         break;
+      case 'enterMark':
+        this.goDashboard.emit();
+      break;
+      case 'changePassword':
+        this.profileEmployed.emit();
+      break;
     }
   }
   Logout() {

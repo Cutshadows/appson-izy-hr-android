@@ -66,4 +66,8 @@
 <!-- footer start -->
 <app-footer></app-footer>
 <!-- footer end -->
-<app-menu-footer></app-menu-footer>
+<app-menu-footer
+[valCapa]="currentVal"
+id="casino"
+(goDashboard)="dashboardGo()"
+(logout)="logout()"></app-menu-footer>

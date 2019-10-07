@@ -95,4 +95,8 @@
 
 </ion-content>
 <app-footer></app-footer>
-<app-menu-footer></app-menu-footer>
+<app-menu-footer
+[valCapa]="currentVal"
+id="enterMark"
+(goDashboard)="dashboardGo()"
+(logout)="logout()"></app-menu-footer>

@@ -1,64 +1,48 @@
 <app-header titulo="MI PERFIL">
 </app-header>
 <ion-content fullscreen="true" padding class="custom-background">
-
-  <ion-toolbar class="custom-background-transparent">
-    <ion-buttons slot="start">
-      <ion-button (click)="dashboardGo()">
-        <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
-      </ion-button>
-    </ion-buttons>    
-    <ion-title text-center color="light">MI PERFIL</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
-      </ion-button>
-    </ion-buttons>    
-  </ion-toolbar>  
-
   <div class="custom-padding-left-right center custom-white">
-
     <div>
-  
       <ion-img [src]="my_profile_page" class="custom-img-7 custom-margin-auto custom-p-t-sm"></ion-img>       
     </div>    
     
     <ion-grid>
-
       <!-- row start -->      
       <ion-row>
-
-        <ion-col size="12" *ngIf="userInfoItems">
-
-          <h5>NOMBRE</h5>
-          <span>{{ userInfoItems.FirstName }}</span>
-
-          <h6 class="custom-m-t-md">RUT</h6>
-          <span>{{ userInfoItems.Rut }}</span>
-          
-          <h6 class="custom-m-t-md">E-MAIL</h6>
-          <span>{{ userInfoItems.Email }}</span>
-          
-          <h6 class="custom-m-t-md">TELÉFONO</h6>
-          <span>{{ userInfoItems.PhoneNumber }}</span>
-          
-          <h6 class="custom-m-t-md">DEPARTAMENTO</h6>
-          <span>{{ userInfoItems.Department }}</span>          
-
+        <ion-col size="12" *ngIf="userInfoItems" class="backgroundTarget">
+            <div class="divProfile">
+              <h5 class="titleEmployed">NOMBRE</h5>
+              <span class="detailEmployed">{{ userInfoItems.FirstName }}</span>
+            </div>
+            <div class="divProfile">
+               <h6 class="custom-m-t-md" class="titleEmployed">RUT</h6>
+              <span class="detailEmployed">{{ userInfoItems.Rut }}</span>
+            </div>
+            <div class="divProfile">
+              <h6 class="custom-m-t-md" class="titleEmployed">E-MAIL</h6>
+              <span class="detailEmployed">{{ userInfoItems.Email }}</span>
+            </div>
+            <div class="divProfile">
+              <h6 class="custom-m-t-md" class="titleEmployed">TELÉFONO</h6>
+              <span class="detailEmployed">{{ userInfoItems.PhoneNumber }}</span>
+            </div>
+            <div style="padding-bottom: 10px; width: 80%; margin-left: 20px;">
+              <h6 class="custom-m-t-md" class="titleEmployed">DEPARTAMENTO</h6>
+              <span class="detailEmployed">{{ userInfoItems.Department }}</span>
+            </div>
         </ion-col>    
 
       </ion-row>
       <!-- row end -->        
-
     </ion-grid>
-
     <ion-button (click)="changepasswordGo()" class="custom-s-margin" shape="round" fill="outline" expand="block" color="light" size="large">CAMBIAR PASSWORD</ion-button>
-
   </div>
-
 </ion-content>
-
 <!-- footer start -->
-<app-footer></app-footer>
+<app-footer *ngIf="currentVal!=2"></app-footer>
 <!-- footer end -->
-<app-menu-footer></app-menu-footer>
+<app-menu-footer
+[valCapa]="currentVal"
+id="myprofile"
+(goDashboard)="dashboardGo()"
+(logout)="logout()"></app-menu-footer>

@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
+import { FunctionsService } from 'src/app/services/functions.service';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-mymark',
@@ -14,12 +16,12 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
 })
 export class MymarkPage implements OnInit {
 
-  header: any = { 
+  /* header: any = { 
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
     } 
-  }  
+  }   */
 
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
@@ -55,7 +57,10 @@ export class MymarkPage implements OnInit {
     public toastController: ToastController,
     public http: HttpClient,
     public navController: NavController,
-    private nativePageTransitions: NativePageTransitions    
+    private nativePageTransitions: NativePageTransitions,
+    private _function:FunctionsService,
+    private _socketService:DatabaseService    
+    
   ) { 
 
   }
@@ -125,7 +130,6 @@ export class MymarkPage implements OnInit {
     let options: NativeTransitionOptions = {
       duration: 800
     }
-  
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'dashboard'])    
   }
@@ -151,26 +155,15 @@ export class MymarkPage implements OnInit {
   }
   
   async badRequestAlert() {
-    const alert = await this.alertController.create({
-      message: 'Error de servicio',
-      buttons: ['De acuerdo']
-    })
-
-    await alert.present()
+    this._function.requireAlert('Error de servicio', 'De acuerdo');
   }
   
   async noDataToast() {
-    const toast = await this.toastController.create({
-      message: 'Datos no encontrados',
-      position: 'middle',
-      duration: 2000
-    })
-    
-    toast.present()
+    this._function.MessageToast('Datos no encontrados', 'bottom', 2000);
   }  
 
-  employeeMarkService() {
-    this.employeeMarkServiceLoaderOn()
+  async employeeMarkService() {
+    //this.employeeMarkServiceLoaderOn()
     
     //let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeMarks'
 
@@ -178,19 +171,44 @@ export class MymarkPage implements OnInit {
     
     let employeeId = "sgV8tUf7wmezDF7PZnF8oQ=="
     let imei = "01dfbf8c-0afb-2fdd-f356-060071893881"*/
-
-    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeMarks'
-    
+    let loadingMarkEmployed = await this.loadingController.create({
+      message: 'Por favor espera...',
+      spinner: 'crescent',
+      cssClass:'transparent'
+    });
+    loadingMarkEmployed.present();
     let employeeId = this.employeeId
     let imei = this.deviceId
 
-    this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
+    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeMarks?employeeId='+employeeId+'&imei='+imei;
+    
+ 
+    //this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
 
-    this.data.subscribe((response) => {
-
-      this.employeeMarkServiceLoaderOff()
-
-      this.employeeMarkItems = response
+    //this.data.subscribe((response) => {
+    this._socketService.serviceMarkEmployeed(url).then((response)=>{
+      switch(response['status']){
+        case '200':
+            loadingMarkEmployed.dismiss();
+            this.employeeMarkItems = response['response'];
+            this.employeeMarkLeftRight = this.employeeMarkItems[0]
+            if(this.employeeMarkItems.length > 1) {
+              this.rightCount = this.employeeMarkItems.length - 1
+            } else {
+              this.rightCount = 0
+              this.leftCount = 0
+            }   
+          break;
+        case '400':
+            loadingMarkEmployed.dismiss();
+            this.noDataToast();
+          break;
+        case '0':
+            loadingMarkEmployed.dismiss();
+            this.badRequestAlert(); 
+            break;      
+        }
+      /* this.employeeMarkItems = response['response'];
 
       if(this.employeeMarkItems.length == 0) {
         this.noDataToast()
@@ -206,7 +224,7 @@ export class MymarkPage implements OnInit {
       }      
     }, (err) => {
       this.employeeMarkServiceLoaderOff()
-      this.badRequestAlert()
+      this.badRequestAlert() */
     })    
   }
 

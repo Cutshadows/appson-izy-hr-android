@@ -58,7 +58,131 @@ export class DatabaseService {
       });
     })
     return Promesa;
-    
   }
+  serviceEmployeeScheduleList(url){
+    let Promesa=new Promise((resolve)=>{
+      this.http.get(url, this.header).pipe(
+        delay(450)
+        ).subscribe((response)=>{
+        let jsonRespond={
+          status,
+          response
+        }
+        if(response){
+          jsonRespond.status="200";
+          jsonRespond.response=response;
+          resolve(jsonRespond);
+        }else if(!response){
+          jsonRespond.status="400";
+          jsonRespond.response=response;
+          resolve(jsonRespond);
+        }
+      },
+      (error)=>{
+        for (const key in error) {
+          switch(key){
+             case 'status':
+                if (error.hasOwnProperty(key)) {
+                  const element = error[key];
+                  if(element==0){
+                    let jsonResponseError={
+                      status
+                    }
+                    jsonResponseError.status="0";
+                    this.response=jsonResponseError;
+                    resolve(this.response);
+                  }
+                } 
+              break;
+          }
+        }
+      });
+    })
+    return Promesa;
+  }
+  serviceViewEvents(url){
+    let Promesa=new Promise((resolve)=>{
+      this.http.get(url, this.header).pipe(
+        delay(450)
+        ).subscribe((response)=>{
+        let jsonRespondEvents={
+          status,
+          response
+        }
+        if((Object.keys(response).length != 0)==true){
+          jsonRespondEvents.status="200";
+          jsonRespondEvents.response=response;
+          resolve(jsonRespondEvents);
+        }else if((Object.keys(response).length == 0)==true){
+          jsonRespondEvents.status="400";
+          jsonRespondEvents.response=response;
+          resolve(jsonRespondEvents);
+        }
+      },
+      (error)=>{
+        for (const key in error) {
+          switch(key){
+             case 'status':
+                if (error.hasOwnProperty(key)) {
+                  const element = error[key];
+                  if(element==0){
+                    let jsonResponseError={
+                      status
+                    }
+                    jsonResponseError.status="0";
+                    this.response=jsonResponseError;
+                    resolve(this.response);
+                  }
+                } 
+              break;
+          }
+        }
+      });
+    })
+    return Promesa;
+  }
+  serviceMarkEmployeed(url){
+    let Promesa=new Promise((resolve)=>{
+      this.http.get(url, this.header).pipe(
+        delay(450)
+        ).subscribe((response)=>{
+        let jsonRespondEvents={
+          status,
+          response
+        }
+        if((Object.keys(response).length != 0)==true){
+          jsonRespondEvents.status="200";
+          jsonRespondEvents.response=response;
+          resolve(jsonRespondEvents);
+        }else if((Object.keys(response).length == 0)==true){
+          jsonRespondEvents.status="400";
+          jsonRespondEvents.response=response;
+          resolve(jsonRespondEvents);
+        }
+      },
+      (error)=>{
+        for (const key in error) {
+          switch(key){
+             case 'status':
+                if (error.hasOwnProperty(key)) {
+                  const element = error[key];
+                  if(element==0){
+                    let jsonResponseError={
+                      status
+                    }
+                    jsonResponseError.status="0";
+                    this.response=jsonResponseError;
+                    resolve(this.response);
+                  }
+                } 
+              break;
+          }
+        }
+      });
+    })
+    return Promesa;
+  }
+
+
 }
   

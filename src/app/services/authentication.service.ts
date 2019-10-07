@@ -10,9 +10,7 @@ const TOKEN_KEY = 'auth-token';
   providedIn: 'root'
 })
 export class AuthenticationService {
-
   authenticationState = new BehaviorSubject(false);
-
   constructor(
     private storage: Storage, 
     private plt: Platform,

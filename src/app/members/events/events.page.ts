@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
+import { FunctionsService } from 'src/app/services/functions.service';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-events',
@@ -14,30 +16,24 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
 })
 export class EventsPage implements OnInit {
 
-  header: any = { 
+ /*  header: any = { 
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
     } 
-  }  
+  }   */
 
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
   employeeId: any
   liveUserCode: any   
-
   data: Observable<any>
-  
   loadingElement: any
-
   deviceId: any
-  
   getEventsItems: any
-
   my_events_page: string = 'assets/img/page/my_events_page.png'
   my_marks_info: string = 'assets/img/my_marks_info.png'
   my_marks_tic: string = 'assets/img/my_marks_tic.png'
-
   constructor(
     private authService: AuthenticationService,
     private storage: Storage,
@@ -46,34 +42,30 @@ export class EventsPage implements OnInit {
     public toastController: ToastController,
     public http: HttpClient,
     public navController: NavController,
-    private nativePageTransitions: NativePageTransitions    
-  ) { 
-
-  }
-
+    private nativePageTransitions: NativePageTransitions,
+    private _function:FunctionsService,
+    private _socketService:DatabaseService    
+  ) {   }
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
         this.employeeId = val['EmployeeId']
       }
-    })
-
+    });
     this.storage.get('liveUserCode').then((val) => {
       if(val != null && val != undefined) {
         this.liveUserCode = val
       }
-    })
-
+    });
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
         this.deviceId = val
-        this.getEventsService()
+        this.getEventsService();
+        //this.dummyData()
       }
-    })
-    
+    });
     //this.dummyData()
   }
-
   dummyData() {
     this.getEventsItems = [
       {
@@ -104,75 +96,48 @@ export class EventsPage implements OnInit {
       }                  
     ]
   }
-  
-  getEventsService() {
-    this.eventsServiceLoaderOn()
-
-    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/GetEvents'
-    
+  async getEventsService() {
+  let LoadingEvents = await this.loadingController.create({
+      message: 'Cargando Eventos...',
+      spinner: 'crescent',
+      cssClass:'transparent'
+    });
+    LoadingEvents.present();
     let employeeId = this.employeeId
     let imei = this.deviceId
 
-    this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
-
-    this.data.subscribe((response) => {
-
-      this.eventsServiceLoaderOff()
-
-      this.getEventsItems = response
-
-      console.log('this.getEventsItems --', this.getEventsItems)
-
-      if(this.getEventsItems.length == 0) {
-        this.noDataToast()
+    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/GetEvents?employeeId='+employeeId+'&imei='+imei;
+    this._socketService.serviceViewEvents(url).then((response)=>{
+      console.log(response);
+      switch(response['status']){
+        case '200':
+            LoadingEvents.dismiss();
+            this.getEventsItems = response['response'];
+          break;
+        case '400':
+            LoadingEvents.dismiss();
+            this.noDataToast();
+          break;
+        case '0':
+            LoadingEvents.dismiss();
+            this.badRequestAlert();
+          break;        
       }
-    
-    }, (err) => {
-      this.eventsServiceLoaderOff()
-      this.badRequestAlert()
+     
     })    
   }
-  
-  async eventsServiceLoaderOn() {
-    this.loadingElement = await this.loadingController.create({
-      message: 'Por favor espera...',
-      spinner: 'crescent'
-    })
-    this.loadingElement.present()
-
-    setTimeout(() => {
-      this.loadingElement.dismiss()
-    }, 3000)    
-  }
-  
-  async eventsServiceLoaderOff() {
-    this.loadingElement.dismiss()
-  }
-  
   async badRequestAlert() {
-    const alert = await this.alertController.create({
-      message: 'Error de servicio',
-      buttons: ['De acuerdo']
-    })
-
-    await alert.present()
+    this._function.requireAlert('Error de servicio','De acuerdo');
   }  
 
   async noDataToast() {
-    const toast = await this.toastController.create({
-      message: 'Datos no encontrados',
-      position: 'middle',
-      duration: 2000
-    })
-    
-    toast.present()
+    this._function.MessageToast('No hay información de eventos','bottom',2000);
   }  
 
   dashboardGo() {
     let options: NativeTransitionOptions = {
       duration: 800
      }
-  
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'dashboard'])
   }

@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
+import { FunctionsService } from 'src/app/services/functions.service';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-changepassword',
@@ -20,22 +22,16 @@ export class ChangepasswordPage implements OnInit {
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
     } 
   }  
-  currentVal=2;
+  currentVal=3;
   oldPassword: number
   newPassword: number
   rePassword: number
-
   userLoginResDetail: string = 'userLoginResDetail'
-
   employeeId: any
   liveUserCode: any  
-
   data: Observable<any>
-
   loadingElement: any
-
   changePasswordData: any
-
   deviceId: any
 
   constructor(
@@ -46,10 +42,10 @@ export class ChangepasswordPage implements OnInit {
     public toastController: ToastController,
     public http: HttpClient,
     public navController: NavController,
-    private nativePageTransitions: NativePageTransitions    
-    ) { 
-
-  }
+    private nativePageTransitions: NativePageTransitions,
+    private _function:FunctionsService,
+    private _socketService:DatabaseService      
+    ) { }
 
   ngOnInit() {    
     this.storage.get(this.userLoginResDetail).then((val) => {
@@ -81,13 +77,13 @@ export class ChangepasswordPage implements OnInit {
     let options: NativeTransitionOptions = {
       duration: 800
     }
-  
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'profile'])
   }
 
   async changePasswordLoaderOn() {
-    this.loadingElement = await this.loadingController.create({
+    this._function.requireLoading('Por favor espera...',2000);
+    /* this.loadingElement = await this.loadingController.create({
       message: 'Por favor espera...',
       spinner: 'crescent'
     });
@@ -95,23 +91,25 @@ export class ChangepasswordPage implements OnInit {
 
     setTimeout(() => {
       this.loadingElement.dismiss()
-    }, 3000)    
+    }, 3000) */    
   }
   
-  async changePasswordLoaderOff() {
+  /* async changePasswordLoaderOff() {
     this.loadingElement.dismiss()
-  }
+  } */
   
   async changePasswordResponseAlert(responseMsg) {
-    const alert = await this.alertController.create({
+    this._function.requireAlert(responseMsg,'De acuerdo');
+    /* const alert = await this.alertController.create({
       message: responseMsg,
       buttons: ['De acuerdo']
-    });
+    }); 
 
-    await alert.present()
+    await alert.present()*/
   }  
   
   async badRequestAlert() {
+    
     const alert = await this.alertController.create({
       message: 'Error de servicio',
       buttons: ['De acuerdo']
@@ -169,27 +167,20 @@ export class ChangepasswordPage implements OnInit {
 
   changePasswordService() {
     this.changePasswordLoaderOn()
-    
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/ChangePassword'
-
     let params = {
       "oldPassword": this.oldPassword,
       "newPassword": this.newPassword,
       "employeeId": this.employeeId,
       "imei": this.deviceId
     }
-
     this.data = this.http.post(url, params, this.header);
-
     this.data.subscribe((response) => {
-
-      this.changePasswordLoaderOff()
-
+      //this.changePasswordLoaderOff()
       this.changePasswordData = response
 
       if(response.status) {
         this.changePasswordResponseAlert('Exitosamente')
-
         let options: NativeTransitionOptions = {
           duration: 800
         }
@@ -201,11 +192,18 @@ export class ChangepasswordPage implements OnInit {
         this.changePasswordResponseAlert(response.Message)
       }        
     }, (err) => {
-      this.changePasswordLoaderOff()
+      //this.changePasswordLoaderOff()
       this.badRequestAlert()
     })
   }
-
+  dashboardGo() {
+    let options: NativeTransitionOptions = {
+      duration: 800
+    }
+  
+    this.nativePageTransitions.fade(options);
+    this.navController.navigateRoot(['members', 'dashboard'])    
+  }
 
 
 }

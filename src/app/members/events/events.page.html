@@ -1,87 +1,54 @@
 <app-header titulo="MIS EVENTOS">
 </app-header>
 <ion-content fullscreen="true" padding class="custom-background">
-
-    <ion-toolbar class="custom-background-transparent">
-      <ion-buttons slot="start">
-        <ion-button (click)="dashboardGo()">
-          <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
-        </ion-button>
-      </ion-buttons>    
-      <ion-title text-center color="light">MIS EVENTOS</ion-title>
-      <ion-buttons slot="end">
-          <ion-button (click)="logout()">
-            <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
-          </ion-button>
-        </ion-buttons>     
-    </ion-toolbar>
-    
     <div class="custom-padding-left-right">
-  
       <div>
-  
         <ion-img [src]="my_events_page" class="custom-img-7 custom-margin-auto custom-p-t-sm"></ion-img>       
       </div>
-
       <ion-grid>
-
         <!-- row start -->      
         <ion-row class="custom-sm-margin" *ngFor="let getEventsItem of getEventsItems">
-  
           <ion-col size="8">
-
             <div class="custom-card-e">            
-            
               <ion-row>
                 <ion-col size="12">
                   <div class="custom-bold-text custom-m-top-bottom-sm">Evento</div>
                   <span class="custom-font-sm">{{ getEventsItem.TypeEvent }}</span>
                 </ion-col>
               </ion-row>
-
               <ion-row>
                 <ion-col size="6">
                   <div class="custom-bold-text custom-m-top-bottom-sm">Desde</div>
                   <span class="custom-font-sm">{{ getEventsItem.From | date: 'dd/MM/yyyy' }}</span>                  
                 </ion-col>
-
                 <ion-col size="6">
                   <div class="custom-bold-text custom-m-top-bottom-sm">Hasta</div>
                   <span class="custom-font-sm">{{ getEventsItem.To | date: 'dd/MM/yyyy' }}</span>                    
                 </ion-col>              
               </ion-row>
-
             </div>
-  
           </ion-col>
-          
           <ion-col size="2">
-
             <div>
               <img [src]="my_marks_info" class="custom-img-4 custom-v-align">
             </div>
-
           </ion-col>
-
           <ion-col size="2">
-
             <div>         
               <img [src]="my_marks_tic" class="custom-img-4 custom-v-align">
             </div>
-
           </ion-col>          
-  
         </ion-row>
         <!-- row end -->
-
       </ion-grid>      
-  
     </div>
-  
   </ion-content>
-  
   <!-- footer start -->
   <app-footer></app-footer>
   <!-- footer end -->
-<app-menu-footer></app-menu-footer>
+<app-menu-footer
+[valCapa]="currentVal"
+id="events"
+(goDashboard)="dashboardGo()"
+(logout)="logout()"></app-menu-footer>
   

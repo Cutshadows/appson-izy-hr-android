@@ -127,6 +127,10 @@
 </ion-content>
 
 <!-- footer start -->
-<app-footer></app-footer>
+<app-footer *ngIf="currentVal!=2"></app-footer>
 <!-- footer end -->
-<app-menu-footer></app-menu-footer>
+<app-menu-footer
+[valCapa]="currentVal"
+id="mymark"
+(goDashboard)="dashboardGo()"
+(logout)="logout()"></app-menu-footer>
