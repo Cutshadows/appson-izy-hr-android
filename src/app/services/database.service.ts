@@ -182,7 +182,93 @@ export class DatabaseService {
     })
     return Promesa;
   }
-
+  serviceChangePassword(url, params){
+    let Promesa=new Promise((resolve)=>{
+      this.http.post(url, params, this.header).pipe(
+        delay(450)
+        ).subscribe((response)=>{
+        let jsonChangPassword={
+          status,
+          response
+        }
+        switch(response['status']){
+          case 1:
+            jsonChangPassword.status="200";
+            jsonChangPassword.response=response;
+            resolve(jsonChangPassword);
+          break;
+          case 0:
+            jsonChangPassword.status="400";
+            jsonChangPassword.response=response;
+            resolve(jsonChangPassword);
+          break;
+        }
+      },
+      (error)=>{
+        for (const key in error) {
+          switch(key){
+             case 'status':
+                if (error.hasOwnProperty(key)) {
+                  const element = error[key];
+                  if(element==0){
+                    let jsonResponseError={
+                      status
+                    }
+                    jsonResponseError.status="0";
+                    this.response=jsonResponseError;
+                    resolve(this.response);
+                  }
+                } 
+              break;
+          }
+        }
+      });
+    })
+    return Promesa;
+  }
+  serviceGetCasino(url){
+    let Promesa=new Promise((resolve)=>{
+      this.http.get(url, this.header).pipe(
+        delay(450)
+        ).subscribe((response)=>{
+          console.log("response de casinos"+response['Data']);
+          debugger
+        /* let jsonRespondEvents={
+          status,
+          response
+        } */
+        /* if((Object.keys(response).length != 0)==true){
+          jsonRespondEvents.status="200";
+          jsonRespondEvents.response=response;
+          resolve(jsonRespondEvents);
+        }else if((Object.keys(response).length == 0)==true){
+          jsonRespondEvents.status="400";
+          jsonRespondEvents.response=response;
+          resolve(jsonRespondEvents);
+        } */
+      },
+      (error)=>{
+        for (const key in error) {
+          switch(key){
+             case 'status':
+                if (error.hasOwnProperty(key)) {
+                  const element = error[key];
+                  if(element==0){
+                    let jsonResponseError={
+                      status
+                    }
+                    jsonResponseError.status="0";
+                    this.response=jsonResponseError;
+                    resolve(this.response);
+                  }
+                } 
+              break;
+          }
+        }
+      });
+    })
+    return Promesa;
+  }
 
 }
   

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AlertController, LoadingController, ToastController, NavController } from '@ionic/angular';
@@ -9,19 +9,14 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
 import { FunctionsService } from 'src/app/services/functions.service';
 import { DatabaseService } from 'src/app/services/database.service';
 
+
 @Component({
   selector: 'app-changepassword',
   templateUrl: './changepassword.page.html',
   styleUrls: ['./changepassword.page.scss'],
 })
-export class ChangepasswordPage implements OnInit {
 
-  header: any = { 
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    } 
-  }  
+export class ChangepasswordPage implements OnInit {
   currentVal=3;
   oldPassword: number
   newPassword: number
@@ -33,7 +28,8 @@ export class ChangepasswordPage implements OnInit {
   loadingElement: any
   changePasswordData: any
   deviceId: any
-
+  @ViewChild("InputPassword") inputPassword;
+  @ViewChild("InputRepeatPassword") inputRepeat;
   constructor(
     private authService: AuthenticationService,
     private storage: Storage,
@@ -83,68 +79,28 @@ export class ChangepasswordPage implements OnInit {
 
   async changePasswordLoaderOn() {
     this._function.requireLoading('Por favor espera...',2000);
-    /* this.loadingElement = await this.loadingController.create({
-      message: 'Por favor espera...',
-      spinner: 'crescent'
-    });
-    this.loadingElement.present()
-
-    setTimeout(() => {
-      this.loadingElement.dismiss()
-    }, 3000) */    
   }
-  
-  /* async changePasswordLoaderOff() {
-    this.loadingElement.dismiss()
-  } */
   
   async changePasswordResponseAlert(responseMsg) {
     this._function.requireAlert(responseMsg,'De acuerdo');
-    /* const alert = await this.alertController.create({
-      message: responseMsg,
-      buttons: ['De acuerdo']
-    }); 
-
-    await alert.present()*/
   }  
   
   async badRequestAlert() {
-    
-    const alert = await this.alertController.create({
-      message: 'Error de servicio',
-      buttons: ['De acuerdo']
-    });
-
-    await alert.present()
+    this._function.requireAlert('Error de servicio','De acuerdo');
   }
   
   async requireAlert() {
-    const alert = await this.alertController.create({
-      message: 'Por favor llena todos los espacios',
-      buttons: ['De acuerdo']
-    });
-
-    await alert.present()
+    this._function.requireAlert('Por favor llena todos los espacios','De acuerdo');
   }
   
   async passwordValid() {
-    const toast = await this.toastController.create({
-      message: 'La contraseña debe ser número',
-      position: 'middle',
-      duration: 2000
-    });
-    toast.present()
+    this._function.MessageToast('La contraseña debe ser número','top',2000);
   }
   
   async passwordMatchAlert() {
-    const alert = await this.alertController.create({
-      message: 'No coincide',
-      buttons: ['De acuerdo']
-    });
-
-    await alert.present()
+    this._function.requireAlert('No coincide','De acuerdo');
   }  
-
+ 
   changePassword() {
     if(this.oldPassword == undefined) {
       this.requireAlert()
@@ -165,8 +121,14 @@ export class ChangepasswordPage implements OnInit {
     }
   }
 
-  changePasswordService() {
-    this.changePasswordLoaderOn()
+  async changePasswordService() {
+    let loadingElementChangePassword = await this.loadingController.create({
+      message: 'Procesando Información ...',
+      spinner: 'crescent',
+      cssClass: 'transparent'
+    });
+    loadingElementChangePassword.present();
+
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/ChangePassword'
     let params = {
       "oldPassword": this.oldPassword,
@@ -174,33 +136,47 @@ export class ChangepasswordPage implements OnInit {
       "employeeId": this.employeeId,
       "imei": this.deviceId
     }
-    this.data = this.http.post(url, params, this.header);
-    this.data.subscribe((response) => {
-      //this.changePasswordLoaderOff()
-      this.changePasswordData = response
 
-      if(response.status) {
-        this.changePasswordResponseAlert('Exitosamente')
-        let options: NativeTransitionOptions = {
-          duration: 800
-        }
-      
-        this.nativePageTransitions.fade(options);
-        this.navController.navigateRoot(['members', 'profile'])   
-
-      } else {
-        this.changePasswordResponseAlert(response.Message)
-      }        
-    }, (err) => {
-      //this.changePasswordLoaderOff()
-      this.badRequestAlert()
-    })
+    this._socketService.serviceChangePassword(url, params).then((response)=>{
+      loadingElementChangePassword.dismiss();
+      console.log("respuesta del cambio de clave "+response['status']);
+      switch(response['status']){
+        case '200':
+            loadingElementChangePassword.dismiss();
+            this.changePasswordData = response['response'];
+            this.changePasswordResponseAlert('Clave cambiada exitosamente')
+            let options: NativeTransitionOptions = {
+              duration: 800
+            }
+            this.nativePageTransitions.fade(options);
+            this.navController.navigateRoot(['members', 'profile']);
+          break;
+        case '400':
+            loadingElementChangePassword.dismiss();
+            this.changePasswordResponseAlert(response['resposne']['Message']);
+          break;
+        case '0':
+            loadingElementChangePassword.dismiss();
+            this.badRequestAlert();
+          break;
+      }
+    });
+  }
+  oldPasswordNotRepeat(){
+    if(this.oldPassword==this.newPassword){
+      this._function.MessageToast("No se puede usar la misma clave antigua", "bottom", 2000);
+      this.newPassword=undefined;
+      this.inputPassword.setFocus();
+    }else if(this.oldPassword==this.rePassword){
+      this._function.MessageToast("No se puede usar la misma clave antigua", "bottom", 2000);
+      this.rePassword=undefined;
+      this.inputRepeat.setFocus();
+    }
   }
   dashboardGo() {
     let options: NativeTransitionOptions = {
       duration: 800
     }
-  
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'dashboard'])    
   }
