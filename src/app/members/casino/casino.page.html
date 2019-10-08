@@ -1,6 +1,6 @@
 <app-header titulo="CASINO">
 </app-header>
-<ion-content fullscreen="true" padding class="custom-background">
+<ion-content fullscreen="true"  class="custom-background padding">
 
   <!-- <ion-toolbar class="custom-background-transparent">
     <ion-buttons slot="start">
@@ -28,17 +28,17 @@
       <!-- first row start -->      
       <ion-row class="custom-m-margin center">     
 
-        <ion-col size="12" *ngFor="let getCasinoItem of getCasinoItems" padding-bottom>
+        <ion-col size="12" *ngFor="let getCasinoItem of getCasinoItems" class="ion-padding-bottom">
 
           <ion-row (click)="getCasinoItemDetail(getCasinoItem)">
 
-            <ion-col size="6" no-padding>
+            <ion-col size="6" class="no-padding">
               <div class="custom-back-color-white custom-border-left custom-p-top-bottom-md">
                 {{ getCasinoItem.Date | date: 'dd/MM/yyyy' }}
               </div>
             </ion-col>
 
-            <ion-col size="6" no-padding>
+            <ion-col size="6" class="no-padding">
 
               <div *ngIf="getCasinoItem.Status" class="custom-back-color-green custom-border-right custom-p-top-bottom-md">
                 SELECCIONADO

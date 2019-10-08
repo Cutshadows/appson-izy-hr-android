@@ -1,6 +1,6 @@
-<ion-content padding class="custom-background">
+<ion-content    class="custom-background ion-padding">
 
-  <ion-text color="light" text-uppercase text-center>
+  <ion-text color="light" class="ion-text-uppercase ion-text-center">
     <h4 class="custom-font-light">BIENVENIDO A:</h4>
   </ion-text>
 
@@ -14,19 +14,19 @@
         <ion-input type="number" autocomplete="off" placeholder="RUT" color="light" [(ngModel)]="username"></ion-input>
       </div>
 
-      <div margin-top class="custom-border-bottom">
+      <div  class="custom-border-bottom ion-margin-top">
         <ion-input type="password" placeholder="PASSWORD" maxlength="4" color="light" [(ngModel)]="password"></ion-input>
       </div> 
 
-      <div *ngIf="addNewCodeButton" margin-top class="custom-border-bottom">
+      <div *ngIf="addNewCodeButton"  class="custom-border-bottom ion-margin-top">
         <ion-input type="text" placeholder="CODIGO" color="light" [(ngModel)]="code"></ion-input>
       </div>
 
-      <div *ngIf="codeArray.length == 0" margin-top class="custom-border-bottom">
+      <div *ngIf="codeArray.length == 0"  class="custom-border-bottom ion-margin-top">
         <ion-input type="text" placeholder="CODIGO" color="light" [(ngModel)]="code"></ion-input>
       </div>    
 
-      <div *ngIf="codeArray.length > 1 && !addNewCodeButton" margin-top class="custom-border-bottom">
+      <div *ngIf="codeArray.length > 1 && !addNewCodeButton"  class="custom-border-bottom ion-margin-top">
         <ion-select interface="popover" placeholder="CODIGO" [(ngModel)]="code" class="custom-white custom-p-left">
           <ion-select-option *ngFor="let code of codeArray" value="{{code}}" color="light">{{ code }}</ion-select-option>
         </ion-select>
