@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { delay } from 'rxjs/operators';
-
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { delay, timeout, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 //import { BehaviourSubject } from 'rxjs';
 
@@ -20,7 +20,12 @@ export class DatabaseService {
   constructor(public http: HttpClient,){}
   validateLogin(url, params){
     let Promesa=new Promise((resolve)=>{
-      this.http.post(url, params, this.header).subscribe((response)=>{
+      this.http.post(url, params, this.header).pipe(
+        timeout(2500),
+        catchError(
+          error=>of(408)
+          )
+        ).subscribe((response)=>{
         let jsonRespond={
           status,
           response
@@ -37,7 +42,7 @@ export class DatabaseService {
           resolve(this.response);
         }
       },
-      (error)=>{
+      (error: HttpErrorResponse)=>{
         for (const key in error) {
           switch(key){
              case 'status':
@@ -78,7 +83,7 @@ export class DatabaseService {
           resolve(jsonRespond);
         }
       },
-      (error)=>{
+      (error: HttpErrorResponse)=>{
         for (const key in error) {
           switch(key){
              case 'status':
@@ -119,7 +124,7 @@ export class DatabaseService {
           resolve(jsonRespondEvents);
         }
       },
-      (error)=>{
+      (error: HttpErrorResponse)=>{
         for (const key in error) {
           switch(key){
              case 'status':
@@ -160,7 +165,7 @@ export class DatabaseService {
           resolve(jsonRespondEvents);
         }
       },
-      (error)=>{
+      (error: HttpErrorResponse)=>{
         for (const key in error) {
           switch(key){
              case 'status':
@@ -204,7 +209,7 @@ export class DatabaseService {
           break;
         }
       },
-      (error)=>{
+      (error: HttpErrorResponse)=>{
         for (const key in error) {
           switch(key){
              case 'status':
@@ -248,7 +253,7 @@ export class DatabaseService {
           resolve(jsonRespondEvents);
         } */
       },
-      (error)=>{
+      (error: HttpErrorResponse)=>{
         for (const key in error) {
           switch(key){
              case 'status':
