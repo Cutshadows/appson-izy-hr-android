@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
 
 import { ModalPage } from '../modal/modal.page';
+import { FunctionsService } from 'src/app/services/functions.service';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-casino',
@@ -57,7 +59,9 @@ export class CasinoPage implements OnInit {
     public http: HttpClient,
     public navController: NavController,
     private nativePageTransitions: NativePageTransitions,
-    private modalController: ModalController    
+    private modalController: ModalController,
+    private _function:FunctionsService,
+    private _socketService:DatabaseService     
   ) { 
 
   }
@@ -82,24 +86,30 @@ export class CasinoPage implements OnInit {
       }
     })
     
-    //this.dummyData()
+    this.dummyData()
   }
 
-  getCasinoService() {
-    this.casinoServiceLoaderOn()
+  async getCasinoService() {
+   // this.casinoServiceLoaderOn()
+    let loadingElementCasino = await this.loadingController.create({
+      message: 'Cargando informaición...',
+      spinner: 'crescent',
+      cssClass:'transparent'
+    });
+    loadingElementCasino.present();
+    let employeeId = this.employeeId;
+    let imei = this.deviceId;
+    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/GetCasino?employeeId='+employeeId+'&imei='+imei;
+    //this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
+   // this.data.subscribe((response) => {
+    this._socketService.serviceGetCasino(url).then((response)=>{
 
-    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/GetCasino'
-    
-    let employeeId = this.employeeId
-    let imei = this.deviceId
+      loadingElementCasino.dismiss();
+      console.log("respuesta de cargar el casino"+response['Data']);
+      debugger
+      //this.casinoServiceLoaderOff()
 
-    this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
-
-    this.data.subscribe((response) => {
-
-      this.casinoServiceLoaderOff()
-
-      this.getCasinoItems = response.Data
+      /* this.getCasinoItems = response.Data
 
       this.canEditFreelyRsp = response.CanEditFreely
 
@@ -111,7 +121,7 @@ export class CasinoPage implements OnInit {
     
     }, (err) => {
       this.casinoServiceLoaderOff()
-      this.badRequestAlert()
+      this.badRequestAlert() */
     })
   }
 

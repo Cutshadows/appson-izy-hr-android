@@ -231,6 +231,7 @@ export class DatabaseService {
       this.http.get(url, this.header).pipe(
         delay(450)
         ).subscribe((response)=>{
+          console.log(response);
           console.log("response de casinos"+response['Data']);
           debugger
         /* let jsonRespondEvents={

@@ -21,44 +21,29 @@ export class CasinooptionPage implements OnInit {
     } 
   }  
 
-  userLoginResDetail: string = 'userLoginResDetail'
-  
-  employeeId: any
-  liveUserCode: any   
-
-  data: Observable<any>
-  
-  loadingElement: any
-
-  deviceId: any  
-
-  menu_1: string = 'assets/img/page/menu_1.png'
-  menu_2: string = 'assets/img/page/menu_2.png'
-  menu_3: string = 'assets/img/page/menu_3.png'
-  menu_4: string = 'assets/img/page/menu_4.png'
-
+  userLoginResDetail: string = 'userLoginResDetail';
+  employeeId: any;
+  liveUserCode: any ;  
+  data: Observable<any>;
+  loadingElement: any;
+  deviceId: any;  
+  menu_1: string = 'assets/img/page/menu_1.png';
+  menu_2: string = 'assets/img/page/menu_2.png';
+  menu_3: string = 'assets/img/page/menu_3.png';
+  menu_4: string = 'assets/img/page/menu_4.png';
   // casino item
-  casinoItem: string = 'casinoItem'
-
-  casinoItemStoreA: any
-
+  casinoItem: string = 'casinoItem';
+  casinoItemStoreA: any;
   // casino service
-  casinoItemService: string = 'casinoItemService'
-
-  casinoItemServiceStoreA: any  
-
+  casinoItemService: string = 'casinoItemService';
+  casinoItemServiceStoreA: any;  
   // casino option
-  casinoItemOption: string = 'casinoItemOption'
-
-  casinoItemOptionStoreA: any  
-
-  setCasinoSrvRes: any
-
-  casinoItemOptionZeroStatus: any = []
-
-  canEditFreelyStorageV: any
-
-  casinoItemServiceStatus: any = []  
+  casinoItemOption: string = 'casinoItemOption';
+  casinoItemOptionStoreA: any;  
+  setCasinoSrvRes: any;
+  casinoItemOptionZeroStatus: any = [];
+  canEditFreelyStorageV: any;
+  casinoItemServiceStatus: any = [];  
 
   constructor(
     private storage: Storage,
@@ -237,15 +222,13 @@ export class CasinooptionPage implements OnInit {
   // option list click for can edit freely false end
 
   setCasinoEmployeeService(optionDetailId) {
-
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/SetCasinoEmployee'
-
     let params = {
       "employeeId": this.employeeId,
       "imei": this.deviceId,
       "optionDetailId": optionDetailId
     }
-
+    
     this.data = this.http.post(url, params, this.header)
 
     this.data.subscribe((response) => {
