@@ -16,17 +16,17 @@ import { DatabaseService } from 'src/app/services/database.service';
 })
 export class EventsPage implements OnInit {
 
- /*  header: any = { 
+ /*  header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    } 
+    }
   }   */
 
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
   employeeId: any
-  liveUserCode: any   
+  liveUserCode: any
   data: Observable<any>
   loadingElement: any
   deviceId: any
@@ -44,7 +44,7 @@ export class EventsPage implements OnInit {
     public navController: NavController,
     private nativePageTransitions: NativePageTransitions,
     private _function:FunctionsService,
-    private _socketService:DatabaseService    
+    private _socketService:DatabaseService
   ) {   }
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
@@ -66,7 +66,7 @@ export class EventsPage implements OnInit {
     });
     //this.dummyData()
   }
-  dummyData() {
+  /* dummyData() {
     this.getEventsItems = [
       {
         "Id": 12,
@@ -93,21 +93,23 @@ export class EventsPage implements OnInit {
         "EventRequestStatus": 1,
         "GlosaApproved": "",
         "InsertBy": 0
-      }                  
+      }
     ]
-  }
+  } */
   async getEventsService() {
-  let LoadingEvents = await this.loadingController.create({
-      message: 'Cargando Eventos...',
-      spinner: 'crescent',
-      cssClass:'transparent'
+  let LoadingEvents = await this.toastController.create({
+    	message: 'Cargando Eventos...',
+		position:'bottom',
+	    //spinner: 'crescent',
+        cssClass:'my-custom-toast'
     });
     LoadingEvents.present();
     let employeeId = this.employeeId
     let imei = this.deviceId
 
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/GetEvents?employeeId='+employeeId+'&imei='+imei;
-    this._socketService.serviceViewEvents(url).then((response)=>{
+	this._socketService.serviceViewEvents(url)
+	.then((response)=>{
       console.log(response);
       switch(response['status']){
         case '200':
@@ -117,22 +119,29 @@ export class EventsPage implements OnInit {
         case '400':
             LoadingEvents.dismiss();
             this.noDataToast();
-          break;
+		  break;
+		case '408':
+            LoadingEvents.dismiss();
+            this.badRequestTimeoutAlert();
+        break;
         case '0':
             LoadingEvents.dismiss();
             this.badRequestAlert();
-          break;        
+          break;
       }
-     
-    })    
-  }
-  async badRequestAlert() {
-    this._function.requireAlert('Error de servicio','De acuerdo');
-  }  
 
-  async noDataToast() {
+    })
+  }
+  badRequestAlert() {
+    this._function.requireAlert('Error de servicio','De acuerdo');
+  }
+
+  noDataToast() {
     this._function.MessageToast('No hay información de eventos','bottom',2000);
-  }  
+  }
+  badRequestTimeoutAlert() {
+    this._function.requireAlert('Tiempo de Respuesta Agotado','De acuerdo');
+  }
 
   dashboardGo() {
     let options: NativeTransitionOptions = {
@@ -141,9 +150,8 @@ export class EventsPage implements OnInit {
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'dashboard'])
   }
-
   logout() {
     this.authService.logout()
-  }  
+  }
 
 }

@@ -128,6 +128,11 @@ export class LoginPage implements OnInit {
               this.loadingElement.dismiss();
               this.wrongInputAlert(response['response']['Message']);
           break;
+          case '408':
+              this.loadingElement.dismiss();
+              this.badRequestTimeoutAlert();  
+              //this.wrongInputAlert(response['response']['Message']);
+          break;
           case '0':
               this.loadingElement.dismiss();
               this.badRequestAlert();  
@@ -300,6 +305,11 @@ export class LoginPage implements OnInit {
               this.loadingElement.dismiss();
               this.wrongInputAlert(response['response']['Message']);
           break;
+          case '408':
+              this.loadingElement.dismiss();
+              this.badRequestTimeoutAlert();  
+              //this.wrongInputAlert(response['response']['Message']);
+          break;
           case '0':
               this.loadingElement.dismiss();
               this.badRequestAlert();   
@@ -349,6 +359,11 @@ export class LoginPage implements OnInit {
               this.loadingElement.dismiss();
               this.wrongInputAlert(response['response']['Message']);
           break;
+          case '408':
+              this.loadingElement.dismiss();
+              this.badRequestTimeoutAlert();  
+              //this.wrongInputAlert(response['response']['Message']);
+          break;
           case '0':
               this.loadingElement.dismiss();
               this.badRequestAlert();  
@@ -374,7 +389,10 @@ export class LoginPage implements OnInit {
     this._function.requireAlert(resMessage,'De acuerdo');
   }
   badRequestAlert() {
-    this._function.requireAlert('Código incorrecto o Problemas de Conexión, intentelo mas tarde','De acuerdo');
+    this._function.requireAlert('Problemas de Conexión, intentelo mas tarde','De acuerdo');
+  }
+  badRequestTimeoutAlert() {
+    this._function.requireAlert('Tiempo de Respuesta Agotado','De acuerdo');
   }
   deviceIdToast() {
     this._function.MessageToast('Permitir ID de dispositivo','top',2000);
