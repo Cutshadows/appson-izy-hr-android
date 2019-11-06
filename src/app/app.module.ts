@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite } from '@ionic-native/sqlite/ngx';
 
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 
@@ -23,16 +23,19 @@ import { NativePageTransitions } from '@ionic-native/native-page-transitions/ngx
 
 import { Network } from '@ionic-native/network/ngx';
 import { ModalPageModule } from './members/modal/modal.module';
-import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module'
+import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module';
+
+
+
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
-    HttpClientModule, 
-    IonicModule.forRoot(), 
-    AppRoutingModule, 
+    HttpClientModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
     IonicStorageModule.forRoot(),
     ModalPageModule,
     OptionmodalPageModule
@@ -47,7 +50,7 @@ import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module'
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NativePageTransitions,
     SQLite,
-    Network    
+	Network
   ],
   bootstrap: [AppComponent]
 })

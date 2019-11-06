@@ -49,17 +49,17 @@ export class EventsPage implements OnInit {
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
-        this.employeeId = val['EmployeeId']
+        this.employeeId = val['EmployeeId'];
       }
     });
     this.storage.get('liveUserCode').then((val) => {
       if(val != null && val != undefined) {
-        this.liveUserCode = val
+        this.liveUserCode = val;
       }
     });
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
-        this.deviceId = val
+        this.deviceId = val;
         this.getEventsService();
         //this.dummyData()
       }
@@ -104,9 +104,8 @@ export class EventsPage implements OnInit {
         cssClass:'my-custom-toast'
     });
     LoadingEvents.present();
-    let employeeId = this.employeeId
-    let imei = this.deviceId
-
+    let employeeId = this.employeeId;
+    let imei = this.deviceId;
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/GetEvents?employeeId='+employeeId+'&imei='+imei;
 	this._socketService.serviceViewEvents(url)
 	.then((response)=>{
@@ -129,7 +128,6 @@ export class EventsPage implements OnInit {
             this.badRequestAlert();
           break;
       }
-
     })
   }
   badRequestAlert() {
@@ -142,7 +140,6 @@ export class EventsPage implements OnInit {
   badRequestTimeoutAlert() {
     this._function.requireAlert('Tiempo de Respuesta Agotado','De acuerdo');
   }
-
   dashboardGo() {
     let options: NativeTransitionOptions = {
       duration: 800

@@ -18,25 +18,25 @@ import { DatabaseService } from 'src/app/services/database.service';
 })
 export class CasinoPage implements OnInit {
 
-  header: any = { 
+  header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    } 
-  }  
+    }
+  }
 
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
 
   employeeId: any
-  liveUserCode: any   
+  liveUserCode: any
 
   data: Observable<any>
-  
+
   loadingElement: any
 
   deviceId: any
-  
+
   getCasinoDummyItems: any
   getCasinoItems: any
 
@@ -61,23 +61,23 @@ export class CasinoPage implements OnInit {
     private nativePageTransitions: NativePageTransitions,
     private modalController: ModalController,
     private _function:FunctionsService,
-    private _socketService:DatabaseService     
-  ) { 
+    private _socketService:DatabaseService
+  ) {
 
   }
 
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
-        this.employeeId = val['EmployeeId']        
+        this.employeeId = val['EmployeeId']
       }
     })
 
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
-        this.deviceId = val                
+        this.deviceId = val
       }
-    })    
+    })
 
     this.storage.get('liveUserCode').then((val) => {
       if(val != null && val != undefined) {
@@ -85,8 +85,8 @@ export class CasinoPage implements OnInit {
         this.getCasinoService()
       }
     })
-    
-    this.dummyData()
+
+    //this.dummyData()
   }
 
   async getCasinoService() {
@@ -103,10 +103,9 @@ export class CasinoPage implements OnInit {
     //this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
    // this.data.subscribe((response) => {
     this._socketService.serviceGetCasino(url).then((response)=>{
-
       loadingElementCasino.dismiss();
       console.log("respuesta de cargar el casino"+response['Data']);
-      debugger
+      
       //this.casinoServiceLoaderOff()
 
       /* this.getCasinoItems = response.Data
@@ -118,7 +117,7 @@ export class CasinoPage implements OnInit {
       if(this.getCasinoItems.length == 0) {
         this.noDataToast()
       }
-    
+
     }, (err) => {
       this.casinoServiceLoaderOff()
       this.badRequestAlert() */
@@ -126,26 +125,19 @@ export class CasinoPage implements OnInit {
   }
 
   async getCasinoItemDetail(item) {
-    
     this.storage.set(this.casinoItem, item)
-
     let casinoItemServiceDetail = {
       From: item.Services[0].From,
       Id: item.Services[0].Id,
       Name: item.Services[0].Name,
       Status: item.Services[0].Status
     }
-
     this.storage.set(this.casinoItemService, casinoItemServiceDetail)
-
     this.storage.set(this.casinoItemOption, item.Services[0].Options)
-
     this.storage.set('canEditFreelyStorage', this.canEditFreelyRsp)
-
     let options: NativeTransitionOptions = {
       duration: 800
     }
-  
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'casinoservice'])
   }
@@ -161,8 +153,8 @@ export class CasinoPage implements OnInit {
     modal.present()
   }
 
-  dummyData() {
-    this.getCasinoDummyItems = 
+  /* dummyData() {
+    this.getCasinoDummyItems =
       {
         "Data": [
             {
@@ -266,15 +258,16 @@ export class CasinoPage implements OnInit {
                       ]
                   }
               ]
-          }            
+          }
         ]
-      }       
+      }
 
     this.getCasinoItems = this.getCasinoDummyItems.Data
-  }  
+  } */
 
-  async casinoServiceLoaderOn() {
-    this.loadingElement = await this.loadingController.create({
+  /* async casinoServiceLoaderOn() {
+	this._function.requireLoading('Procesando informacion', 2000);
+	this.loadingElement = await this.loadingController.create({
       message: 'Por favor espera...',
       spinner: 'crescent'
     })
@@ -282,43 +275,45 @@ export class CasinoPage implements OnInit {
 
     setTimeout(() => {
       this.loadingElement.dismiss()
-    }, 3000)    
-  }
-  
-  async casinoServiceLoaderOff() {
+    }, 3000)
+  } */
+
+  /* async casinoServiceLoaderOff() {
     this.loadingElement.dismiss()
-  }
-  
+  } */
+
   async badRequestAlert() {
-    const alert = await this.alertController.create({
+	this._function.requireAlert('Error en el servicio', 'De acuerdo');
+	/* const alert = await this.alertController.create({
       message: 'Error de servicio',
       buttons: ['De acuerdo']
-    })
+    }) */
 
-    await alert.present()
-  }  
+    //await alert.present()
+  }
 
   async noDataToast() {
-    const toast = await this.toastController.create({
+	this._function.MessageToast('Datos no encontrados', 'middle', 2000);
+	/* const toast = await this.toastController.create({
       message: 'Datos no encontrados',
       position: 'middle',
       duration: 2000
     })
-    
-    toast.present()
-  }  
+
+    toast.present() */
+  }
 
   dashboardGo() {
     let options: NativeTransitionOptions = {
       duration: 800
      }
-  
+
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'dashboard'])
   }
 
   logout() {
     this.authService.logout()
-  }  
+  }
 
 }

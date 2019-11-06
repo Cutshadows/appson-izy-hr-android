@@ -287,15 +287,21 @@ export class DatabaseService {
         	).subscribe((response)=>{
           console.log(response);
           console.log("response de casinos"+response['Data']);
-          debugger
         /* let jsonRespondEvents={
           status,
           response
         } */
         /* if((Object.keys(response).length != 0)==true){
-          jsonRespondEvents.status="200";
-          jsonRespondEvents.response=response;
-          resolve(jsonRespondEvents);
+		  if(response==408){
+			jsonRespondEvents.status="408";
+          	jsonRespondEvents.response=response;
+          	resolve(jsonRespondEvents);
+		  }else{
+			jsonRespondEvents.status="200";
+          	jsonRespondEvents.response=response;
+          	resolve(jsonRespondEvents);
+		  }
+
         }else if((Object.keys(response).length == 0)==true){
           jsonRespondEvents.status="400";
           jsonRespondEvents.response=response;

@@ -28,11 +28,11 @@ export class ModalPage implements OnInit {
 
   casinoItemService: string = 'casinoItemService'
 
-  casinoItemServiceStoreA: any  
+  casinoItemServiceStoreA: any
 
   casinoItemOption: string = 'casinoItemOption'
 
-  casinoItemOptionStoreA: any  
+  casinoItemOptionStoreA: any
 
   constructor(
     private navController: NavController,
@@ -40,7 +40,7 @@ export class ModalPage implements OnInit {
     private modalController: ModalController,
     private storage: Storage,
     private nativePageTransitions: NativePageTransitions
-  ) { 
+  ) {
 
   }
 
@@ -50,15 +50,15 @@ export class ModalPage implements OnInit {
       if(val != null && val != undefined) {
         this.casinoItemStoreA = val
       }
-      //console.log('this.casinoItemStoreA --', this.casinoItemStoreA)            
+      //console.log('this.casinoItemStoreA --', this.casinoItemStoreA)
     })
 
     this.storage.get(this.casinoItemService).then((val) => {
       if(val != null && val != undefined) {
         this.casinoItemServiceStoreA = val
       }
-      //console.log('this.casinoItemServiceStoreA --', this.casinoItemServiceStoreA)            
-    })    
+      //console.log('this.casinoItemServiceStoreA --', this.casinoItemServiceStoreA)
+    })
 
     this.servicesDetail = this.navParams.get('itemData')
   }
@@ -69,15 +69,13 @@ export class ModalPage implements OnInit {
     let options: NativeTransitionOptions = {
       duration: 800
      }
-  
+
     this.nativePageTransitions.fade(options);
-    this.navController.navigateRoot(['members', 'testing'])    
+    this.navController.navigateRoot(['members', 'testing'])
   }
 
-  async optionsList() {     
-
+  async optionsList() {
     this.closeModal()
-
     this.storage.get(this.casinoItemOption).then((val) => {
 
       if(val != null && val != undefined) {
@@ -86,13 +84,12 @@ export class ModalPage implements OnInit {
 
       }
 
-    })         
-
+    })
     const modal = await this.modalController.create({
       component: OptionmodalPage
     })
 
-    modal.present()      
-  }    
+    modal.present()
+  }
 
 }

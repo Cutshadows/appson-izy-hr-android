@@ -16,16 +16,16 @@ import { DatabaseService } from '../../services/database.service';
   styleUrls: ['./calendar.page.scss'],
 })
 export class CalendarPage implements OnInit {
-  /* header: any = { 
+  /* header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    } 
-  }  */ 
+    }
+  }  */
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
   employeeId: any
-  liveUserCode: any   
+  liveUserCode: any
   data: Observable<any>
   loadingElement: any
   deviceId: any
@@ -53,7 +53,7 @@ export class CalendarPage implements OnInit {
     public navController: NavController,
     private nativePageTransitions: NativePageTransitions,
     private _function:FunctionsService,
-    private _socketService:DatabaseService    
+    private _socketService:DatabaseService
   ) {   }
 
   ngOnInit() {
@@ -71,16 +71,16 @@ export class CalendarPage implements OnInit {
 
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
-        this.deviceId = val 
+        this.deviceId = val
         this.EmployeeScheduleList()
       }
-    })    
+    })
 
   }
 
   EmployeeScheduleListDummy() {
 
-    this.allMonthName = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']    
+    this.allMonthName = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
     let currentDate = new Date();
     let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -108,7 +108,7 @@ export class CalendarPage implements OnInit {
       this.rightCount = 0;
       this.leftCount = 0;
     }
-    
+
   }
   dashboardGo() {
     let options: NativeTransitionOptions = {
@@ -121,19 +121,23 @@ export class CalendarPage implements OnInit {
   logout() {
     this.authService.logout();
   }
-  async badRequestAlert() {
-    const alert = await this.alertController.create({
+  badRequestAlert() {
+	  this._function.requireAlert('Error de servicio','De acuerdo');
+    /* const alert = await this.alertController.create({
       message: 'Error de servicio',
       buttons: ['De acuerdo']
     });
-    await alert.present();
+    await alert.present(); */
   }
 
-  async noDataToast() {
+  noDataToast() {
     this._function.MessageToast('Datos no encontrados','bottom',2000);
-  }  
+  }
+  badRequestTimeoutAlert() {
+    this._function.requireAlert('Tiempo de Respuesta Agotado','De acuerdo');
+  }
   async EmployeeScheduleList() {
-    this.allMonthName = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];    
+    this.allMonthName = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     //this.employeeScheduleLoaderOn()
     let loadingMessage = await this.loadingController.create({
       message: 'Cargando Información ...',
@@ -158,29 +162,33 @@ export class CalendarPage implements OnInit {
             this.testDateRange = this.employeeScheduleLeftRight.DateRange
             this.testDateRangeSplit = this.testDateRange.split(' - ')
             this.dateConvertFrom = this.testDateRangeSplit[0].split('/')
-            this.dateConvertTo = this.testDateRangeSplit[1].split('/')        
+            this.dateConvertTo = this.testDateRangeSplit[1].split('/')
             // show date range end
             if(this.employeeScheduleListDatas.length > 1) {
               this.rightCount = this.employeeScheduleListDatas.length - 1;
             } else {
               this.rightCount = 0
               this.leftCount = 0
-            }   
-          break;
-        case '400':
+            }
+        break;
+		case '400':
             loadingMessage.dismiss();
             this.noDataToast();
-          break;
+		break;
+		case '408':
+		  loadingMessage.dismiss();
+		  this.badRequestTimeoutAlert();
+		break;
         case '0':
             loadingMessage.dismiss();
-            this.badRequestAlert(); 
+            this.badRequestAlert();
           break;
 
       }
     })
   }
-  
-  leftSchedule() {    
+
+  leftSchedule() {
     this.increaseValue = this.increaseValue - 1;
     this.employeeScheduleLeftRight = this.employeeScheduleListDatas[this.increaseValue];
     // show date range start
@@ -189,17 +197,17 @@ export class CalendarPage implements OnInit {
     this.testDateRangeSplit = this.testDateRange.split(' - ');
 
     this.dateConvertFrom = this.testDateRangeSplit[0].split('/');
-    this.dateConvertTo = this.testDateRangeSplit[1].split('/') ;       
-    // show date range end    
+    this.dateConvertTo = this.testDateRangeSplit[1].split('/') ;
+    // show date range end
 
-    this.leftCount = this.leftCount - 1;   
+    this.leftCount = this.leftCount - 1;
 
-    this.rightCount = this.rightCount + 1;       
+    this.rightCount = this.rightCount + 1;
   }
 
   rightSchedule() {
     this.increaseValue = this.increaseValue + 1;
-    
+
     this.employeeScheduleLeftRight = this.employeeScheduleListDatas[this.increaseValue];
 
     // show date range start
@@ -208,12 +216,12 @@ export class CalendarPage implements OnInit {
     this.testDateRangeSplit = this.testDateRange.split(' - ');
 
     this.dateConvertFrom = this.testDateRangeSplit[0].split('/');
-    this.dateConvertTo = this.testDateRangeSplit[1].split('/');        
-    // show date range end    
-    
+    this.dateConvertTo = this.testDateRangeSplit[1].split('/');
+    // show date range end
+
     this.rightCount = this.rightCount - 1;
 
     this.leftCount = this.leftCount + 1;
-  }  
+  }
 
 }

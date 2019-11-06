@@ -8,7 +8,7 @@
       <ion-grid>
 		<!-- row start -->
 		<div *ngIf="getEventsItems" >
-        <ion-row class="custom-sm-margin" *ngFor="let getEventsItem of getEventsItems">
+	  <ion-row class="custom-sm-margin" *ngFor="let getEventsItem of getEventsItems">
           <ion-col size="8">
             <div class="custom-card-e">
               <ion-row>
@@ -44,22 +44,23 @@
 		<!-- row end -->
 		<!-- row start SKELETON-->
 		<div *ngIf="!getEventsItems" class="animated flash slow infinite center" >
-        <ion-row class="custom-sm-margin"  *ngFor="let getEventsItem of [1,1,1]">
+        <ion-row style="margin-top: 35px;"  *ngFor="let getEventsItem of [1,1,1]">
 			<ion-col size="8">
 			  <div class="custom-card-e">
 				<ion-row>
 				  <ion-col size="12">
-					<div class="custom-bold-text custom-m-top-bottom-sm"><ion-skeleton-text class="animated" style="width:40%; height:25px!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text></div>
+					<div class="custom-bold-text " style="margin-top: 1px!important; margin-bottom: 1px!important;"><ion-skeleton-text class="animated" style="width:40%; height:25px!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text></div>
 					<span class="custom-font-sm"><ion-skeleton-text class="animated" style="width:30%; height:15px!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text></span>
 				  </ion-col>
 				</ion-row>
 				<ion-row>
 				  <ion-col size="6">
-					<div class="custom-bold-text custom-m-top-bottom-sm"><ion-skeleton-text class="animated" style="width:40%; height:20px!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text></div>
+					<div class="custom-bold-text " style="margin-top: 1px!important; margin-bottom: 1px!important;"><ion-skeleton-text class="animated" style="width:40%; height:20px!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text></div>
+
 					<span class="custom-font-sm"><ion-skeleton-text class="animated" style="width:60%; height:12px!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text></span>
 				  </ion-col>
 				  <ion-col size="6">
-					<div class="custom-bold-text custom-m-top-bottom-sm"><ion-skeleton-text class="animated" style="width:40%; height:20px!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text></div>
+					<div class="custom-bold-text " style="margin-top: 1px!important; margin-bottom: 1px!important;"><ion-skeleton-text class="animated" style="width:40%; height:20px!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text></div>
 					<span class="custom-font-sm"><ion-skeleton-text class="animated" style="width:60%; height:12px!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text></span>
 				  </ion-col>
 				</ion-row>
@@ -68,13 +69,11 @@
 			<ion-col size="2">
 			  <div>
 				<ion-skeleton-text class="custom-v-align" style="width:65%; height:54px!important; border-style: solid; border-radius:100%; border-width: 100%; border-color:rgb(219, 205, 205)!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text>
-				<!-- <img [src]="my_marks_info" class="custom-img-4 custom-v-align"> -->
 			  </div>
 			</ion-col>
 			<ion-col size="2">
 			  <div>
 					<ion-skeleton-text class="custom-v-align" style="width:65%; height:54px!important; border-style: solid; border-radius:100%; border-width: 100%; border-color:rgb(219, 205, 205)!important; background-color:rgb(219, 205, 205)!important;"></ion-skeleton-text>
-				<!-- <img [src]="my_marks_tic" class="custom-img-4 custom-v-align"> -->
 			  </div>
 			</ion-col>
 		  </ion-row>
