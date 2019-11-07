@@ -32,20 +32,22 @@ export class DatabaseService {
 			response
 			}
 			if(response && response['status']==1){
-				jsonRespond.status="200";
-				jsonRespond.response=response;
-				this.response=jsonRespond;
-				resolve(jsonRespond);
+				if(response==408){
+					jsonRespond.status="408";
+					jsonRespond.response=response;
+					this.response=jsonRespond;
+					resolve(jsonRespond);
+				}else{
+					jsonRespond.status="200";
+					jsonRespond.response=response;
+					this.response=jsonRespond;
+					resolve(jsonRespond);
+				}
 			}else if(response && response['status']==0){
 				jsonRespond.status="400";
 				jsonRespond.response=response;
 				this.response=jsonRespond;
 				resolve(this.response);
-			}else if(response==408){
-				jsonRespond.status="408";
-				jsonRespond.response=response;
-				this.response=jsonRespond;
-				resolve(jsonRespond);
 			}
       },
       (error: HttpErrorResponse)=>{
@@ -137,15 +139,17 @@ export class DatabaseService {
 						response
 					}
 					if((Object.keys(response).length != 0)==true){
-						jsonRespondEvents.status="200";
-						jsonRespondEvents.response=response;
-						resolve(jsonRespondEvents);
+						if(response==408){
+							jsonRespondEvents.status="408";
+							jsonRespondEvents.response=response;
+							resolve(jsonRespondEvents);
+						}else{
+							jsonRespondEvents.status="200";
+							jsonRespondEvents.response=response;
+							resolve(jsonRespondEvents);
+						}
 					}else if((Object.keys(response).length == 0)==true){
 						jsonRespondEvents.status="400";
-						jsonRespondEvents.response=response;
-						resolve(jsonRespondEvents);
-					}else if(response==408){
-						jsonRespondEvents.status="408";
 						jsonRespondEvents.response=response;
 						resolve(jsonRespondEvents);
 					}

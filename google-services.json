@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "719056002630",
+    "firebase_url": "https://ihrteam-feae6.firebaseio.com",
+    "project_id": "ihrteam-feae6",
+    "storage_bucket": "ihrteam-feae6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719056002630:android:905b2afc89cfb0fee37447",
+        "android_client_info": {
+          "package_name": "com.izyhrteam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "719056002630-op2gb9a5rpq6fj8jn0slcucqpcgfpm7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp3zY69a-b7zEqZlmodpUSYEc9dlk2SV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "719056002630-op2gb9a5rpq6fj8jn0slcucqpcgfpm7i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
