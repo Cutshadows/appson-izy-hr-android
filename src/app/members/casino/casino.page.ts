@@ -105,8 +105,8 @@ export class CasinoPage implements OnInit {
     this._socketService.serviceGetCasino(url).then((response)=>{
       loadingElementCasino.dismiss();
       console.log("respuesta de cargar el casino"+response['Data']);
-      
-      //this.casinoServiceLoaderOff()
+    	//   debugger
+      	//this.casinoServiceLoaderOff()
 
       /* this.getCasinoItems = response.Data
 
@@ -284,23 +284,10 @@ export class CasinoPage implements OnInit {
 
   async badRequestAlert() {
 	this._function.requireAlert('Error en el servicio', 'De acuerdo');
-	/* const alert = await this.alertController.create({
-      message: 'Error de servicio',
-      buttons: ['De acuerdo']
-    }) */
-
-    //await alert.present()
   }
 
   async noDataToast() {
 	this._function.MessageToast('Datos no encontrados', 'middle', 2000);
-	/* const toast = await this.toastController.create({
-      message: 'Datos no encontrados',
-      position: 'middle',
-      duration: 2000
-    })
-
-    toast.present() */
   }
 
   dashboardGo() {

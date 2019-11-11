@@ -25,7 +25,8 @@ import { Network } from '@ionic-native/network/ngx';
 import { ModalPageModule } from './members/modal/modal.module';
 import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module';
 
-
+import { FCM } from '@ionic-native/fcm/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 @NgModule({
@@ -46,11 +47,13 @@ import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module'
     SplashScreen,
     Geolocation,
     LocationAccuracy,
-    UniqueDeviceID,
+	UniqueDeviceID,
+	LocalNotifications,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NativePageTransitions,
     SQLite,
-	Network
+	Network,
+	FCM
   ],
   bootstrap: [AppComponent]
 })

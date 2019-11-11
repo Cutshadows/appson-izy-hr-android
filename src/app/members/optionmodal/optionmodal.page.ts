@@ -14,23 +14,23 @@ import { ModalPage } from '../modal/modal.page';
 })
 export class OptionmodalPage implements OnInit {
 
-  header: any = { 
+  header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    } 
-  }  
+    }
+  }
 
   userLoginResDetail: string = 'userLoginResDetail'
-  
+
   employeeId: any
-  liveUserCode: any   
+  liveUserCode: any
 
   data: Observable<any>
-  
+
   loadingElement: any
 
-  deviceId: any  
+  deviceId: any
 
   menu_1: string = 'assets/img/page/menu_1.png'
   menu_2: string = 'assets/img/page/menu_2.png'
@@ -45,12 +45,12 @@ export class OptionmodalPage implements OnInit {
   // casino service
   casinoItemService: string = 'casinoItemService'
 
-  casinoItemServiceStoreA: any  
+  casinoItemServiceStoreA: any
 
   // casino option
   casinoItemOption: string = 'casinoItemOption'
 
-  casinoItemOptionStoreA: any  
+  casinoItemOptionStoreA: any
 
   setCasinoSrvRes: any
 
@@ -66,8 +66,8 @@ export class OptionmodalPage implements OnInit {
     public alertController: AlertController,
     public loadingController: LoadingController,
     public toastController: ToastController,
-    public http: HttpClient        
-  ) { 
+    public http: HttpClient
+  ) {
 
   }
 
@@ -77,29 +77,29 @@ export class OptionmodalPage implements OnInit {
       if(val != null && val != undefined) {
         this.casinoItemStoreA = val
       }
-      //console.log('this.casinoItemStoreA --', this.casinoItemStoreA)            
-    })    
+      //console.log('this.casinoItemStoreA --', this.casinoItemStoreA)
+    })
 
     this.storage.get(this.casinoItemService).then((val) => {
       if(val != null && val != undefined) {
         this.casinoItemServiceStoreA = val
       }
-    })    
+    })
 
     this.storage.get(this.casinoItemOption).then((val) => {
       if(val != null && val != undefined) {
         this.casinoItemOptionStoreA = val
       }
-      //console.log('this.casinoItemOptionStoreA --', this.casinoItemOptionStoreA)            
+      //console.log('this.casinoItemOptionStoreA --', this.casinoItemOptionStoreA)
     })
 
     this.storage.get('canEditFreelyStorage').then((val) => {
       if(val != null && val != undefined) {
         this.canEditFreelyStorageV = val
       }
-      //console.log('this.canEditFreelyStorageV --', this.canEditFreelyStorageV)            
-    })    
-    
+      //console.log('this.canEditFreelyStorageV --', this.canEditFreelyStorageV)
+    })
+
     // service parameter getting local storage start
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
@@ -118,7 +118,7 @@ export class OptionmodalPage implements OnInit {
         this.deviceId = val
       }
     })
-    // service parameter getting local storage end    
+    // service parameter getting local storage end
 
   }
 
@@ -134,16 +134,16 @@ export class OptionmodalPage implements OnInit {
 
     if(this.canEditFreelyStorageV == true) {
       this.setCasinoStatusZeroOn()
-    
+
       for(let i = 0; i < this.casinoItemOptionStoreA.length; i++) {
-  
+
         if(casinoOptionClickId == this.casinoItemOptionStoreA[i].Id) {
           var optionObject = {
             Id: this.casinoItemOptionStoreA[i].Id,
             Name: this.casinoItemOptionStoreA[i].Name,
             Status: 1
           }
-  
+
           this.setCasinoEmployeeService(casinoOptionClickId)
         } else {
           var optionObject = {
@@ -152,17 +152,17 @@ export class OptionmodalPage implements OnInit {
             Status: 0
           }
         }
-  
+
         this.casinoItemOptionZeroStatus.push(optionObject)
-      }   
-  
+      }
+
       this.casinoItemOptionStoreA = this.casinoItemOptionZeroStatus
-      
+
       this.storage.set(this.casinoItemOption, this.casinoItemOptionStoreA)
-  
+
       this.casinoItemOptionZeroStatus = []
 
-      // service object status select start      
+      // service object status select start
       var serviceObject = {
         From: this.casinoItemServiceStoreA.From,
         Id: this.casinoItemServiceStoreA.Id,
@@ -171,25 +171,25 @@ export class OptionmodalPage implements OnInit {
       }
 
       this.storage.set(this.casinoItemService, serviceObject)
-      // service object status select end      
-  
+      // service object status select end
+
       if(this.casinoItemOptionZeroStatus.length == this.casinoItemOptionStoreA.length) {
         this.setCasinoStatusZeroOff()
-      }      
+      }
     } else {
       if(giveMonth > currentMonth) {
         this.optionsListEditFalseClick(casinoOptionClickId)
       } else {
         this.canNotEditToast()
-      }       
+      }
     }
-    
+
   }
 
   // option list click for can edit freely false start
   optionsListEditFalseClick(casinoOptionClickId) {
     this.setCasinoStatusZeroOn()
-    
+
     for(let i = 0; i < this.casinoItemOptionStoreA.length; i++) {
 
       if(casinoOptionClickId == this.casinoItemOptionStoreA[i].Id) {
@@ -209,15 +209,15 @@ export class OptionmodalPage implements OnInit {
       }
 
       this.casinoItemOptionZeroStatus.push(optionObject)
-    }        
+    }
 
     this.casinoItemOptionStoreA = this.casinoItemOptionZeroStatus
-    
+
     this.storage.set(this.casinoItemOption, this.casinoItemOptionStoreA)
 
     this.casinoItemOptionZeroStatus = []
 
-    // service object status select start      
+    // service object status select start
     var serviceObject = {
       From: this.casinoItemServiceStoreA.From,
       Id: this.casinoItemServiceStoreA.Id,
@@ -226,7 +226,7 @@ export class OptionmodalPage implements OnInit {
     }
 
     this.storage.set(this.casinoItemService, serviceObject)
-    // service object status select end    
+    // service object status select end
 
     if(this.casinoItemOptionZeroStatus.length == this.casinoItemOptionStoreA.length) {
       this.setCasinoStatusZeroOff()
@@ -250,14 +250,14 @@ export class OptionmodalPage implements OnInit {
     this.data.subscribe((response) => {
 
       this.setCasinoSrvRes = response
-    
+
     }, (err) => {
       this.badRequestAlert()
     })
   }
   // set casino status 1 end
 
-  // set casino status 2 start  
+  // set casino status 2 start
   cancelCasinoClick() {
 
     var giveDate = new Date(this.casinoItemStoreA.Date)
@@ -268,18 +268,18 @@ export class OptionmodalPage implements OnInit {
     var currentMonth = date.getMonth()
 
     if(this.canEditFreelyStorageV == true) {
-      this.setCasinoStatusCancelOn()
-    
+      this.setCasinoStatusCancelOn();
+
       for(let i = 0; i < this.casinoItemOptionStoreA.length; i++) {
-  
+
         if(this.casinoItemOptionStoreA[i].Status == '1') {
           var optionObject = {
             Id: this.casinoItemOptionStoreA[i].Id,
             Name: this.casinoItemOptionStoreA[i].Name,
             Status: 2
           }
-  
-          this.cancelCasinoEmployeeService(this.casinoItemOptionStoreA[i].Id)
+
+          this.cancelCasinoEmployeeService(this.casinoItemOptionStoreA[i].Id);
         } else {
           var optionObject = {
             Id: this.casinoItemOptionStoreA[i].Id,
@@ -287,17 +287,17 @@ export class OptionmodalPage implements OnInit {
             Status: 0
           }
         }
-  
-        this.casinoItemOptionZeroStatus.push(optionObject)
-      }        
-  
-      this.casinoItemOptionStoreA = this.casinoItemOptionZeroStatus
-      
-      this.storage.set(this.casinoItemOption, this.casinoItemOptionStoreA)
-  
-      this.casinoItemOptionZeroStatus = []
 
-      // service object status cancel start      
+        this.casinoItemOptionZeroStatus.push(optionObject);
+      }
+
+      this.casinoItemOptionStoreA = this.casinoItemOptionZeroStatus;
+
+      this.storage.set(this.casinoItemOption, this.casinoItemOptionStoreA);
+
+      this.casinoItemOptionZeroStatus = [];
+
+      // service object status cancel start
       var serviceObject = {
         From: this.casinoItemServiceStoreA.From,
         Id: this.casinoItemServiceStoreA.Id,
@@ -305,25 +305,25 @@ export class OptionmodalPage implements OnInit {
         Status: 2
       }
 
-      this.storage.set(this.casinoItemService, serviceObject)
-      // service object status cancel end      
-  
+      this.storage.set(this.casinoItemService, serviceObject);
+      // service object status cancel end
+
       if(this.casinoItemOptionZeroStatus.length == this.casinoItemOptionStoreA.length) {
-        this.setCasinoStatusCancelOff()
-      }      
+        this.setCasinoStatusCancelOff();
+      }
     } else {
       if(giveMonth > currentMonth) {
-        this.cancelCasinoEditFalseClick()
+        this.cancelCasinoEditFalseClick();
       } else {
-        this.canNotEditToast()
-      }       
+        this.canNotEditToast();
+      }
     }
   }
 
   // cancel casino for can edit freely false start
   cancelCasinoEditFalseClick() {
     this.setCasinoStatusCancelOn()
-    
+
     for(let i = 0; i < this.casinoItemOptionStoreA.length; i++) {
 
       if(this.casinoItemOptionStoreA[i].Status == '1') {
@@ -343,15 +343,15 @@ export class OptionmodalPage implements OnInit {
       }
 
       this.casinoItemOptionZeroStatus.push(optionObject)
-    }    
+    }
 
     this.casinoItemOptionStoreA = this.casinoItemOptionZeroStatus
-    
+
     this.storage.set(this.casinoItemOption, this.casinoItemOptionStoreA)
 
     this.casinoItemOptionZeroStatus = []
 
-    // service object status cancel start      
+    // service object status cancel start
     var serviceObject = {
       From: this.casinoItemServiceStoreA.From,
       Id: this.casinoItemServiceStoreA.Id,
@@ -360,11 +360,11 @@ export class OptionmodalPage implements OnInit {
     }
 
     this.storage.set(this.casinoItemService, serviceObject)
-    // service object status cancel end    
+    // service object status cancel end
 
     if(this.casinoItemOptionZeroStatus.length == this.casinoItemOptionStoreA.length) {
       this.setCasinoStatusCancelOff()
-    }    
+    }
   }
   // cancel casino for can edit freely false end
 
@@ -383,11 +383,11 @@ export class OptionmodalPage implements OnInit {
     this.data.subscribe((response) => {
 
       this.setCasinoSrvRes = response
-    
+
     }, (err) => {
       this.badRequestAlert()
     })
-  }  
+  }
   // set casino status 2 end
 
   async setCasinoStatusCancelOn() {
@@ -399,12 +399,12 @@ export class OptionmodalPage implements OnInit {
 
     setTimeout(() => {
       this.loadingElement.dismiss()
-    }, 3000)     
+    }, 3000)
   }
-  
+
   async setCasinoStatusCancelOff() {
     this.loadingElement.dismiss()
-  }  
+  }
 
   async setCasinoStatusZeroOn() {
     this.loadingElement = await this.loadingController.create({
@@ -415,9 +415,9 @@ export class OptionmodalPage implements OnInit {
 
     setTimeout(() => {
       this.loadingElement.dismiss()
-    }, 3000)     
+    }, 3000)
   }
-  
+
   async setCasinoStatusZeroOff() {
     this.loadingElement.dismiss()
   }
@@ -431,13 +431,13 @@ export class OptionmodalPage implements OnInit {
 
     setTimeout(() => {
       this.loadingElement.dismiss()
-    }, 3000)     
+    }, 3000)
   }
-  
+
   async setCasinoEmpLoaderOff() {
     this.loadingElement.dismiss()
   }
-  
+
   async badRequestAlert() {
     const alert = await this.alertController.create({
       message: 'Error de servicio',
@@ -445,7 +445,7 @@ export class OptionmodalPage implements OnInit {
     })
 
     await alert.present()
-  }  
+  }
 
   async noDataToast() {
     const toast = await this.toastController.create({
@@ -453,19 +453,19 @@ export class OptionmodalPage implements OnInit {
       position: 'middle',
       duration: 2000
     })
-    
+
     toast.present()
   }
-  
+
   async canNotEditToast() {
     const toast = await this.toastController.create({
       message: 'No se puede editar',
       position: 'middle',
       duration: 2000
     })
-    
+
     toast.present()
-  }  
+  }
 
   async closeModal() {
 
@@ -475,8 +475,8 @@ export class OptionmodalPage implements OnInit {
       component: ModalPage
     })
 
-    modal.present()    
-  }  
-  
+    modal.present()
+  }
+
 
 }

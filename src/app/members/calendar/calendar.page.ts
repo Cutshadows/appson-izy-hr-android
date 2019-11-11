@@ -123,11 +123,6 @@ export class CalendarPage implements OnInit {
   }
   badRequestAlert() {
 	  this._function.requireAlert('Error de servicio','De acuerdo');
-    /* const alert = await this.alertController.create({
-      message: 'Error de servicio',
-      buttons: ['De acuerdo']
-    });
-    await alert.present(); */
   }
 
   noDataToast() {
@@ -139,10 +134,11 @@ export class CalendarPage implements OnInit {
   async EmployeeScheduleList() {
     this.allMonthName = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     //this.employeeScheduleLoaderOn()
-    let loadingMessage = await this.loadingController.create({
+    let loadingMessage = await this.toastController.create({
       message: 'Cargando Información ...',
-      spinner: 'crescent',
-      cssClass:'transparent'
+      //spinner: 'crescent',
+	  cssClass:'my-custom-toast',
+	  position:'bottom'
     });
     loadingMessage.present();
     let currentDate = new Date();

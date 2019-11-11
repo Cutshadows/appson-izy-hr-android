@@ -22,12 +22,12 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 })
 export class EntermarkPage implements OnInit {
 
-  header: any = { 
+  /* header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    } 
-  }  
+    }
+  }  */
   currentVal=2;
   locationData: string = '';
   //loadingElement: any;
@@ -50,7 +50,7 @@ export class EntermarkPage implements OnInit {
   back_button_mark_page: string = 'assets/img/page/back_button_mark_page.png';
 
   constructor(
-    private authService: AuthenticationService, 
+    private authService: AuthenticationService,
     private storage: Storage,
     private geolocation: Geolocation,
     public alertController: AlertController,
@@ -62,12 +62,12 @@ export class EntermarkPage implements OnInit {
     private nativePageTransitions: NativePageTransitions,
     private network: Network,
     private _function:FunctionsService,
-    private _socketService:DatabaseService      
+    private _socketService:DatabaseService
     ) {
-            
+
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
         this.employeeId = val['EmployeeId']
@@ -79,32 +79,32 @@ export class EntermarkPage implements OnInit {
         this.liveUserCode = val
       }
     })
-    
+
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
         this.deviceId = val
       }
-    })    
-  }  
+    })
+  }
 
   async getLocationLoaderOn() {
     this._function.requireLoading('Procesando ubicación...',2000);
   }
-  
+
   dashboardGo() {
     let options: NativeTransitionOptions = {
       duration: 800
     }
     this.nativePageTransitions.fade(options);
-    this.navController.navigateRoot(['members', 'dashboard'])    
+    this.navController.navigateRoot(['members', 'dashboard'])
   }
   logout() {
     this.authService.logout()
   }
   async locationErrorAlert(errorMsg) {
     this._function.requireAlert(errorMsg,'De acuerdo');
-  }  
-  
+  }
+
   async getCurrentLocation() {
     let loadingGeolocation = await this.loadingController.create({
       message: 'Procesando ubicación...',
@@ -120,9 +120,8 @@ export class EntermarkPage implements OnInit {
 
     this.geolocation.getCurrentPosition(option)
     .then((resp) => {
-      
-      //this.getLocationLoaderOff()
 
+      //this.getLocationLoaderOff()
       if(resp.coords) {
         loadingGeolocation.dismiss();
         this.lat = resp.coords.latitude;
@@ -143,34 +142,34 @@ export class EntermarkPage implements OnInit {
 
   async markEmployeeResponseAlert(responseMsg) {
     this._function.requireAlert(responseMsg,'De acuerdo');
-  }  
-  
+  }
+
   async badRequestAlert() {
     this._function.requireAlert('Error de servicio','De acuerdo');
-  }  
-  
+  }
+
   // mock location function
 
   async mockLocationErrorAlert() {
     this._function.requireAlert('Dispositivo de uso de ubicación simulada por favor desactivado', 'De acuerdo');
-  } 
-  
+  }
+
   //EJECUTA GEOLOCALIZACION DEL BOTON
   enableLocation() {
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
       // the accuracy option will be ignored by iOS
       this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
       .then(
-        () => { 
+        () => {
           console.log('Request successful');
           this.getLatLongMobile(); //CON ESTA FUNCION OBTIENE LATITUD Y LONGITUD DEL EQUIPO MOVIL
           this.buttonDisabled = true;
-          //this.getLocationLoaderOn(); //MENSAJE DE PANTALLA OBTENIENDO GEOLOCALIZACION           
+          //this.getLocationLoaderOn(); //MENSAJE DE PANTALLA OBTENIENDO GEOLOCALIZACION
         },(error)=> {
           this.locationErrorAlert(error);
         }
       );
-    });    
+    });
   }
   async getLatLongMobile() {
     let loadingLatLongElement = await this.loadingController.create({
@@ -199,8 +198,8 @@ export class EntermarkPage implements OnInit {
         this.locationErrorAlert(error.message);
        }
        console.log('Error getting location', error);
-     });    
-  }  
+     });
+  }
   checkMockLocation(){
     const config: BackgroundGeolocationConfig = {
             desiredAccuracy: 10,
@@ -228,21 +227,21 @@ export class EntermarkPage implements OnInit {
       } else {
         this.getLatLongMobile();
       }
-    })    
+    })
   }
 
   async offlineAlert() {
     this._function.requireAlert('Tu marca es capturada','De acuerdo');
-  }  
+  }
 
   mockLocationCheck() {
     this.localDate = new Date();
-    this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);    
+    this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);
     if(this.validgetLocationDataArray.isFromMockProvider) {
       this.buttonDisabled = false;
       //this.getLocationLoaderOff()
       this.deleteStoreLocation();
-      this.mockLocationErrorAlert();      
+      this.mockLocationErrorAlert();
     } else if(this.network.type == 'none') {
       this.buttonDisabled = false;
       //this.getLocationLoaderOff()
@@ -260,8 +259,8 @@ export class EntermarkPage implements OnInit {
     }
   }
 
-  async markEmployee(){  
-    
+  async markEmployee(){
+
    // this.markEmployeeLoaderOn()
     let loadingMarkEmployeed = await this.loadingController.create({
       message: 'Ingresando marca empleado...',
@@ -269,7 +268,7 @@ export class EntermarkPage implements OnInit {
       cssClass:'transparent'
     });
     loadingMarkEmployeed.present();
-    
+
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
 
     let params = {
@@ -279,37 +278,42 @@ export class EntermarkPage implements OnInit {
       "imei": this.deviceId,
       "isBuffer": 'false',
       "date": this.localDate
-    }
-    this.data = this.http.post(url, params, this.header);
-    this.data.subscribe((response) => {
-      this.markEmployeeData = response.data
+	}
+
+
+    //this.data = this.http.post(url, params, this.header);
+    //this.data.subscribe((response) => {
+	this._socketService.markEmployee(url, params).then((response)=>{
+		console.log("Lo que trae el response despues de hacer la marca  -- "+response);
+	//this.markEmployeeData = response.data
       //this.markEmployeeLoaderOff();
-      loadingMarkEmployeed.dismiss();
-      
+      /* loadingMarkEmployeed.dismiss();
+
       this.buttonDisabled = false
 
       if(response.status) {
         this.markEmployeeResponseAlert('Marca satisfactoria');
-        this.buttonDisabled = false;      
-        
+        this.buttonDisabled = false;
+
         let options: NativeTransitionOptions = {
           duration: 800
         }
-      
+
         this.nativePageTransitions.fade(options);
         this.navController.navigateRoot(['members', 'mymark'])
 
       } else {
         this.markEmployeeResponseAlert(response.Message);
         this.buttonDisabled = false;
-      }        
+      }
     }, (err) => {
       //this.markEmployeeLoaderOff()
       loadingMarkEmployeed.dismiss();
       this.badRequestAlert();
       this.buttonDisabled = false;
-    });
-  }  
+    }); */
+	})
+	}
 
   showLocalLatLong() {
     console.log('showLocalLatLong --')
@@ -326,28 +330,28 @@ export class EntermarkPage implements OnInit {
         this.localLong = val;
       }
     })
-    
+
     this.storage.get('localisBuffer').then((val) => {
       console.log('localisBuffer', val);
     })
-    
+
     this.storage.get('localDate').then((val) => {
       console.log('localDate', val);
-    })    
+    })
   }
 
   removeLocalLatLong() {
     console.log('removeLocalLatLong --');
-    this.storage.remove('localLat').then(() => {      
-    })    
+    this.storage.remove('localLat').then(() => {
+    })
   }
 
   deleteStoreLocation() {
     this.backgroundGeolocation.deleteAllLocations()
     .then((deleteAllLocationsData) => {
         console.log('deleteAllLocationsData --', deleteAllLocationsData);
-    });    
-  }  
+    });
+  }
 
   getCurrentLocationWeb() {
     this.getLocationLoaderOn();
@@ -356,11 +360,11 @@ export class EntermarkPage implements OnInit {
       enableHighAccuracy: true
     }
     this.geolocation.getCurrentPosition(option).then((resp) => {
-    
+
       //this.getLocationLoaderOff()
 
-      if(resp.coords) {        
-        
+      if(resp.coords) {
+
         console.log('resp --', resp);
         // resp.coords.latitude
         // resp.coords.longitude
@@ -381,7 +385,7 @@ export class EntermarkPage implements OnInit {
     this.localDate = new Date();
 
     this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);
-    
+
     if(this.network.type == 'none') {
       this.localisBuffer = false;
     } else {
@@ -396,7 +400,7 @@ export class EntermarkPage implements OnInit {
       "isBuffer": this.localisBuffer,
       "date": this.localDate
     }
-    
+
     console.log('this.network.type --', this.network.type);
     console.log('testparams params --', params);
   }*/

@@ -7,6 +7,8 @@ import { Storage } from '@ionic/storage';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { FunctionsService } from '../../services/functions.service';
 import {DatabaseService} from '../../services/database.service';
+import { FCM } from '@ionic-native/fcm/ngx';
+
 
 @Component({
   selector: 'app-login',
@@ -33,6 +35,7 @@ export class LoginPage implements OnInit {
   addNewCodeButton: boolean = false;
   userPreviousCode: any;
   deviceId: any;
+  fcmToken:any;
 
   constructor(
     private authService: AuthenticationService,
@@ -45,6 +48,7 @@ export class LoginPage implements OnInit {
     private uniqueDeviceID: UniqueDeviceID,
     private _function:FunctionsService,
 	private _services:DatabaseService,
+	private fcm:FCM
     ) {  }
   ngOnInit() {
     this.storage.get('userCode').then((val) => {
@@ -69,12 +73,24 @@ export class LoginPage implements OnInit {
         this.deviceId = val
       }
   })
+  this.getFcmToken();
   }
-
+  getFcmToken(){
+    this.fcm.getToken().then(token => {
+		console.log("Obtener Token  ---"+token);
+      	this.storage.set('deviceFcmToken', token);
+      	this.fcmToken = token;
+    });
+    this.fcm.onTokenRefresh().subscribe(token => {
+		console.log("Refrescar Token  ---"+token);
+      	this.storage.set('deviceFcmToken', token);
+      	this.fcmToken = token;
+    });
+  }
 
   async loginWithCode() {
     if(this.code != undefined && this.code != '') {
-      this.codeLowerCase = this.code.toLowerCase()
+      this.codeLowerCase = this.code.toLowerCase();
     }
     var keepGoing = true
     if(this.codeArray.length > 0) {
@@ -87,17 +103,17 @@ export class LoginPage implements OnInit {
       }
     }
     if(this.username == undefined || this.username == '') {
-      this.requireAlert()
+      this.requireAlert();
     } else if(this.password == undefined) {
-      this.requireAlert()
+      this.requireAlert();
     } else if(isNaN(this.password)) {
-      this.passwordValid()
+      this.passwordValid();
     } else if(this.code == undefined || this.code == '') {
-      this.requireAlert()
+      this.requireAlert();
     } else if(keepGoing == false) {
-      this.alreadyExistCodeAlert()
+      this.alreadyExistCodeAlert();
     } else if(this.deviceId == undefined) {
-      this.getDeviceId()
+      this.getDeviceId();
     }
     else {
       // save code start
@@ -133,7 +149,6 @@ export class LoginPage implements OnInit {
           case '408':
               this.loadingElement.dismiss();
               this.badRequestTimeoutAlert();
-              //this.wrongInputAlert(response['response']['Message']);
           break;
           case '0':
               this.loadingElement.dismiss();
@@ -141,7 +156,6 @@ export class LoginPage implements OnInit {
           break;
         }
       })
-      // save code end
     }
   }
 

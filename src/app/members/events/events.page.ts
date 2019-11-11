@@ -117,7 +117,10 @@ export class EventsPage implements OnInit {
           break;
         case '400':
             LoadingEvents.dismiss();
-            this.noDataToast();
+			this.noDataToast();
+			setTimeout(()=>{
+				this.dashboardGo();
+			}, 6000);
 		  break;
 		case '408':
             LoadingEvents.dismiss();
@@ -148,7 +151,7 @@ export class EventsPage implements OnInit {
     this.navController.navigateRoot(['members', 'dashboard'])
   }
   logout() {
-    this.authService.logout()
+    this.authService.logout();
   }
 
 }
