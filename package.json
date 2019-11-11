@@ -39,7 +39,7 @@
     "@mauron85/cordova-plugin-background-geolocation": "^3.1.0",
     "com.telerik.plugins.nativepagetransitions": "0.6.5",
     "cordova-android": "^8.1.0",
-    "cordova-ios": "4.5.5",
+    "cordova-ios": "^5.0.1",
     "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-fcm-with-dependecy-updated": "^4.1.0",
@@ -118,16 +118,10 @@
         "GEOLOCATION_USAGE_DESCRIPTION": "In order to mark your current location"
       },
       "cordova-plugin-uniquedeviceid": {},
-      "cordova-plugin-fcm-with-dependecy-updated": {
-        "FCM_CORE_VERSION": "16.0.9",
-        "FCM_VERSION": "18.0.0",
-        "GRADLE_TOOLS_VERSION": "3.5.0",
-        "GOOGLE_SERVICES_VERSION": "4.2.0"
-      },
+      "cordova-plugin-fcm-with-dependecy-updated": {},
       "cordova-plugin-local-notification": {}
     },
     "platforms": [
-      "ios",
       "android"
     ]
   }
