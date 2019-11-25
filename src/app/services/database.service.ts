@@ -338,42 +338,41 @@ export class DatabaseService {
 
 
   markEmployee(url, params){
-	let Promesa=new Promise((resolve)=>{
+	console.log("URL ++ "+url);
+	console.log("PARAMETROS EN LA PROMESA ++"+JSON.stringify(params));
+
+	 let Promesa=new Promise((resolve)=>{
 		this.http.post(url, params, this.header)
 			.pipe(
-			  timeout(10000),
+			  timeout(1000000),
 			  catchError(
 					error=>of(408)
 			  )
-		  ).subscribe((response)=>{
+		  ).subscribe(
+			  (response)=>{
+				console.log("#### response STATUS DEL INGRESO DE MARCA  -- "+response['status']);
+				console.log("#### response DATA DEL INGRESO DE MARCA  -- "+response['data']);
 
-
-
-
-		console.log("#### response de casinos  -- "+response);
-
-
-		debugger
-	  /* let jsonRespondEvents={
-		status,
-		response
-	  }
-	   if((Object.keys(response).length != 0)==true){
-		if(response==408){
-		  jsonRespondEvents.status="408";
-			jsonRespondEvents.response=response;
-			resolve(jsonRespondEvents);
-		}else{
-		  jsonRespondEvents.status="200";
-			jsonRespondEvents.response=response;
-			resolve(jsonRespondEvents);
-		}
-
-	  }else if((Object.keys(response).length == 0)==true){
-		jsonRespondEvents.status="400";
-		jsonRespondEvents.response=response;
-		resolve(jsonRespondEvents);
-	  } */
+			let jsonRespondEvents={
+				status,
+				response
+			}
+			if((Object.keys(response).length != 0)==true || response == 1){
+				if(response==408){
+				jsonRespondEvents.status="408";
+					jsonRespondEvents.response=response;
+					resolve(jsonRespondEvents);
+				}else{
+				jsonRespondEvents.status="200";
+					jsonRespondEvents.response=response['data'];
+					debugger
+					resolve(jsonRespondEvents);
+				}
+			}else if((Object.keys(response).length == 0)==true || response == 0){
+				jsonRespondEvents.status="400";
+				jsonRespondEvents.response=response['Message'];
+				resolve(jsonRespondEvents);
+			}
 	},
 	(error: HttpErrorResponse)=>{
 	  for (const key in error) {

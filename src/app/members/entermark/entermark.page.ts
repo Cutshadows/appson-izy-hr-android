@@ -22,12 +22,12 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 })
 export class EntermarkPage implements OnInit {
 
-  /* header: any = {
+  header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
     }
-  }  */
+  }
   currentVal=2;
   locationData: string = '';
   //loadingElement: any;
@@ -171,6 +171,7 @@ export class EntermarkPage implements OnInit {
       );
     });
   }
+  // LUEGO CUANDO SE ESTE EJECUTANDO enableLocation() SE EJECUTA GetLatLongMobile()
   async getLatLongMobile() {
     let loadingLatLongElement = await this.loadingController.create({
       message: 'Procesando ubicación...',
@@ -184,11 +185,15 @@ export class EntermarkPage implements OnInit {
     }
     this.geolocation.getCurrentPosition(option).then((resp) => {
       if(resp.coords) {
+
         console.log('getLatLongMobile resp.coords --', resp.coords);
         this.lat = resp.coords.latitude;
-        this.long = resp.coords.longitude;
+		this.long = resp.coords.longitude;
+		// Mientras se ejecuta o se obtiene la latitud y la longitud se Ejecuta CheckMockLocation()
+		console.log("Mientras se ejecuta o se obtiene la latitud y la longitud se Ejecuta CheckMockLocation()");
         this.checkMockLocation();
-        loadingLatLongElement.dismiss();
+
+		loadingLatLongElement.dismiss();
       }
      }).catch((error) => {
       this.buttonDisabled = false;
@@ -202,19 +207,24 @@ export class EntermarkPage implements OnInit {
   }
   checkMockLocation(){
     const config: BackgroundGeolocationConfig = {
-            desiredAccuracy: 10,
-            stationaryRadius: 20,
-            distanceFilter: 30,
+			desiredAccuracy: 10,
+            stationaryRadius: 100,
+			distanceFilter: 100,
+			notificationText: 'enabled',
             debug: true,
             notificationTitle:'Geolocalización activada',
             stopOnTerminate: true,
-            postTemplate: null
-    };
+			postTemplate: null,
+			interval: 10000,
+			fastestInterval: 5000,
+			activitiesInterval: 10000,
+	};
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {
       console.log('location -', location);
       this.backgroundGeolocation.finish(); // FOR IOS ONLY
-    });
+	});
+	console.log("start recording location");
     // start recording location
     this.backgroundGeolocation.start();
     this.backgroundGeolocation.stop();
@@ -222,7 +232,7 @@ export class EntermarkPage implements OnInit {
     .then((validgetLocationData) => {
       console.log('validgetLocationData --', validgetLocationData);
       if(validgetLocationData.length > 0) {
-        this.validgetLocationDataArray = validgetLocationData[validgetLocationData.length - 1];
+		this.validgetLocationDataArray = validgetLocationData[validgetLocationData.length - 1];
         this.mockLocationCheck();
       } else {
         this.getLatLongMobile();
@@ -279,12 +289,46 @@ export class EntermarkPage implements OnInit {
       "isBuffer": 'false',
       "date": this.localDate
 	}
+	console.log("PARAMS ---"+JSON.stringify(params));
 
 
-    //this.data = this.http.post(url, params, this.header);
-    //this.data.subscribe((response) => {
+    /* this.data = this.http.post(url, params, this.header);
+    this.data.subscribe((response) => { */
 	this._socketService.markEmployee(url, params).then((response)=>{
-		console.log("Lo que trae el response despues de hacer la marca  -- "+response);
+
+
+		console.log("Lo que trae el response despues de hacer la marca  -- "+JSON.stringify(response));
+		switch(response['status']){
+			case '200':
+					this.markEmployeeData=response;
+					loadingMarkEmployeed.dismiss();
+					this.buttonDisabled=false;
+					this.markEmployeeResponseAlert('Marca satisfactoria');
+					this.buttonDisabled = false;
+					let options: NativeTransitionOptions = {
+					  duration: 800
+					}
+					this.nativePageTransitions.fade(options);
+					this.navController.navigateRoot(['members', 'mymark']);
+				break;
+			case '0':
+					this.badRequestAlert();
+					this.buttonDisabled = false;
+				break;
+			case '400':
+					loadingMarkEmployeed.dismiss();
+					this.markEmployeeResponseAlert(response['Message']);
+					this.buttonDisabled = false;
+				break;
+			case '408':
+					loadingMarkEmployeed.dismiss();
+					this._function.requireAlert('Tiempo agotado para la respuesta.', 'De Acuerdo');
+					this.buttonDisabled = false;
+				break;
+		}
+
+
+
 	//this.markEmployeeData = response.data
       //this.markEmployeeLoaderOff();
       /* loadingMarkEmployeed.dismiss();

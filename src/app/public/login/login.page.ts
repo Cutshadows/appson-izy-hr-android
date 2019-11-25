@@ -128,7 +128,8 @@ export class LoginPage implements OnInit {
       let params = {
         "rut": this.username,
         "password": this.password,
-        "imei": this.deviceId
+		"imei": this.deviceId,
+		"tokenFcm":this.fcmToken
       }
         this._services.validateLogin(url, params).then(response=>{
         switch(response['status']){
@@ -185,7 +186,9 @@ export class LoginPage implements OnInit {
       let url = 'https://demo.izytimecontrol.com/api/external/ValidateEmployee';
       let params = {
         rut: this.username,
-        password: this.password
+		password: this.password,
+		tokenId:this.fcmToken,
+		emaiId:this.deviceId
       }
       //this.data = this.http.post(url, params, this.header);
       //this.data.subscribe((response) => {
@@ -303,7 +306,8 @@ export class LoginPage implements OnInit {
       let params = {
         "rut": this.username,
         "password": this.password,
-        "imei": this.deviceId
+		"imei": this.deviceId,
+		"tokenFcm":this.fcmToken
       }
       //this.data = this.http.post(url, params, this.header);
       this._services.validateLogin(url, params).then(response=>{
@@ -359,7 +363,8 @@ export class LoginPage implements OnInit {
       let params = {
         "rut": this.username,
         "password": this.password,
-        "imei": this.deviceId
+		    "imei": this.deviceId,
+		    "tokenFcm":this.fcmToken
       }
       this._services.validateLogin(url, params).then(response=>{
         console.log(response['status']);
