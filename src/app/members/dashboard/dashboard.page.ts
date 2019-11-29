@@ -7,6 +7,7 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
 import { HttpClient } from '@angular/common/http';
 import { Network } from '@ionic-native/network/ngx';
 import { DatabaseService } from '../../services/database.service';
+import { FunctionsService } from '../../services/functions.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,12 +16,12 @@ import { DatabaseService } from '../../services/database.service';
 })
 export class DashboardPage implements OnInit {
  currentVal=1;
-  header: any = {
+  /* header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
     }
-  }
+  } */
   userInfoItems: any;
   data: Observable<any>;
   userLoginResDetail: string = 'userLoginResDetail';
@@ -50,7 +51,8 @@ export class DashboardPage implements OnInit {
     public http: HttpClient,
     public alertController: AlertController,
 	public loadingController: LoadingController,
-	private __serviceData:DatabaseService
+	private __serviceData:DatabaseService,
+	private _function:FunctionsService
     ) { }
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
@@ -177,7 +179,28 @@ export class DashboardPage implements OnInit {
       "date": this.localDate
     }
 	this.__serviceData.markEmployee(url, params).then((responseMarkPending)=>{
-		console.log("responseMarkPending    --"+responseMarkPending);
+		console.log("responseMarkPending    --"+JSON.stringify(responseMarkPending));
+		console.log("Lo que trae el response despues de hacer la marca  -- "+JSON.stringify(responseMarkPending));
+		switch(responseMarkPending['status']){
+			case '200':
+					cargandoMarca.dismiss();
+					this.markEmployeeResponseAlert('Marca satisfactoria');
+					this.removeLocalLatLong();
+				break;
+			case '0':
+					cargandoMarca.dismiss();
+					this.markEmployeeResponseAlert(responseMarkPending['Message']);
+        			this.removeLocalLatLong();
+				break;
+			case '400':
+					cargandoMarca.dismiss();
+      				this.badRequestAlert();
+				break;
+			case '408':
+					cargandoMarca.dismiss();
+					this._function.requireAlert('Tiempo agotado para la respuesta.', 'De Acuerdo');
+				break;
+		}
 	});
 	/*
 	this.markEmployeeLoaderOn()
@@ -224,18 +247,21 @@ export class DashboardPage implements OnInit {
     this.loadingElement.dismiss();
   }
   async markEmployeeResponseAlert(responseMsg) {
-    const alert = await this.alertController.create({
+	  this._function.requireAlert(responseMsg,'De acuerdo');
+    /* const alert = await this.alertController.create({
       message: responseMsg,
-      buttons: ['De acuerdo']
+	  buttons: ['De acuerdo'],
+      cssClass:'transparent'
     });
-    await alert.present();
+    await alert.present(); */
   }
   async badRequestAlert() {
-    const alert = await this.alertController.create({
+	  this._function.requireAlert('Error de servicio','De acuerdo');
+    /* const alert = await this.alertController.create({
       message: 'Error de servicio',
       buttons: ['De acuerdo']
     });
-    await alert.present();
+    await alert.present(); */
   }
   removeLocalLatLong() {
     this.storage.remove('localLat').then(() => {});
