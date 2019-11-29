@@ -205,7 +205,7 @@
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	margin: auto;  
+	margin: auto;
 }
 
 .custom-border-button {
@@ -228,7 +228,7 @@
 }
 
 .custom-box-shadow {
-  box-shadow: 5px 10px 18px #c4c1c1;  
+  box-shadow: 5px 10px 18px #c4c1c1;
 }
 
 .custom-color-black {
@@ -236,19 +236,19 @@
 }
 
 .custom-back-color-white {
-  background-color: #f4f5f8;  
+  background-color: #f4f5f8;
 }
 
 .custom-back-color-green {
-  background-color: #a3f296;  
+  background-color: #a3f296;
 }
 
 .custom-back-color-green-light {
-  background-color: #c4f5bb;  
+  background-color: #c4f5bb;
 }
 
 .custom-back-color-yello {
-  background-color: #faf586;  
+  background-color: #faf586;
 }
 
 .custom-back-color-sky-light {
@@ -258,7 +258,7 @@
 .classAlert{
   --background:rgb(255, 255, 255);
   color:rgb(215, 36, 66)!important;
-  
+
 }
 .cssAlert{
 background-color: rgb(215, 36, 66)!important;
@@ -288,9 +288,9 @@ background-color: rgba(200, 200, 200, 0.5);
   --spinner-color:rgb(215, 36, 66)!important;
   .spinner-crescent circle {
     stroke-width: 80px;
-    
+
   }
-  
+
 }
 }
 .custom-background-red{
@@ -311,6 +311,20 @@ background: rgb(215, 36, 66)!important;
   -webkit-animation-duration: 2s;
   animation-duration: 2s;
 }
+.blink {
+	animation: blink-animation 1s steps(5, start) infinite;
+	-webkit-animation: blink-animation 1s steps(5, start) infinite;
+  }
+  @keyframes blink-animation {
+	to {
+	  visibility: hidden;
+	}
+  }
+  @-webkit-keyframes blink-animation {
+	to {
+	  visibility: hidden;
+	}
+  }
 @-webkit-keyframes flash {
   from,
   50%,
@@ -368,7 +382,7 @@ background: rgb(215, 36, 66)!important;
   text-decoration: none;
   transition: background .3s, transform .3s, box-shadow .3s;
    will-change: transform;
-  
+
   &:hover {
     background: darken(rgba(29, 27, 28, 0.353),10%);
     transform: translate3d(0, -4px, 0);

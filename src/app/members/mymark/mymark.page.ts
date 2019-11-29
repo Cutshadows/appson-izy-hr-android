@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { AlertController, LoadingController, ToastController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController, NavController, IonSlides } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -16,23 +16,23 @@ import { DatabaseService } from 'src/app/services/database.service';
 })
 export class MymarkPage implements OnInit {
 
-  /* header: any = { 
+  /* header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    } 
+    }
   }   */
-
+  @ViewChild('slidesMymark')slide: IonSlides;
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
   employeeId: any
-  liveUserCode: any   
+  liveUserCode: any
 
   data: Observable<any>
 
   loadingElement: any
 
-  deviceId: any  
+  deviceId: any
 
   employeeMarkItems: any
 
@@ -49,6 +49,8 @@ export class MymarkPage implements OnInit {
   exit_lunch_img: string = 'assets/img/exit_lunch_img.png'
   location_img: string = 'assets/img/location_img.png'
 
+  arregloNumbers:any=[];
+
   constructor(
     private authService: AuthenticationService,
     private storage: Storage,
@@ -59,13 +61,12 @@ export class MymarkPage implements OnInit {
     public navController: NavController,
     private nativePageTransitions: NativePageTransitions,
     private _function:FunctionsService,
-    private _socketService:DatabaseService    
-    
-  ) { 
+    private _socketService:DatabaseService
 
+  ) {
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
         this.employeeId = val['EmployeeId']
@@ -74,17 +75,23 @@ export class MymarkPage implements OnInit {
 
     this.storage.get('liveUserCode').then((val) => {
       if(val != null && val != undefined) {
-        this.liveUserCode = val
+		console.log("LiveCodeUser --"+val);
+		this.liveUserCode = val
       }
     })
 
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
         this.deviceId = val
-        this.employeeMarkService()
+		this.employeeMarkService();
       }
-    })
-    
+	})
+
+	// var arregloNumbers=new Array();
+	// for(let sumcont=0;sumcont<=this.employeeMarkItems.length;sumcont++){
+	// 	arregloNumbers.push(sumcont);
+	// }
+
     //this.dummyData()
   }
 
@@ -113,7 +120,7 @@ export class MymarkPage implements OnInit {
         "GoOutForLunch": "13:37",
         "ArriveFromLunch": "15:01",
         "ExitDate": "19:47"
-      }  
+      }
     ]
 
     this.employeeMarkLeftRight = this.employeeMarkItems[0]
@@ -123,15 +130,15 @@ export class MymarkPage implements OnInit {
     } else {
       this.rightCount = 0
       this.leftCount = 0
-    }    
+    }
   }
 
-  dashboardGo() {    
+  dashboardGo() {
     let options: NativeTransitionOptions = {
       duration: 800
     }
     this.nativePageTransitions.fade(options);
-    this.navController.navigateRoot(['members', 'dashboard'])    
+    this.navController.navigateRoot(['members', 'dashboard'])
   }
 
   logout() {
@@ -143,32 +150,32 @@ export class MymarkPage implements OnInit {
       message: 'Por favor espera...',
       spinner: 'crescent'
     })
-    this.loadingElement.present()
+    this.loadingElement.present();
 
     setTimeout(() => {
       this.loadingElement.dismiss()
-    }, 3000)    
+    }, 3000)
   }
-  
+
   async employeeMarkServiceLoaderOff() {
     this.loadingElement.dismiss()
   }
-  
+
   async badRequestAlert() {
     this._function.requireAlert('Error de servicio', 'De acuerdo');
   }
-  
+
   async noDataToast() {
     this._function.MessageToast('Datos no encontrados', 'bottom', 2000);
-  }  
+  }
 
   async employeeMarkService() {
     //this.employeeMarkServiceLoaderOn()
-    
+
     //let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeMarks'
 
     /*let url = 'https://dimercqa.izytimecontrol.com/api/external/EmployeeMarks'
-    
+
     let employeeId = "sgV8tUf7wmezDF7PZnF8oQ=="
     let imei = "01dfbf8c-0afb-2fdd-f356-060071893881"*/
     let loadingMarkEmployed = await this.loadingController.create({
@@ -181,23 +188,29 @@ export class MymarkPage implements OnInit {
     let imei = this.deviceId
 
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeMarks?employeeId='+employeeId+'&imei='+imei;
-    
- 
     //this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
-
     //this.data.subscribe((response) => {
-    this._socketService.serviceMarkEmployeed(url).then((response)=>{
+	this._socketService.serviceMarkEmployeed(url)
+	.then((response)=>{
       switch(response['status']){
         case '200':
             loadingMarkEmployed.dismiss();
             this.employeeMarkItems = response['response'];
             this.employeeMarkLeftRight = this.employeeMarkItems[0]
             if(this.employeeMarkItems.length > 1) {
-              this.rightCount = this.employeeMarkItems.length - 1
+			  this.rightCount = this.employeeMarkItems.length - 1;
+			  let arreglo:any=[];
+        		for(let sumcont=1;sumcont<=this.employeeMarkItems.length;sumcont++){
+					arreglo.push(sumcont);
+				}
+				this.arregloNumbers=arreglo;
+
+				console.log("InFO --"+this.arregloNumbers)
+
             } else {
               this.rightCount = 0
               this.leftCount = 0
-            }   
+            }
           break;
         case '400':
             loadingMarkEmployed.dismiss();
@@ -205,8 +218,8 @@ export class MymarkPage implements OnInit {
           break;
         case '0':
             loadingMarkEmployed.dismiss();
-            this.badRequestAlert(); 
-            break;      
+            this.badRequestAlert();
+            break;
         }
       /* this.employeeMarkItems = response['response'];
 
@@ -221,32 +234,66 @@ export class MymarkPage implements OnInit {
       } else {
         this.rightCount = 0
         this.leftCount = 0
-      }      
+      }
     }, (err) => {
       this.employeeMarkServiceLoaderOff()
       this.badRequestAlert() */
-    })    
+    })
   }
 
-  leftMark() {    
+  /* onSlideMoved(event) {
+	// this.slide.getActiveIndex().then((numSlide)=>{
+	// 	console.log("Cuando se carga slide +"+numSlide);
+	// 	for(let sumcont=0;sumcont<=this.employeeMarkItems.length;sumcont++){
+	// 			 this.arregloNumbers.push(sumcont);
+	// 		 }
+	// })
+	  console.log("EVENTO DEL SLIDE  +"+JSON.stringify(event));
+	this.slide.ionSlidesDidLoad.subscribe((load)=>{
+		console.log("cargando   +"+load);
+	})
+
+	event.target.getActiveIndex();
+	console.log(event.target.getActiveIndex());
+	console.log(event.target.length());
+	console.log(this.employeeMarkItems.length);
+
+
+    event.target.isEnd().then(isEnd => {
+	  console.log('End of slide', isEnd);
+
+    });
+
+    event.target.isBeginning().then((istrue) => {
+      console.log('End of slide', istrue);
+    });
+  } */
+
+  	slideLeftMark(){
+		this.increaseValue = this.increaseValue - 1
+		this.employeeMarkLeftRight = this.employeeMarkItems[this.increaseValue]
+		this.leftCount = this.leftCount - 1
+		this.rightCount = this.rightCount + 1
+  	}
+	slideRightMark(){
+		this.increaseValue = this.increaseValue + 1
+		this.employeeMarkLeftRight = this.employeeMarkItems[this.increaseValue]
+		this.rightCount = this.rightCount - 1
+		this.leftCount = this.leftCount + 1
+  	}
+  leftMark() {
     this.increaseValue = this.increaseValue - 1
-
     this.employeeMarkLeftRight = this.employeeMarkItems[this.increaseValue]
-
-    this.leftCount = this.leftCount - 1    
-
-    this.rightCount = this.rightCount + 1        
+    this.leftCount = this.leftCount - 1
+    this.rightCount = this.rightCount + 1
   }
 
   rightMark() {
     this.increaseValue = this.increaseValue + 1
-    
     this.employeeMarkLeftRight = this.employeeMarkItems[this.increaseValue]
-    
     this.rightCount = this.rightCount - 1
-
     this.leftCount = this.leftCount + 1
-  }    
-  
+  }
+
 
 }

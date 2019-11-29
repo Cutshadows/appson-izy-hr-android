@@ -290,8 +290,6 @@ export class DatabaseService {
 				)
         	).subscribe((response)=>{
           console.log(response);
-		  console.log("response de casinos  -- "+response['Data']);
-		  debugger
         let jsonRespondEvents={
           status,
           response
@@ -344,33 +342,27 @@ export class DatabaseService {
 	 let Promesa=new Promise((resolve)=>{
 		this.http.post(url, params, this.header)
 			.pipe(
-			  timeout(1000000),
+			  timeout(10000),
 			  catchError(
 					error=>of(408)
 			  )
 		  ).subscribe(
 			  (response)=>{
-				console.log("#### response STATUS DEL INGRESO DE MARCA  -- "+response['status']);
-				console.log("#### response DATA DEL INGRESO DE MARCA  -- "+response['data']);
-
 			let jsonRespondEvents={
 				status,
 				response
 			}
-			if((Object.keys(response).length != 0)==true || response == 1){
-				if(response==408){
-				jsonRespondEvents.status="408";
-					jsonRespondEvents.response=response;
-					resolve(jsonRespondEvents);
-				}else{
+			if((Object.keys(response).length != 0)==true){
 				jsonRespondEvents.status="200";
 					jsonRespondEvents.response=response['data'];
-					debugger
 					resolve(jsonRespondEvents);
-				}
-			}else if((Object.keys(response).length == 0)==true || response == 0){
+			}else if((Object.keys(response).length == 0)==true && response != 408 ){
 				jsonRespondEvents.status="400";
 				jsonRespondEvents.response=response['Message'];
+				resolve(jsonRespondEvents);
+			}else if(response == 408){
+				jsonRespondEvents.status="408";
+				jsonRespondEvents.response=response;
 				resolve(jsonRespondEvents);
 			}
 	},

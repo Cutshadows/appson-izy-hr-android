@@ -7,25 +7,25 @@
       <ion-button (click)="dashboardGo()">
         <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
       </ion-button>
-    </ion-buttons>    
+    </ion-buttons>
     <ion-title text-center color="light">MI CALENDARIO</ion-title>
     <ion-buttons slot="end">
         <ion-button (click)="logout()">
           <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
         </ion-button>
-      </ion-buttons>     
+      </ion-buttons>
   </ion-toolbar> -->
-  
+
   <div class="custom-white center"><!-- custom-padding-left-right -->
 
-    <!-- left right button start -->    
+    <!-- left right button start -->
     <ion-grid>
       <ion-row>
         <ion-col size="1" offset="2">
           <ion-icon *ngIf="leftCount" name="arrow-dropleft" color="light" size="large" (click)="leftSchedule()" class="custom-p-t-md"></ion-icon>
         </ion-col>
 
-        <ion-col size="7">          
+        <ion-col size="7">
           <ion-img [src]="my_calendar_page" class="custom-img-7 custom-margin-auto"></ion-img>
         </ion-col>
 
@@ -37,7 +37,7 @@
 
       </ion-row>
     </ion-grid>
-    <!-- left right button end -->    
+    <!-- left right button end -->
 
     <div *ngIf="employeeScheduleLeftRight">
       <div class="ion-padding-top ion-padding-bottom">
@@ -46,7 +46,7 @@
         </ion-text>
         <ion-text color="light" class="ion-text-uppercase">
           <span>{{ dateConvertFrom[0] }} </span>
-        </ion-text> 
+        </ion-text>
         <ion-text color="light" class="ion-text-uppercase">
           <span *ngIf="dateConvertFrom[1] == 1">{{ allMonthName[0] }}</span>
           <span *ngIf="dateConvertFrom[1] == 2">{{ allMonthName[1] }}</span>
@@ -66,7 +66,7 @@
         </ion-text>
         <ion-text color="light" class="ion-text-uppercase">
           <span>{{ dateConvertTo[0] }} </span>
-        </ion-text> 
+        </ion-text>
         <ion-text color="light" class="ion-text-uppercase">
           <span *ngIf="dateConvertTo[1] == 1">{{ allMonthName[0] }}</span>
           <span *ngIf="dateConvertTo[1] == 2">{{ allMonthName[1] }}</span>
@@ -80,21 +80,21 @@
           <span *ngIf="dateConvertTo[1] == 10">{{ allMonthName[9] }}</span>
           <span *ngIf="dateConvertTo[1] == 11">{{ allMonthName[10] }}</span>
           <span *ngIf="dateConvertTo[1] == 12">{{ allMonthName[11] }}</span>
-        </ion-text>        
-      </div>      
+        </ion-text>
+      </div>
       <ion-grid>
         <ion-row *ngFor="let weekDataItem of employeeScheduleLeftRight.Days">
           <ion-col>
             <ion-button *ngIf="currentday != weekDataItem.Name" shape="round" expand="block" color="light">{{ weekDataItem.Name }}</ion-button>
             <ion-button *ngIf="currentday == weekDataItem.Name && leftCount == 0" shape="round" expand="block" color="success">{{ weekDataItem.Name }}</ion-button>
-            <ion-button *ngIf="currentday == weekDataItem.Name && leftCount > 0" shape="round" expand="block" color="light">{{ weekDataItem.Name }}</ion-button>              
+            <ion-button *ngIf="currentday == weekDataItem.Name && leftCount > 0" shape="round" expand="block" color="light">{{ weekDataItem.Name }}</ion-button>
           </ion-col>
           <ion-col class="ion-padding">{{ weekDataItem.Letter }} {{ weekDataItem.Hour }}</ion-col>
-        </ion-row>     
-      </ion-grid>     
+        </ion-row>
+      </ion-grid>
     </div>
     <div *ngIf="!employeeScheduleLeftRight" style="justify-content: space-around;">
-      <div   class="animated flash slow infinite center" >
+      <div   class="animated flash slow infinite center blink" >
         <div style="padding-left:20%!important">
             <ion-text color="light" class="ion-text-uppercase">
                 <span ><ion-skeleton-text  class="animated" style="width:80%; height:37px!important; background-color:white!important;"></ion-skeleton-text > &nbsp; <!-- &bull; --> &nbsp;</span>
@@ -104,19 +104,24 @@
               </ion-text> -->
               <ion-text color="light" class="ion-text-uppercase">
                 <span><ion-skeleton-text class="animated" style="--background-rgb:rgb(255,255,255);width:10%;"></ion-skeleton-text> </span>
-              </ion-text> 
+              </ion-text>
         </div>
-      </div>      
-      <ion-grid *ngIf="!employeeScheduleLeftRight" class="animated flash slow infinite">
+      </div>
+      <ion-grid *ngIf="!employeeScheduleLeftRight" class="animated flash slow infinite blink">
         <ion-row *ngFor="let weekDataItem of [1, 1, 1, 1, 1, 1, 1]">
           <ion-col>
-           <ion-button shape="round" expand="block" color="light"><ion-skeleton-text class="animated"  style="width: 88%; height: 80%;"></ion-skeleton-text></ion-button>
+           <ion-button shape="round" expand="block" color="light">
+			   <ion-skeleton-text class="animated"  style="width: 88%; height: 80%;">
+				</ion-skeleton-text>
+			</ion-button>
           </ion-col>
-          <ion-col  style="padding-left:10%!important;"><ion-skeleton-text class="animated" style="background-color:white!important;width:70%; height:27px!important; border-radius: 5%;"></ion-skeleton-text></ion-col><!-- padding -->
-        </ion-row>     
-      </ion-grid>     
+		  <ion-col  style="padding-left:10%!important;">
+				<ion-skeleton-text class="animated" style="background-color:white!important;width:70%; height:27px!important; border-radius: 5%;">
+				</ion-skeleton-text></ion-col><!-- padding -->
+        </ion-row>
+      </ion-grid>
     </div>
-  </div> 
+  </div>
     <!-- <ion-button (click)="EmployeeScheduleList()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large">Check service</ion-button> -->
 </ion-content>
 <!-- footer start -->
@@ -125,6 +130,6 @@
 <app-menu-footer
 [valCapa]="currentVal"
 id="calendar"
-(goDashboard)='dashboardGo()'  
+(goDashboard)='dashboardGo()'
 (logout)="logout()"
 ></app-menu-footer>

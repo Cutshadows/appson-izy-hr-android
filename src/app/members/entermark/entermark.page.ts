@@ -48,6 +48,7 @@ export class EntermarkPage implements OnInit {
   entermark_page: string = 'assets/img/page/entermark_page.png';
   mark_button_page: string = 'assets/img/page/mark_button_page.png';
   back_button_mark_page: string = 'assets/img/page/back_button_mark_page.png';
+  loadingLatLongElement:any;
 
   constructor(
     private authService: AuthenticationService,
@@ -63,10 +64,7 @@ export class EntermarkPage implements OnInit {
     private network: Network,
     private _function:FunctionsService,
     private _socketService:DatabaseService
-    ) {
-
-  }
-
+    ){  }
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
@@ -107,7 +105,7 @@ export class EntermarkPage implements OnInit {
 
   async getCurrentLocation() {
     let loadingGeolocation = await this.loadingController.create({
-      message: 'Procesando ubicación...',
+      message: 'Verificando ubicación...',
       spinner: 'crescent',
       cssClass:'transparent'
     });
@@ -117,26 +115,20 @@ export class EntermarkPage implements OnInit {
       timeout: 30000,
       enableHighAccuracy: true
     }
-
     this.geolocation.getCurrentPosition(option)
     .then((resp) => {
-
-      //this.getLocationLoaderOff()
       if(resp.coords) {
         loadingGeolocation.dismiss();
         this.lat = resp.coords.latitude;
         this.long = resp.coords.longitude;
         this.markEmployee();
-        console.log('resp.coords.latitude --', resp.coords.latitude);
-        console.log('resp.coords.longitude --', resp.coords.longitude);
       }
      }).catch((error) => {
        if(error) {
-        //this.getLocationLoaderOff()
         loadingGeolocation.dismiss();
         this.locationErrorAlert(error.message);
        }
-       console.log('Error getting location', error)
+       console.log('Error al obtener Location ++', error)
      });
   }
 
@@ -171,34 +163,40 @@ export class EntermarkPage implements OnInit {
       );
     });
   }
+
   // LUEGO CUANDO SE ESTE EJECUTANDO enableLocation() SE EJECUTA GetLatLongMobile()
-  async getLatLongMobile() {
-    let loadingLatLongElement = await this.loadingController.create({
-      message: 'Procesando ubicación...',
-      spinner: 'crescent',
-      cssClass:'transparent'
-    })
-    loadingLatLongElement.present();
+  	async loadingLatLongElementOn(){
+		this.loadingLatLongElement = await this.loadingController.create({
+			message: 'Procesando ubicación...',
+			spinner: 'crescent',
+			cssClass:'transparent'
+		  })
+		  await this.loadingLatLongElement.present();
+	  }
+  async loadingLatLongElementOff(){
+		await this.loadingLatLongElement.dismiss();
+	}
+
+  getLatLongMobile(){
+	this.loadingLatLongElementOn();
     let option = {
       timeout: 30000,
       enableHighAccuracy: true
     }
     this.geolocation.getCurrentPosition(option).then((resp) => {
       if(resp.coords) {
-
         console.log('getLatLongMobile resp.coords --', resp.coords);
         this.lat = resp.coords.latitude;
 		this.long = resp.coords.longitude;
 		// Mientras se ejecuta o se obtiene la latitud y la longitud se Ejecuta CheckMockLocation()
 		console.log("Mientras se ejecuta o se obtiene la latitud y la longitud se Ejecuta CheckMockLocation()");
         this.checkMockLocation();
-
-		loadingLatLongElement.dismiss();
+		this.loadingLatLongElementOn();
       }
      }).catch((error) => {
-      this.buttonDisabled = false;
-      loadingLatLongElement.dismiss();
-      //this.getLocationLoaderOff()
+	  this.buttonDisabled = false;
+	  this.loadingLatLongElementOff();
+      //loadingLatLongElement.dismiss();
        if(error) {
         this.locationErrorAlert(error.message);
        }
@@ -210,14 +208,14 @@ export class EntermarkPage implements OnInit {
 			desiredAccuracy: 10,
             stationaryRadius: 100,
 			distanceFilter: 100,
-			notificationText: 'enabled',
+			notificationText: 'Habilitado',
             debug: true,
             notificationTitle:'Geolocalización activada',
             stopOnTerminate: true,
 			postTemplate: null,
-			interval: 10000,
+			interval: 1000,
 			fastestInterval: 5000,
-			activitiesInterval: 10000,
+			activitiesInterval: 1000,
 	};
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {
@@ -237,7 +235,9 @@ export class EntermarkPage implements OnInit {
       } else {
         this.getLatLongMobile();
       }
-    })
+    }).finally(()=>{
+		this.backgroundGeolocation.stop();
+	});
   }
 
   async offlineAlert() {
@@ -248,12 +248,16 @@ export class EntermarkPage implements OnInit {
     this.localDate = new Date();
     this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);
     if(this.validgetLocationDataArray.isFromMockProvider) {
-      this.buttonDisabled = false;
+	  this.buttonDisabled = false;
+	  this.loadingLatLongElementOff();
       //this.getLocationLoaderOff()
       this.deleteStoreLocation();
       this.mockLocationErrorAlert();
     } else if(this.network.type == 'none') {
-      this.buttonDisabled = false;
+		debugger
+		console.log("PASANDO SIN INTERNET ------ ####");
+	  this.buttonDisabled = false;
+	  this.loadingLatLongElementOff();
       //this.getLocationLoaderOff()
       this.deleteStoreLocation();
       this.storage.set('localLat', this.lat);
@@ -262,7 +266,8 @@ export class EntermarkPage implements OnInit {
       this.storage.set('localDate', this.localDate);
       this.offlineAlert();
     } else {
-      this.buttonDisabled = false;
+	  this.buttonDisabled = false;
+	  this.loadingLatLongElementOff();
       //this.getLocationLoaderOff()
       this.deleteStoreLocation();
       this.markEmployee();
@@ -270,8 +275,6 @@ export class EntermarkPage implements OnInit {
   }
 
   async markEmployee(){
-
-   // this.markEmployeeLoaderOn()
     let loadingMarkEmployeed = await this.loadingController.create({
       message: 'Ingresando marca empleado...',
       spinner: 'crescent',
@@ -405,7 +408,8 @@ export class EntermarkPage implements OnInit {
     }
     this.geolocation.getCurrentPosition(option).then((resp) => {
 
-      //this.getLocationLoaderOff()
+	  //this.getLocationLoaderOff()
+	  this.loadingLatLongElementOff();
 
       if(resp.coords) {
 
@@ -417,7 +421,8 @@ export class EntermarkPage implements OnInit {
 
      }).catch((error) => {
        if(error) {
-        //this.getLocationLoaderOff()
+		//this.getLocationLoaderOff()
+		this.loadingLatLongElementOff();
         this.locationErrorAlert(error.message);
        }
        console.log('Error getting location', error);

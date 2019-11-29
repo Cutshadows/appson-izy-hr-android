@@ -6,6 +6,7 @@ import { ToastController, NavController, NavParams, AlertController, LoadingCont
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Network } from '@ionic-native/network/ngx';
+import { DatabaseService } from '../../services/database.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -48,53 +49,47 @@ export class DashboardPage implements OnInit {
     private network: Network,
     public http: HttpClient,
     public alertController: AlertController,
-    public loadingController: LoadingController
+	public loadingController: LoadingController,
+	private __serviceData:DatabaseService
     ) { }
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
-		//(val != null && val != undefined)?this.userInfoItems = val:undefined;
-      //if(val != null && val != undefined) {
+      if(val != null && val != undefined) {
         this.userInfoItems = val;
         console.log('this.userInfoItems --', this.userInfoItems);
-      //}
+      }
     });
     this.storage.get(this.userLoginResDetail).then((val) => {
-		this.employeeId = val['EmployeeId'];
-      /* if(val != null && val != undefined) {
+      if(val != null && val != undefined) {
 		    this.employeeId = val['EmployeeId'];
-      } */
+      }
     })
 
     this.storage.get('liveUserCode').then((val) => {
+      if(val != null && val != undefined) {
 		this.liveUserCode = val;
-      /* if(val != null && val != undefined) {
-		this.liveUserCode = val;
-      } */
+      }
     })
     this.storage.get('deviceIdLocalStorage').then((val) => {
-		this.deviceId = val;
-	/* if(val != null && val != undefined) {
-		this.deviceId = val;
-      } */
+		if(val != null && val != undefined) {
+			this.deviceId = val;
+      	}
     })
     this.storage.get('localLat').then((val) => {
+      if(val != null && val != undefined) {
 		this.localLat = val;
-      /* if(val != null && val != undefined) {
-		this.localLat = val;
-      } */
+      }
     })
     this.storage.get('localisBuffer').then((val) => {
+      if(val != null && val != undefined) {
 		this.localisBuffer = val;
-      /* if(val != null && val != undefined) {
-		this.localisBuffer = val;
-      } */
+      }
     })
     this.storage.get('localDate').then((val) => {
-		this.localDate = val;
-      /* if(val != null && val != undefined) {
+      if(val != null && val != undefined) {
 		this.localDate = val
 
-      } */
+      }
     })
 
     this.storage.get('localLong').then((val) => {
@@ -102,7 +97,7 @@ export class DashboardPage implements OnInit {
         this.localLong = val
         if(this.network.type != 'none') {
           if(this.localLat != null && this.localLat != undefined && this.localLong != null && this.localLong != undefined) {
-            // this.markEmployee()
+             this.markEmployee()
           }
         }
       }
@@ -164,8 +159,31 @@ export class DashboardPage implements OnInit {
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'mymark'])
   }
- /*  markEmployee() {
-    this.markEmployeeLoaderOn()
+
+  async markEmployee() {
+	let cargandoMarca = await this.loadingController.create({
+		message: 'Procesando marca pendiente...',
+		spinner: 'crescent',
+		cssClass:'transparent'
+	});
+	cargandoMarca.present();
+	let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
+    let params = {
+      "lat": this.localLat,
+      "lon": this.localLong,
+      "employeeId": this.employeeId,
+      "imei": this.deviceId,
+      "isBuffer": this.localisBuffer,
+      "date": this.localDate
+    }
+	this.__serviceData.markEmployee(url, params).then((responseMarkPending)=>{
+		console.log("responseMarkPending    --"+responseMarkPending);
+	});
+	/*
+	this.markEmployeeLoaderOn()
+
+
+
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
     let params = {
       "lat": this.localLat,
@@ -198,8 +216,9 @@ export class DashboardPage implements OnInit {
     this.loadingElement.present()
     setTimeout(() => {
       this.loadingElement.dismiss()
-    }, 3000)
-  } */
+	}, 3000)
+	*/
+  }
 
   async markEmployeeLoaderOff() {
     this.loadingElement.dismiss();

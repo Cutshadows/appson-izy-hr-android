@@ -31,9 +31,11 @@ export class EventsPage implements OnInit {
   loadingElement: any
   deviceId: any
   getEventsItems: any
+  EventStatus:any;
   my_events_page: string = 'assets/img/page/my_events_page.png'
   my_marks_info: string = 'assets/img/my_marks_info.png'
   my_marks_tic: string = 'assets/img/my_marks_tic.png'
+  imgStatus:string;
   constructor(
     private authService: AuthenticationService,
     private storage: Storage,
@@ -61,10 +63,8 @@ export class EventsPage implements OnInit {
       if(val != null && val != undefined) {
         this.deviceId = val;
         this.getEventsService();
-        //this.dummyData()
       }
     });
-    //this.dummyData()
   }
   /* dummyData() {
     this.getEventsItems = [
@@ -109,11 +109,10 @@ export class EventsPage implements OnInit {
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/GetEvents?employeeId='+employeeId+'&imei='+imei;
 	this._socketService.serviceViewEvents(url)
 	.then((response)=>{
-      console.log(response);
       switch(response['status']){
         case '200':
             LoadingEvents.dismiss();
-            this.getEventsItems = response['response'];
+			this.getEventsItems = response['response'];
           break;
         case '400':
             LoadingEvents.dismiss();
@@ -132,6 +131,23 @@ export class EventsPage implements OnInit {
           break;
       }
     })
+  }
+  validarImagen(stateEvents){
+		switch(stateEvents){
+			case 0:
+				this.imgStatus=this.my_marks_info;
+			break;
+			case 1:
+				this.imgStatus=this.my_marks_tic;
+			break;
+			case 2:
+				this.imgStatus=this.my_events_page;
+			break;
+			case 3:
+				this.imgStatus=this.my_events_page;
+			break;
+		}
+		return this.imgStatus;
   }
   badRequestAlert() {
     this._function.requireAlert('Error de servicio','De acuerdo');
