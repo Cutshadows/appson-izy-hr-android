@@ -16,12 +16,6 @@ import { DatabaseService } from '../../services/database.service';
   styleUrls: ['./calendar.page.scss'],
 })
 export class CalendarPage implements OnInit {
-  /* header: any = {
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    }
-  }  */
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
   employeeId: any
@@ -62,53 +56,17 @@ export class CalendarPage implements OnInit {
         this.employeeId = val['EmployeeId']
       }
     })
-
     this.storage.get('liveUserCode').then((val) => {
       if(val != null && val != undefined) {
         this.liveUserCode = val
       }
     })
-
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
         this.deviceId = val
         this.EmployeeScheduleList()
       }
     })
-
-  }
-
-  EmployeeScheduleListDummy() {
-
-    this.allMonthName = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-
-    let currentDate = new Date();
-    let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    this.currentday = weekdays[currentDate.getDay()];
-    console.log('this.currentday --', this.currentday);
-    this.employeeScheduleLeftRight = this.employeeScheduleListDatas[0];
-
-    this.testDateRange = '08/04/2019 - 14/04/2019';
-
-    this.testDateRangeSplit = this.testDateRange.split(' - ');
-
-    this.dateTestFrom = '17/04/2019';
-    this.dateTestTo = '20/04/2019';
-    // this.dateConvertFrom = this.dateTestFrom.split('/')
-    // this.dateConvertTo = this.dateTestTo.split('/')
-    this.dateConvertFrom = this.testDateRangeSplit[0].split('/');
-    this.dateConvertTo = this.testDateRangeSplit[1].split('/');
-    //console.log('this.dateConvertFrom --', this.dateConvertFrom)
-    //console.log('this.dateConvertFrom --', this.dateConvertFrom)
-    console.log('this.testDateRange --', this.testDateRange);
-    console.log('this.testDateRangeSplit --', this.testDateRangeSplit);
-    if(this.employeeScheduleListDatas.length > 1) {
-      this.rightCount = this.employeeScheduleListDatas.length - 1;
-    } else {
-      this.rightCount = 0;
-      this.leftCount = 0;
-    }
-
   }
   dashboardGo() {
     let options: NativeTransitionOptions = {
@@ -133,16 +91,13 @@ export class CalendarPage implements OnInit {
   }
   async EmployeeScheduleList() {
     this.allMonthName = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    //this.employeeScheduleLoaderOn()
     let loadingMessage = await this.toastController.create({
       message: 'Cargando Información ...',
-      //spinner: 'crescent',
 	  cssClass:'my-custom-toast',
 	  position:'bottom'
     });
     loadingMessage.present();
     let currentDate = new Date();
-    //let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     let weekdays = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
     this.currentday = weekdays[currentDate.getDay()];
     let employeeId = this.employeeId;
@@ -154,12 +109,10 @@ export class CalendarPage implements OnInit {
             this.employeeScheduleListDatas = response['response'];
             loadingMessage.dismiss();
             this.employeeScheduleLeftRight = this.employeeScheduleListDatas[0];
-            // show date range start
             this.testDateRange = this.employeeScheduleLeftRight.DateRange
             this.testDateRangeSplit = this.testDateRange.split(' - ')
             this.dateConvertFrom = this.testDateRangeSplit[0].split('/')
             this.dateConvertTo = this.testDateRangeSplit[1].split('/')
-            // show date range end
             if(this.employeeScheduleListDatas.length > 1) {
               this.rightCount = this.employeeScheduleListDatas.length - 1;
             } else {
@@ -187,36 +140,22 @@ export class CalendarPage implements OnInit {
   leftSchedule() {
     this.increaseValue = this.increaseValue - 1;
     this.employeeScheduleLeftRight = this.employeeScheduleListDatas[this.increaseValue];
-    // show date range start
     this.testDateRange = this.employeeScheduleLeftRight.DateRange;
-
     this.testDateRangeSplit = this.testDateRange.split(' - ');
-
     this.dateConvertFrom = this.testDateRangeSplit[0].split('/');
     this.dateConvertTo = this.testDateRangeSplit[1].split('/') ;
-    // show date range end
-
     this.leftCount = this.leftCount - 1;
-
     this.rightCount = this.rightCount + 1;
   }
 
   rightSchedule() {
     this.increaseValue = this.increaseValue + 1;
-
     this.employeeScheduleLeftRight = this.employeeScheduleListDatas[this.increaseValue];
-
-    // show date range start
     this.testDateRange = this.employeeScheduleLeftRight.DateRange;
-
     this.testDateRangeSplit = this.testDateRange.split(' - ');
-
     this.dateConvertFrom = this.testDateRangeSplit[0].split('/');
     this.dateConvertTo = this.testDateRangeSplit[1].split('/');
-    // show date range end
-
     this.rightCount = this.rightCount - 1;
-
     this.leftCount = this.leftCount + 1;
   }
 

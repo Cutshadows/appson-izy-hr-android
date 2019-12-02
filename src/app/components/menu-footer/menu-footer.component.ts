@@ -8,19 +8,16 @@ import { Router } from '@angular/router';
 })
 export class MenuFooterComponent implements OnInit {
   buttonChange:any;
-  @Input() id: string; 
+  @Input() id: string;
   @Input() valCapa: number;
   @Output() goDashboard = new EventEmitter<string>();
   @Output() profileEmployed = new EventEmitter<string>();
-  /* @Output() attendanceView = new EventEmitter<string>();
-  @Output() attendanceDetail = new EventEmitter<string>();
-  @Output() goInformation = new EventEmitter<string>(); */
   @Output() logout = new EventEmitter<string>();
   constructor(
     private nativePageTransitions: NativePageTransitions,
     private router: Router,
-  ) { 
-    
+  ) {
+
   }
 
   ngOnInit() {
@@ -59,7 +56,7 @@ export class MenuFooterComponent implements OnInit {
       duration: 800
     }
     this.nativePageTransitions.fade(options)
-    this.router.navigate(['members', 'dashboard'])  
+    this.router.navigate(['members', 'dashboard'])
   }
   cargarNavegacion(){
     switch(this.valCapa){

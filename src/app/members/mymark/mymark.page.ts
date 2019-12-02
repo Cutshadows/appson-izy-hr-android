@@ -75,7 +75,6 @@ export class MymarkPage implements OnInit {
 
     this.storage.get('liveUserCode').then((val) => {
       if(val != null && val != undefined) {
-		console.log("LiveCodeUser --"+val);
 		this.liveUserCode = val
       }
     })
@@ -87,51 +86,8 @@ export class MymarkPage implements OnInit {
       }
 	})
 
-	// var arregloNumbers=new Array();
-	// for(let sumcont=0;sumcont<=this.employeeMarkItems.length;sumcont++){
-	// 	arregloNumbers.push(sumcont);
-	// }
-
-    //this.dummyData()
   }
 
-  dummyData() {
-    this.employeeMarkItems = [
-      {
-        "BranchName": "TRANSLOGIC",
-        "Date": "29-01-2019",
-        "EntryDate": "09:51",
-        "GoOutForLunch": "13:37",
-        "ArriveFromLunch": "14:02",
-        "ExitDate": "19:55"
-      },
-      {
-        "BranchName": "TRANSLOGIC",
-        "Date": "30-01-2019",
-        "EntryDate": "09:49",
-        "GoOutForLunch": "13:41",
-        "ArriveFromLunch": "14:06",
-        "ExitDate": "19:14"
-      },
-      {
-        "BranchName": "TRANSLOGIC",
-        "Date": "31-01-2019",
-        "EntryDate": "09:42",
-        "GoOutForLunch": "13:37",
-        "ArriveFromLunch": "15:01",
-        "ExitDate": "19:47"
-      }
-    ]
-
-    this.employeeMarkLeftRight = this.employeeMarkItems[0]
-
-    if(this.employeeMarkItems.length > 1) {
-      this.rightCount = this.employeeMarkItems.length - 1
-    } else {
-      this.rightCount = 0
-      this.leftCount = 0
-    }
-  }
 
   dashboardGo() {
     let options: NativeTransitionOptions = {
@@ -170,14 +126,6 @@ export class MymarkPage implements OnInit {
   }
 
   async employeeMarkService() {
-    //this.employeeMarkServiceLoaderOn()
-
-    //let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeMarks'
-
-    /*let url = 'https://dimercqa.izytimecontrol.com/api/external/EmployeeMarks'
-
-    let employeeId = "sgV8tUf7wmezDF7PZnF8oQ=="
-    let imei = "01dfbf8c-0afb-2fdd-f356-060071893881"*/
     let loadingMarkEmployed = await this.loadingController.create({
       message: 'Por favor espera...',
       spinner: 'crescent',
@@ -186,10 +134,7 @@ export class MymarkPage implements OnInit {
     loadingMarkEmployed.present();
     let employeeId = this.employeeId
     let imei = this.deviceId
-
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeMarks?employeeId='+employeeId+'&imei='+imei;
-    //this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
-    //this.data.subscribe((response) => {
 	this._socketService.serviceMarkEmployeed(url)
 	.then((response)=>{
       switch(response['status']){
@@ -204,9 +149,6 @@ export class MymarkPage implements OnInit {
 					arreglo.push(sumcont);
 				}
 				this.arregloNumbers=arreglo;
-
-				console.log("InFO --"+this.arregloNumbers)
-
             } else {
               this.rightCount = 0
               this.leftCount = 0
@@ -221,53 +163,9 @@ export class MymarkPage implements OnInit {
             this.badRequestAlert();
             break;
         }
-      /* this.employeeMarkItems = response['response'];
-
-      if(this.employeeMarkItems.length == 0) {
-        this.noDataToast()
-      }
-
-      this.employeeMarkLeftRight = this.employeeMarkItems[0]
-
-      if(this.employeeMarkItems.length > 1) {
-        this.rightCount = this.employeeMarkItems.length - 1
-      } else {
-        this.rightCount = 0
-        this.leftCount = 0
-      }
-    }, (err) => {
-      this.employeeMarkServiceLoaderOff()
-      this.badRequestAlert() */
     })
   }
 
-  /* onSlideMoved(event) {
-	// this.slide.getActiveIndex().then((numSlide)=>{
-	// 	console.log("Cuando se carga slide +"+numSlide);
-	// 	for(let sumcont=0;sumcont<=this.employeeMarkItems.length;sumcont++){
-	// 			 this.arregloNumbers.push(sumcont);
-	// 		 }
-	// })
-	  console.log("EVENTO DEL SLIDE  +"+JSON.stringify(event));
-	this.slide.ionSlidesDidLoad.subscribe((load)=>{
-		console.log("cargando   +"+load);
-	})
-
-	event.target.getActiveIndex();
-	console.log(event.target.getActiveIndex());
-	console.log(event.target.length());
-	console.log(this.employeeMarkItems.length);
-
-
-    event.target.isEnd().then(isEnd => {
-	  console.log('End of slide', isEnd);
-
-    });
-
-    event.target.isBeginning().then((istrue) => {
-      console.log('End of slide', istrue);
-    });
-  } */
 
   	slideLeftMark(){
 		this.increaseValue = this.increaseValue - 1

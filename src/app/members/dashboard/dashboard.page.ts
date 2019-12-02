@@ -16,12 +16,6 @@ import { FunctionsService } from '../../services/functions.service';
 })
 export class DashboardPage implements OnInit {
  currentVal=1;
-  /* header: any = {
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    }
-  } */
   userInfoItems: any;
   data: Observable<any>;
   userLoginResDetail: string = 'userLoginResDetail';
@@ -45,7 +39,6 @@ export class DashboardPage implements OnInit {
     private storage: Storage,
     public toastController: ToastController,
     public navController: NavController,
-    //public navParams: NavParams,
     private nativePageTransitions: NativePageTransitions,
     private network: Network,
     public http: HttpClient,
@@ -58,7 +51,6 @@ export class DashboardPage implements OnInit {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
         this.userInfoItems = val;
-        console.log('this.userInfoItems --', this.userInfoItems);
       }
     });
     this.storage.get(this.userLoginResDetail).then((val) => {
@@ -66,7 +58,6 @@ export class DashboardPage implements OnInit {
 		    this.employeeId = val['EmployeeId'];
       }
     })
-
     this.storage.get('liveUserCode').then((val) => {
       if(val != null && val != undefined) {
 		this.liveUserCode = val;
@@ -106,20 +97,6 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  getData() {
-    //console.log('Testing data transfer --', this.navParams.get('title'))
-    console.log('Testing data transfer --')
-  }
-/**
-  async signOutToast() {
-    const toast = await this.toastController.create({
-      message: 'You are now signed out',
-      position: 'middle',
-      duration: 2500
-    })
-    toast.present()
-  }
-  */
 
   entermarkGo() {
     let options: NativeTransitionOptions = {
@@ -179,8 +156,6 @@ export class DashboardPage implements OnInit {
       "date": this.localDate
     }
 	this.__serviceData.markEmployee(url, params).then((responseMarkPending)=>{
-		console.log("responseMarkPending    --"+JSON.stringify(responseMarkPending));
-		console.log("Lo que trae el response despues de hacer la marca  -- "+JSON.stringify(responseMarkPending));
 		switch(responseMarkPending['status']){
 			case '200':
 					cargandoMarca.dismiss();
@@ -202,45 +177,6 @@ export class DashboardPage implements OnInit {
 				break;
 		}
 	});
-	/*
-	this.markEmployeeLoaderOn()
-
-
-
-    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
-    let params = {
-      "lat": this.localLat,
-      "lon": this.localLong,
-      "employeeId": this.employeeId,
-      "imei": this.deviceId,
-      "isBuffer": this.localisBuffer,
-      "date": this.localDate
-    }
-    this.data = this.http.post(url, params, this.header);
-    this.data.subscribe((response) => {
-      this.markEmployeeLoaderOff()
-      if(response.status) {
-        this.markEmployeeResponseAlert('Marca satisfactoria')
-        this.removeLocalLatLong()
-      } else {
-        this.markEmployeeResponseAlert(response.Message)
-        this.removeLocalLatLong()
-      }
-    }, (err) => {
-		this.markEmployeeLoaderOff()
-      this.badRequestAlert()
-    });
-  } */
-  /* async markEmployeeLoaderOn() {
-    this.loadingElement = await this.loadingController.create({
-      message: 'Por favor espere servicio de marca...',
-      spinner: 'crescent'
-    })
-    this.loadingElement.present()
-    setTimeout(() => {
-      this.loadingElement.dismiss()
-	}, 3000)
-	*/
   }
 
   async markEmployeeLoaderOff() {
@@ -248,20 +184,9 @@ export class DashboardPage implements OnInit {
   }
   async markEmployeeResponseAlert(responseMsg) {
 	  this._function.requireAlert(responseMsg,'De acuerdo');
-    /* const alert = await this.alertController.create({
-      message: responseMsg,
-	  buttons: ['De acuerdo'],
-      cssClass:'transparent'
-    });
-    await alert.present(); */
   }
   async badRequestAlert() {
 	  this._function.requireAlert('Error de servicio','De acuerdo');
-    /* const alert = await this.alertController.create({
-      message: 'Error de servicio',
-      buttons: ['De acuerdo']
-    });
-    await alert.present(); */
   }
   removeLocalLatLong() {
     this.storage.remove('localLat').then(() => {});

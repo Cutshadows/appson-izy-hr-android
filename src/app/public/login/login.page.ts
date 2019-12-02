@@ -16,12 +16,6 @@ import { FCM } from '@ionic-native/fcm/ngx';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  /* header: any = {
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    }
-  }  */
   username: string;
   password: number;
   code: string;
@@ -77,12 +71,10 @@ export class LoginPage implements OnInit {
   }
   getFcmToken(){
     this.fcm.getToken().then(token => {
-		console.log("Obtener Token  ---"+token);
       	this.storage.set('deviceFcmToken', token);
       	this.fcmToken = token;
     });
     this.fcm.onTokenRefresh().subscribe(token => {
-		console.log("Refrescar Token  ---"+token);
       	this.storage.set('deviceFcmToken', token);
       	this.fcmToken = token;
     });
@@ -124,7 +116,6 @@ export class LoginPage implements OnInit {
     });
     this.loadingElement.present();
     var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
-      console.log(this.deviceId);
       let params = {
         "rut": this.username,
         "password": this.password,
@@ -160,12 +151,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-
-
-
-/**
- * LOGIN CREADO PARA LA MUESTRA
- */
   async login() {
     if(this.username == undefined && this.password == undefined && this.code == undefined) {
       this.requireAlert()
@@ -182,7 +167,6 @@ export class LoginPage implements OnInit {
         cssClass: 'transparent'
       });
       this.loadingElement.present();
-      //MOVER A UN SERVICIO
       let url = 'https://demo.izytimecontrol.com/api/external/ValidateEmployee';
       let params = {
         rut: this.username,
@@ -190,11 +174,7 @@ export class LoginPage implements OnInit {
 		tokenId:this.fcmToken,
 		emaiId:this.deviceId
       }
-      //this.data = this.http.post(url, params, this.header);
-      //this.data.subscribe((response) => {
       this._services.validateLogin(url, params).then(response=>{
-        console.log(response);
-        console.log(response['status']);
         switch(response['status']){
           case '200':
             var responseData = response['response']['data'];
@@ -215,70 +195,9 @@ export class LoginPage implements OnInit {
               this.badRequestAlert();
           break;
         }
-        // var responseData = response.data
-
-        // this.loginLoaderOff()
-
-        // if(response.status) {
-
-        //   this.storage.set(this.userLoginResDetail, responseData)
-
-        //   this.codeArray.push(this.code)
-
-        //   this.storage.set('userCode', this.codeArray)
-
-        //   this.authService.login()
-        // } else {
-        //   this.wrongInputAlert(response.Message)
-        // }
-        //SI ES ERROR
-        // this.loginLoaderOff()
-
-        // let userLoginData = {
-        //   FirstName: 'Hello',
-        //   LastName: 'test',
-        //   Rut: 'rut',
-        //   Department: 'department',
-        //   EmployeeId: 'employeeId'
-        // }
-
-        // this.storage.set(this.userLoginResDetail, userLoginData)
-
-        // this.codeArray.push(this.code)
-
-        // this.storage.set('userCode', this.codeArray)
-
-        // this.authService.login()
       })
-
-      //}, (err) => {
-        /*this.loginLoaderOff()
-        this.badRequestAlert()*/
-
-        // this.loginLoaderOff()
-
-        // let userLoginData = {
-        //   FirstName: 'Hello',
-        //   LastName: 'test',
-        //   Rut: 'rut',
-        //   Department: 'department',
-        //   EmployeeId: 'employeeId'
-        // }
-
-        // this.storage.set(this.userLoginResDetail, userLoginData)
-
-        // this.codeArray.push(this.code)
-
-        // this.storage.set('userCode', this.codeArray)
-
-        // this.authService.login()
-
-      //})
     }
   }
-  /**
- * LOGIN CREADO PARA LA MUESTRA NOSE PESCA PARECE
- */
   addNewCodeHideShow() {
     this.addNewCodeButton = !this.addNewCodeButton
     this.password = undefined
@@ -309,9 +228,7 @@ export class LoginPage implements OnInit {
 		"imei": this.deviceId,
 		"tokenFcm":this.fcmToken
       }
-      //this.data = this.http.post(url, params, this.header);
       this._services.validateLogin(url, params).then(response=>{
-        console.log(response);
         switch(response['status']){
           case '200':
               var responseData = response['response']['data'];
@@ -328,7 +245,6 @@ export class LoginPage implements OnInit {
           case '408':
               this.loadingElement.dismiss();
               this.badRequestTimeoutAlert();
-              //this.wrongInputAlert(response['response']['Message']);
           break;
           case '0':
               this.loadingElement.dismiss();
@@ -357,7 +273,6 @@ export class LoginPage implements OnInit {
 
       });
       this.loadingElement.present();
-      console.log("UNA PASADA POR ACA PARECE");
       var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
 
       let params = {
@@ -367,7 +282,6 @@ export class LoginPage implements OnInit {
 		    "tokenFcm":this.fcmToken
       }
       this._services.validateLogin(url, params).then(response=>{
-        console.log(response['status']);
         switch(response['status']){
           case '200':
             var responseData = response['response']['data'];
@@ -383,7 +297,6 @@ export class LoginPage implements OnInit {
           case '408':
               this.loadingElement.dismiss();
               this.badRequestTimeoutAlert();
-              //this.wrongInputAlert(response['response']['Message']);
           break;
           case '0':
               this.loadingElement.dismiss();
@@ -424,10 +337,7 @@ export class LoginPage implements OnInit {
   }
   getDeviceId() {
     this.uniqueDeviceID.get().then((uuid: any) => {
-      console.log(" UID -- "+uuid);
-      console.log(" deviceId -- "+this.deviceId );
       if(this.deviceId != undefined && this.deviceId != uuid) {
-        console.log("Esta iniciando sesion desde otro dispositivo ");
       }else if(this.deviceId== undefined){
 		this.deviceId = uuid;
 		this.setDeviceLocal();
@@ -435,7 +345,6 @@ export class LoginPage implements OnInit {
 	  }
 
     }).catch((error: any) => {
-      console.log(error);
       if(error == 'cordova_not_available') {
         this.deviceId = 'personal_computer_login';
         this.setDeviceLocal();

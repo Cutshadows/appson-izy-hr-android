@@ -30,7 +30,6 @@ export class EntermarkPage implements OnInit {
   }
   currentVal=2;
   locationData: string = '';
-  //loadingElement: any;
   data: Observable<any>;
   markEmployeeData: any;
   userLoginResDetail: string = 'userLoginResDetail';
@@ -127,7 +126,6 @@ export class EntermarkPage implements OnInit {
         loadingGeolocation.dismiss();
         this.locationErrorAlert(error.message);
        }
-       console.log('Error al obtener Location ++', error)
      });
   }
 
@@ -139,23 +137,17 @@ export class EntermarkPage implements OnInit {
     this._function.requireAlert('Error de servicio','De acuerdo');
   }
 
-  // mock location function
-
   async mockLocationErrorAlert() {
     this._function.requireAlert('Dispositivo de uso de ubicación simulada por favor desactivado', 'De acuerdo');
   }
 
-  //EJECUTA GEOLOCALIZACION DEL BOTON
   enableLocation() {
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
-      // the accuracy option will be ignored by iOS
       this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
       .then(
         () => {
-          console.log('Request successful');
-          this.getLatLongMobile(); //CON ESTA FUNCION OBTIENE LATITUD Y LONGITUD DEL EQUIPO MOVIL
+          this.getLatLongMobile();
           this.buttonDisabled = true;
-          //this.getLocationLoaderOn(); //MENSAJE DE PANTALLA OBTENIENDO GEOLOCALIZACION
         },(error)=> {
           this.locationErrorAlert(error);
         }
@@ -163,10 +155,8 @@ export class EntermarkPage implements OnInit {
     });
   }
 
-  // LUEGO CUANDO SE ESTE EJECUTANDO enableLocation() SE EJECUTA GetLatLongMobile()
 
   async getLatLongMobile(){
-	//this.loadingLatLongElementOn();
 	let loadingLatLongElement = await this.loadingController.create({
 		message: 'Procesando ubicación...',
 		spinner: 'crescent',
@@ -182,11 +172,8 @@ export class EntermarkPage implements OnInit {
     this.geolocation.getCurrentPosition(option).then((resp) => {
       if(resp.coords) {
 		loadingLatLongElement.dismiss();
-        console.log('getLatLongMobile resp.coords --', resp.coords);
         this.lat = resp.coords.latitude;
 		this.long = resp.coords.longitude;
-		// Mientras se ejecuta o se obtiene la latitud y la longitud se Ejecuta CheckMockLocation()
-		console.log("Mientras se ejecuta o se obtiene la latitud y la longitud se Ejecuta CheckMockLocation()");
         this.checkMockLocation();
       }
      }).catch((error) => {
@@ -195,7 +182,6 @@ export class EntermarkPage implements OnInit {
        if(error) {
         this.locationErrorAlert(error.message);
        }
-       console.log('Error getting location', error);
      });
   }
   checkMockLocation(){
@@ -214,16 +200,12 @@ export class EntermarkPage implements OnInit {
 	};
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {
-      console.log('location -', location);
-      this.backgroundGeolocation.finish(); // FOR IOS ONLY
+      this.backgroundGeolocation.finish();
 	});
-	console.log("start recording location");
-    // start recording location
     this.backgroundGeolocation.start();
     this.backgroundGeolocation.stop();
     this.backgroundGeolocation.getLocations()
     .then((validgetLocationData) => {
-      console.log('validgetLocationData --', validgetLocationData);
       if(validgetLocationData.length > 0) {
 		this.validgetLocationDataArray = validgetLocationData[validgetLocationData.length - 1];
         this.mockLocationCheck();
@@ -251,9 +233,6 @@ export class EntermarkPage implements OnInit {
     this.localDate = new Date();
     this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);
 
-	console.log("TIPO DE RED  ++"+this.network.type)
-	console.log("CONECTION DE RED  ++"+this.network)
-
 	if(this.validgetLocationDataArray.isFromMockProvider) {
 	  this.buttonDisabled = false;
 	  loadingMockLocation.dismiss();
@@ -262,8 +241,6 @@ export class EntermarkPage implements OnInit {
       this.mockLocationErrorAlert();
 
 	} else if(this.network.type == 'none') {
-	  console.log("PASANDO SIN INTERNET ------ ####");
-
 	  this.buttonDisabled = false;
 	  loadingMockLocation.dismiss();
 
@@ -299,15 +276,7 @@ export class EntermarkPage implements OnInit {
       "isBuffer": 'false',
       "date": this.localDate
 	}
-	console.log("PARAMS ---"+JSON.stringify(params));
-
-
-    /* this.data = this.http.post(url, params, this.header);
-    this.data.subscribe((response) => { */
 	this._socketService.markEmployee(url, params).then((response)=>{
-
-
-		console.log("Lo que trae el response despues de hacer la marca  -- "+JSON.stringify(response));
 		switch(response['status']){
 			case '200':
 					this.markEmployeeData=response;
@@ -336,66 +305,30 @@ export class EntermarkPage implements OnInit {
 					this.buttonDisabled = false;
 				break;
 		}
-
-
-
-	//this.markEmployeeData = response.data
-      //this.markEmployeeLoaderOff();
-      /* loadingMarkEmployeed.dismiss();
-
-      this.buttonDisabled = false
-
-      if(response.status) {
-        this.markEmployeeResponseAlert('Marca satisfactoria');
-        this.buttonDisabled = false;
-
-        let options: NativeTransitionOptions = {
-          duration: 800
-        }
-
-        this.nativePageTransitions.fade(options);
-        this.navController.navigateRoot(['members', 'mymark'])
-
-      } else {
-        this.markEmployeeResponseAlert(response.Message);
-        this.buttonDisabled = false;
-      }
-    }, (err) => {
-      //this.markEmployeeLoaderOff()
-      loadingMarkEmployeed.dismiss();
-      this.badRequestAlert();
-      this.buttonDisabled = false;
-    }); */
 	})
 	}
 
   showLocalLatLong() {
-    console.log('showLocalLatLong --')
     this.storage.get('localLat').then((val) => {
-      console.log('localLat', val);
       if(val != null && val != undefined) {
         this.localLat = val;
       }
     })
 
     this.storage.get('localLong').then((val) => {
-      console.log('localLong', val);
       if(val != null && val != undefined) {
         this.localLong = val;
       }
     })
 
     this.storage.get('localisBuffer').then((val) => {
-      console.log('localisBuffer', val);
     })
 
     this.storage.get('localDate').then((val) => {
-      console.log('localDate', val);
     })
   }
 
   removeLocalLatLong() {
-    console.log('removeLocalLatLong --');
     this.storage.remove('localLat').then(() => {
     })
   }
@@ -403,7 +336,6 @@ export class EntermarkPage implements OnInit {
   deleteStoreLocation() {
     this.backgroundGeolocation.deleteAllLocations()
     .then((deleteAllLocationsData) => {
-        console.log('deleteAllLocationsData --', deleteAllLocationsData);
     });
   }
 
@@ -420,51 +352,16 @@ export class EntermarkPage implements OnInit {
       enableHighAccuracy: true
     }
     this.geolocation.getCurrentPosition(option).then((resp) => {
-
-	  //this.getLocationLoaderOff()
 	  getCurrentLocationWeb.dismiss();
-
       if(resp.coords) {
-
-        console.log('resp --', resp);
-        // resp.coords.latitude
-        // resp.coords.longitude
         this.locationData = 'Lat: ' + resp.coords.latitude + '<br>' + 'Long: ' + resp.coords.longitude;
       }
 
      }).catch((error) => {
        if(error) {
-		//this.getLocationLoaderOff()
 		getCurrentLocationWeb.dismiss();
         this.locationErrorAlert(error.message);
        }
-       console.log('Error getting location', error);
      });
   }
-
-  /*testParams() {
-
-    this.localDate = new Date();
-
-    this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);
-
-    if(this.network.type == 'none') {
-      this.localisBuffer = false;
-    } else {
-      this.localisBuffer = true;
-    }
-
-    let params = {
-      "lat": this.lat,
-      "lon": this.long,
-      "employeeId": this.employeeId,
-      "imei": this.deviceId,
-      "isBuffer": this.localisBuffer,
-      "date": this.localDate
-    }
-
-    console.log('this.network.type --', this.network.type);
-    console.log('testparams params --', params);
-  }*/
-
 }

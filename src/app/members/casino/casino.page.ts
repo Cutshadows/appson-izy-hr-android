@@ -86,11 +86,9 @@ export class CasinoPage implements OnInit {
       }
     })
 
-    //this.dummyData()
   }
 
   async getCasinoService() {
-   // this.casinoServiceLoaderOn()
     let loadingElementCasino = await this.loadingController.create({
       message: 'Cargando informaición...',
       spinner: 'crescent',
@@ -100,27 +98,8 @@ export class CasinoPage implements OnInit {
     let employeeId = this.employeeId;
     let imei = this.deviceId;
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/GetCasino?employeeId='+employeeId+'&imei='+imei;
-    //this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
-   // this.data.subscribe((response) => {
     this._socketService.serviceGetCasino(url).then((response)=>{
       loadingElementCasino.dismiss();
-      console.log("respuesta de cargar el casino"+response['Data']);
-    	//   debugger
-      	//this.casinoServiceLoaderOff()
-
-      /* this.getCasinoItems = response.Data
-
-      this.canEditFreelyRsp = response.CanEditFreely
-
-      //console.log('this.getCasinoItems --', this.getCasinoItems)
-
-      if(this.getCasinoItems.length == 0) {
-        this.noDataToast()
-      }
-
-    }, (err) => {
-      this.casinoServiceLoaderOff()
-      this.badRequestAlert() */
     })
   }
 

@@ -289,7 +289,6 @@ export class DatabaseService {
 					  error=>of(408)
 				)
         	).subscribe((response)=>{
-          console.log(response);
         let jsonRespondEvents={
           status,
           response
@@ -334,11 +333,7 @@ export class DatabaseService {
     return Promesa;
   }
 
-
   markEmployee(url, params){
-	console.log("URL ++ "+url);
-	console.log("PARAMETROS EN LA PROMESA ++"+JSON.stringify(params));
-
 	 let Promesa=new Promise((resolve)=>{
 		this.http.post(url, params, this.header)
 			.pipe(

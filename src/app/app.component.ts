@@ -11,7 +11,6 @@ import { FCM } from '@ionic-native/fcm/ngx';
 import { Router } from '@angular/router';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html'
@@ -20,7 +19,6 @@ export class AppComponent {
 	fcmMessage:any;
 	fcmTitle:any;
 	logoUrl='assets/img/logo.png';
-
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -35,67 +33,37 @@ export class AppComponent {
   ) {
     this.initializeApp();
   }
-
   initializeApp() {
     this.platform.ready().then(() => {
-
 		this.fcm.onNotification().subscribe((notification) => {
 			this.fcmTitle = notification.title;
 			this.fcmMessage = notification.body;
 			if(notification.wasTapped) {
-				console.log("INGRESO DE LA NOTIFICACION POR LADO BACKGROUND  ---"+notification);
-			  /* let selectedBranchData = {
-				Id: parseInt(notification.id_sucursal),
-				Name: notification.nom_sucursal
-			  }
-			  this.storage.set('selectedBranchDataLocal', selectedBranchData);
-			  let options: NativeTransitionOptions = {
-				duration: 800
-			  }
-			  this.nativePageTransitions.fade(options)
-			  this.router.navigate(['members', 'attendanceview']) */
 			} else {
-				console.log("INGRESO DE LA NOTIFICACION POR LADO FRONT  ---"+notification);
-			/*
-			  let selectedBranchData = {
-				Id: parseInt(notification.id_sucursal),
-				Name: notification.nom_sucursal
-			  }
-			  this.storage.set('selectedBranchDataLocal', selectedBranchData); */
 			  this.localNotificationFcm(this.fcmTitle, this.fcmMessage);
 			}
 		  });
 		this.fcm.getToken().then((tokn)=>{
-
 	  	});
 		this.statusBar.styleDefault();
       	this.splashScreen.hide();
 
       this.authService.authenticationState.subscribe(state => {
-
-        console.log('state --', state)
-
         if(state) {
           let options: NativeTransitionOptions = {
             duration: 800
           }
-
           this.nativePageTransitions.fade(options);
           this.navController.navigateRoot(['members', 'dashboard'])
-          //this.navController.navigateRoot(['members', 'casino'])
         } else {
           let options: NativeTransitionOptions = {
             duration: 800
           }
-
           this.nativePageTransitions.fade(options);
           this.navController.navigateRoot(['login'])
         }
 	  });
-
-
 	});
-
   }
   localNotificationFcm(fcmTitle, fcmMessage) {
 	this.localNotifications.schedule({
