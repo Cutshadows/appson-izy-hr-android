@@ -23,7 +23,7 @@ export class ChangepasswordPage implements OnInit {
   rePassword: number
   userLoginResDetail: string = 'userLoginResDetail'
   employeeId: any
-  liveUserCode: any  
+  liveUserCode: any
   data: Observable<any>
   loadingElement: any
   changePasswordData: any
@@ -40,10 +40,10 @@ export class ChangepasswordPage implements OnInit {
     public navController: NavController,
     private nativePageTransitions: NativePageTransitions,
     private _function:FunctionsService,
-    private _socketService:DatabaseService      
+    private _socketService:DatabaseService
     ) { }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
         this.employeeId = val['EmployeeId']
@@ -55,20 +55,19 @@ export class ChangepasswordPage implements OnInit {
         this.liveUserCode = val
       }
     })
-    
+
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
         this.deviceId = val
       }
-    })   
-    
-    console.log('this.deviceId --', this.deviceId)
+    })
+
   }
 
   logout() {
     this.authService.logout();
   }
-  
+
   profileGo() {
     let options: NativeTransitionOptions = {
       duration: 800
@@ -80,27 +79,27 @@ export class ChangepasswordPage implements OnInit {
   async changePasswordLoaderOn() {
     this._function.requireLoading('Por favor espera...',2000);
   }
-  
+
   async changePasswordResponseAlert(responseMsg) {
     this._function.requireAlert(responseMsg,'De acuerdo');
-  }  
-  
+  }
+
   async badRequestAlert() {
     this._function.requireAlert('Error de servicio','De acuerdo');
   }
-  
+
   async requireAlert() {
     this._function.requireAlert('Por favor llena todos los espacios','De acuerdo');
   }
-  
+
   async passwordValid() {
     this._function.MessageToast('La contraseña debe ser número','top',2000);
   }
-  
+
   async passwordMatchAlert() {
     this._function.requireAlert('No coincide','De acuerdo');
-  }  
- 
+  }
+
   changePassword() {
     if(this.oldPassword == undefined) {
       this.requireAlert()
@@ -139,7 +138,6 @@ export class ChangepasswordPage implements OnInit {
 
     this._socketService.serviceChangePassword(url, params).then((response)=>{
       loadingElementChangePassword.dismiss();
-      console.log("respuesta del cambio de clave "+response['status']);
       switch(response['status']){
         case '200':
             loadingElementChangePassword.dismiss();
@@ -178,7 +176,7 @@ export class ChangepasswordPage implements OnInit {
       duration: 800
     }
     this.nativePageTransitions.fade(options);
-    this.navController.navigateRoot(['members', 'dashboard'])    
+    this.navController.navigateRoot(['members', 'dashboard'])
   }
 
 

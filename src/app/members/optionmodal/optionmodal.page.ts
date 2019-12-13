@@ -77,7 +77,6 @@ export class OptionmodalPage implements OnInit {
       if(val != null && val != undefined) {
         this.casinoItemStoreA = val
       }
-      //console.log('this.casinoItemStoreA --', this.casinoItemStoreA)
     })
 
     this.storage.get(this.casinoItemService).then((val) => {
@@ -90,14 +89,12 @@ export class OptionmodalPage implements OnInit {
       if(val != null && val != undefined) {
         this.casinoItemOptionStoreA = val
       }
-      //console.log('this.casinoItemOptionStoreA --', this.casinoItemOptionStoreA)
     })
 
     this.storage.get('canEditFreelyStorage').then((val) => {
       if(val != null && val != undefined) {
         this.canEditFreelyStorageV = val
       }
-      //console.log('this.canEditFreelyStorageV --', this.canEditFreelyStorageV)
     })
 
     // service parameter getting local storage start

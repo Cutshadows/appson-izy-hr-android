@@ -86,7 +86,9 @@ export class DatabaseService {
 						status,
 						response
 					}
-					if(response){
+					//(Object.keys(response).length == 0)==true
+					//if(response){
+					if((Object.keys(response).length != 0)==true){
 						if(response==408){
 							jsonRespond.status="408";
 							jsonRespond.response=response;
@@ -96,7 +98,8 @@ export class DatabaseService {
 							jsonRespond.response=response;
 							resolve(jsonRespond);
 						}
-					}else if(!response){
+					//}else if(!response){
+					}else if((Object.keys(response).length == 0)==true){
 						jsonRespond.status="400";
 						jsonRespond.response=response;
 						resolve(jsonRespond);
@@ -289,8 +292,6 @@ export class DatabaseService {
 					  error=>of(408)
 				)
         	).subscribe((response)=>{
-          console.log(response);
-		  console.log("response de casinos  -- "+response['Data']);
 		  debugger
         let jsonRespondEvents={
           status,
@@ -339,63 +340,53 @@ export class DatabaseService {
 
   markEmployee(url, params){
 	let Promesa=new Promise((resolve)=>{
-		this.http.post(url, params, this.header)
-			.pipe(
-			  timeout(10000),
-			  catchError(
-					error=>of(408)
-			  )
-		  ).subscribe((response)=>{
-
-
-
-
-		console.log("#### response de casinos  -- "+response);
-
-
-		debugger
-	  /* let jsonRespondEvents={
-		status,
-		response
-	  }
-	   if((Object.keys(response).length != 0)==true){
-		if(response==408){
-		  jsonRespondEvents.status="408";
-			jsonRespondEvents.response=response;
-			resolve(jsonRespondEvents);
-		}else{
-		  jsonRespondEvents.status="200";
-			jsonRespondEvents.response=response;
-			resolve(jsonRespondEvents);
-		}
-
-	  }else if((Object.keys(response).length == 0)==true){
-		jsonRespondEvents.status="400";
-		jsonRespondEvents.response=response;
-		resolve(jsonRespondEvents);
-	  } */
-	},
-	(error: HttpErrorResponse)=>{
-	  for (const key in error) {
-		switch(key){
-		   case 'status':
-			  if (error.hasOwnProperty(key)) {
-				const element = error[key];
-				if(element==0){
-				  let jsonResponseError={
-					status
-				  }
-				  jsonResponseError.status="0";
-				  this.response=jsonResponseError;
-				  resolve(this.response);
-				}
-			  }
-			break;
-		}
-	  }
-	});
-  })
-  return Promesa;
-  }
+	   this.http.post(url, params, this.header)
+		   .pipe(
+			 timeout(10000),
+			 catchError(
+				   error=>of(408)
+			 )
+		 ).subscribe(
+			 (response)=>{
+		   let jsonRespondEvents={
+			   status,
+			   response
+		   }
+		   if((Object.keys(response).length != 0)==true){
+			   jsonRespondEvents.status="200";
+				   jsonRespondEvents.response=response['data'];
+				   resolve(jsonRespondEvents);
+		   }else if((Object.keys(response).length == 0)==true && response != 408 ){
+			   jsonRespondEvents.status="400";
+			   jsonRespondEvents.response=response['Message'];
+			   resolve(jsonRespondEvents);
+		   }else if(response == 408){
+			   jsonRespondEvents.status="408";
+			   jsonRespondEvents.response=response;
+			   resolve(jsonRespondEvents);
+		   }
+   },
+   (error: HttpErrorResponse)=>{
+	 for (const key in error) {
+	   switch(key){
+		  case 'status':
+			 if (error.hasOwnProperty(key)) {
+			   const element = error[key];
+			   if(element==0){
+				 let jsonResponseError={
+				   status
+				 }
+				 jsonResponseError.status="0";
+				 this.response=jsonResponseError;
+				 resolve(this.response);
+			   }
+			 }
+		   break;
+	   }
+	 }
+   });
+ })
+ return Promesa;
+ }
 
 }

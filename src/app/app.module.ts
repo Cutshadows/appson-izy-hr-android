@@ -17,7 +17,7 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 
-import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
 
 import { NativePageTransitions } from '@ionic-native/native-page-transitions/ngx';
 
@@ -27,6 +27,7 @@ import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module'
 
 import { FCM } from '@ionic-native/fcm/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { IntroductionService } from './services/introduction.service';
 
 
 @NgModule({
@@ -42,7 +43,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
     OptionmodalPageModule
   ],
   providers: [
-    BackgroundGeolocation,
+	BackgroundGeolocation,
     StatusBar,
     SplashScreen,
     Geolocation,
@@ -53,6 +54,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
     NativePageTransitions,
     SQLite,
 	Network,
+	IntroductionService,
 	FCM
   ],
   bootstrap: [AppComponent]

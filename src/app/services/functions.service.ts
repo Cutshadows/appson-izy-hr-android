@@ -11,7 +11,6 @@ export class FunctionsService {
     private alertController:AlertController,
     private loadingController:LoadingController,
     ) {}
-
   async MessageToast(bodyMessage, positionAlert,durationTime){
     const toast = await this.toastController.create({
       message: bodyMessage,
@@ -21,22 +20,17 @@ export class FunctionsService {
     });
     toast.present()
   }
-
   async requireAlert(messageBody, options:string) {
     const alert = await this.alertController.create({
       message: messageBody,
       cssClass:'classAlert',
-      buttons: [
-        {
+      buttons: [{
           text:options,
           cssClass:'cssAlert'
-      }
-      ]
+      }]
     });
-
     await alert.present()
   }
-  
   async requireLoading(messageLoading, time) {
     const loadingElement = await this.loadingController.create({
       message: messageLoading,
@@ -44,12 +38,10 @@ export class FunctionsService {
       cssClass: 'transparent',
     });
     loadingElement.present()
-
     setTimeout(() => {
       loadingElement.dismiss()
     }, time)
   }
-
   //loading login personalizado
   /* async startLoginVerify(){
     let loadingElementMessage = await this.loadingController.create({

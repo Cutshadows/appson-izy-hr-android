@@ -85,7 +85,6 @@ export class CalendarPage implements OnInit {
     let currentDate = new Date();
     let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     this.currentday = weekdays[currentDate.getDay()];
-    console.log('this.currentday --', this.currentday);
     this.employeeScheduleLeftRight = this.employeeScheduleListDatas[0];
 
     this.testDateRange = '08/04/2019 - 14/04/2019';
@@ -98,10 +97,6 @@ export class CalendarPage implements OnInit {
     // this.dateConvertTo = this.dateTestTo.split('/')
     this.dateConvertFrom = this.testDateRangeSplit[0].split('/');
     this.dateConvertTo = this.testDateRangeSplit[1].split('/');
-    //console.log('this.dateConvertFrom --', this.dateConvertFrom)
-    //console.log('this.dateConvertFrom --', this.dateConvertFrom)
-    console.log('this.testDateRange --', this.testDateRange);
-    console.log('this.testDateRangeSplit --', this.testDateRangeSplit);
     if(this.employeeScheduleListDatas.length > 1) {
       this.rightCount = this.employeeScheduleListDatas.length - 1;
     } else {
@@ -126,17 +121,15 @@ export class CalendarPage implements OnInit {
   }
 
   noDataToast() {
-    this._function.MessageToast('Datos no encontrados','bottom',2000);
+    this._function.MessageToast('Horario no cargado, contactar al administrador','middle',4000);
   }
   badRequestTimeoutAlert() {
     this._function.requireAlert('Tiempo de Respuesta Agotado','De acuerdo');
   }
   async EmployeeScheduleList() {
     this.allMonthName = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    //this.employeeScheduleLoaderOn()
     let loadingMessage = await this.toastController.create({
       message: 'Cargando Información ...',
-      //spinner: 'crescent',
 	  cssClass:'my-custom-toast',
 	  position:'bottom'
     });
@@ -147,7 +140,8 @@ export class CalendarPage implements OnInit {
     this.currentday = weekdays[currentDate.getDay()];
     let employeeId = this.employeeId;
     let imei = this.deviceId;
-    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeSchedule?employeeId='+employeeId+'&imei='+imei;
+	let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeSchedule?employeeId='+employeeId+'&imei='+imei;
+
    this._socketService.serviceEmployeeScheduleList(url).then((response)=>{
       switch(response['status']){
         case '200':
@@ -169,11 +163,17 @@ export class CalendarPage implements OnInit {
         break;
 		case '400':
             loadingMessage.dismiss();
-            this.noDataToast();
+			this.noDataToast();
+			setTimeout(()=>{
+				this.dashboardGo();
+			}, 6000);
 		break;
 		case '408':
 		  loadingMessage.dismiss();
 		  this.badRequestTimeoutAlert();
+		  setTimeout(()=>{
+			this.dashboardGo();
+		}, 11000);
 		break;
         case '0':
             loadingMessage.dismiss();

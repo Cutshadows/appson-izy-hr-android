@@ -104,7 +104,6 @@ export class CasinoPage implements OnInit {
    // this.data.subscribe((response) => {
     this._socketService.serviceGetCasino(url).then((response)=>{
       loadingElementCasino.dismiss();
-      console.log("respuesta de cargar el casino"+response['Data']);
     	//   debugger
       	//this.casinoServiceLoaderOff()
 
@@ -112,7 +111,6 @@ export class CasinoPage implements OnInit {
 
       this.canEditFreelyRsp = response.CanEditFreely
 
-      //console.log('this.getCasinoItems --', this.getCasinoItems)
 
       if(this.getCasinoItems.length == 0) {
         this.noDataToast()

@@ -11,7 +11,7 @@ import { FunctionsService } from 'src/app/services/functions.service';
 import { DatabaseService } from 'src/app/services/database.service';
 
 //LOCALIZATION
-import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
+import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse, BackgroundGeolocationEvents } from '@ionic-native/background-geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
@@ -22,15 +22,14 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 })
 export class EntermarkPage implements OnInit {
 
-  /* header: any = {
+  header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
     }
-  }  */
+  }
   currentVal=2;
   locationData: string = '';
-  //loadingElement: any;
   data: Observable<any>;
   markEmployeeData: any;
   userLoginResDetail: string = 'userLoginResDetail';
@@ -63,10 +62,7 @@ export class EntermarkPage implements OnInit {
     private network: Network,
     private _function:FunctionsService,
     private _socketService:DatabaseService
-    ) {
-
-  }
-
+    ){  }
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
@@ -107,7 +103,7 @@ export class EntermarkPage implements OnInit {
 
   async getCurrentLocation() {
     let loadingGeolocation = await this.loadingController.create({
-      message: 'Procesando ubicación...',
+      message: 'Verificando ubicación...',
       spinner: 'crescent',
       cssClass:'transparent'
     });
@@ -117,26 +113,19 @@ export class EntermarkPage implements OnInit {
       timeout: 30000,
       enableHighAccuracy: true
     }
-
     this.geolocation.getCurrentPosition(option)
     .then((resp) => {
-
-      //this.getLocationLoaderOff()
       if(resp.coords) {
         loadingGeolocation.dismiss();
         this.lat = resp.coords.latitude;
         this.long = resp.coords.longitude;
         this.markEmployee();
-        console.log('resp.coords.latitude --', resp.coords.latitude);
-        console.log('resp.coords.longitude --', resp.coords.longitude);
       }
      }).catch((error) => {
        if(error) {
-        //this.getLocationLoaderOff()
         loadingGeolocation.dismiss();
         this.locationErrorAlert(error.message);
        }
-       console.log('Error getting location', error)
      });
   }
 
@@ -148,129 +137,133 @@ export class EntermarkPage implements OnInit {
     this._function.requireAlert('Error de servicio','De acuerdo');
   }
 
-  // mock location function
-
   async mockLocationErrorAlert() {
     this._function.requireAlert('Dispositivo de uso de ubicación simulada por favor desactivado', 'De acuerdo');
   }
 
-  //EJECUTA GEOLOCALIZACION DEL BOTON
   enableLocation() {
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
-      // the accuracy option will be ignored by iOS
       this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
       .then(
         () => {
-          console.log('Request successful');
-          this.getLatLongMobile(); //CON ESTA FUNCION OBTIENE LATITUD Y LONGITUD DEL EQUIPO MOVIL
+          this.getLatLongMobile();
           this.buttonDisabled = true;
-          //this.getLocationLoaderOn(); //MENSAJE DE PANTALLA OBTENIENDO GEOLOCALIZACION
         },(error)=> {
           this.locationErrorAlert(error);
         }
       );
     });
   }
-  async getLatLongMobile() {
-    let loadingLatLongElement = await this.loadingController.create({
-      message: 'Procesando ubicación...',
-      spinner: 'crescent',
-      cssClass:'transparent'
-    })
-    loadingLatLongElement.present();
+
+
+  async getLatLongMobile(){
+	let loadingLatLongElement = await this.loadingController.create({
+		message: 'Procesando ubicación...',
+		spinner: 'crescent',
+		cssClass:'transparent'
+	  })
+	   loadingLatLongElement.present();
+
     let option = {
-      timeout: 30000,
+      timeout: 10000,
       enableHighAccuracy: true
-    }
+	}
+
     this.geolocation.getCurrentPosition(option).then((resp) => {
       if(resp.coords) {
-        console.log('getLatLongMobile resp.coords --', resp.coords);
+		loadingLatLongElement.dismiss();
         this.lat = resp.coords.latitude;
-        this.long = resp.coords.longitude;
+		this.long = resp.coords.longitude;
         this.checkMockLocation();
-        loadingLatLongElement.dismiss();
       }
      }).catch((error) => {
-      this.buttonDisabled = false;
+	  this.buttonDisabled = false;
       loadingLatLongElement.dismiss();
-      //this.getLocationLoaderOff()
        if(error) {
         this.locationErrorAlert(error.message);
        }
-       console.log('Error getting location', error);
      });
   }
   checkMockLocation(){
     const config: BackgroundGeolocationConfig = {
-            desiredAccuracy: 10,
-            stationaryRadius: 20,
-            distanceFilter: 30,
+			desiredAccuracy: 10,
+            stationaryRadius: 100,
+			distanceFilter: 200,
+			notificationText: 'Habilitado',
             debug: true,
             notificationTitle:'Geolocalización activada',
-            stopOnTerminate: true,
-            postTemplate: null
-    };
+			stopOnTerminate: false,
+			activityType:"OtherNavigation",
+			pauseLocationUpdates:false,
+			saveBatteryOnBackground:false
+	};
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {
-      console.log('location -', location);
-      this.backgroundGeolocation.finish(); // FOR IOS ONLY
-    });
-    // start recording location
-    this.backgroundGeolocation.start();
+		this.backgroundGeolocation.start();
     this.backgroundGeolocation.stop();
-    this.backgroundGeolocation.getLocations()
-    .then((validgetLocationData) => {
-      console.log('validgetLocationData --', validgetLocationData);
-      if(validgetLocationData.length > 0) {
-        this.validgetLocationDataArray = validgetLocationData[validgetLocationData.length - 1];
-        this.mockLocationCheck();
-      } else {
-        this.getLatLongMobile();
-      }
-    })
+	this.backgroundGeolocation.getLocations()
+	.then((validgetLocationData) => {
+		if(validgetLocationData.length > 0) {
+		  this.validgetLocationDataArray = validgetLocationData[validgetLocationData.length - 1];
+		  this.mockLocationCheck();
+		} else {
+		  this.getLatLongMobile();
+		}
+	  });
+      this.backgroundGeolocation.finish();
+	});
   }
 
   async offlineAlert() {
     this._function.requireAlert('Tu marca es capturada','De acuerdo');
   }
 
-  mockLocationCheck() {
+  async mockLocationCheck() {
+	let loadingMockLocation = await this.loadingController.create({
+		message: 'Chequeando ubicación...',
+		spinner: 'crescent',
+		cssClass:'transparent'
+	  })
+	  loadingMockLocation.present();
+
+
     this.localDate = new Date();
     this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);
-    if(this.validgetLocationDataArray.isFromMockProvider) {
-      this.buttonDisabled = false;
-      //this.getLocationLoaderOff()
+
+	if(this.validgetLocationDataArray.isFromMockProvider) {
+	  this.buttonDisabled = false;
+	  loadingMockLocation.dismiss();
+
       this.deleteStoreLocation();
       this.mockLocationErrorAlert();
-    } else if(this.network.type == 'none') {
-      this.buttonDisabled = false;
-      //this.getLocationLoaderOff()
-      this.deleteStoreLocation();
+
+	} else if(this.network.type == 'none') {
+	  this.buttonDisabled = false;
+	  loadingMockLocation.dismiss();
+
+	  this.deleteStoreLocation();
+
       this.storage.set('localLat', this.lat);
       this.storage.set('localLong', this.long);
       this.storage.set('localisBuffer', 'true');
       this.storage.set('localDate', this.localDate);
       this.offlineAlert();
-    } else {
-      this.buttonDisabled = false;
-      //this.getLocationLoaderOff()
+	} else {
+	  this.buttonDisabled = false;
+	  loadingMockLocation.dismiss();
       this.deleteStoreLocation();
       this.markEmployee();
     }
   }
 
   async markEmployee(){
-
-   // this.markEmployeeLoaderOn()
     let loadingMarkEmployeed = await this.loadingController.create({
       message: 'Ingresando marca empleado...',
       spinner: 'crescent',
       cssClass:'transparent'
     });
     loadingMarkEmployeed.present();
-
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
-
     let params = {
       "lat": this.lat,
       "lon": this.long,
@@ -279,69 +272,59 @@ export class EntermarkPage implements OnInit {
       "isBuffer": 'false',
       "date": this.localDate
 	}
-
-
-    //this.data = this.http.post(url, params, this.header);
-    //this.data.subscribe((response) => {
 	this._socketService.markEmployee(url, params).then((response)=>{
-		console.log("Lo que trae el response despues de hacer la marca  -- "+response);
-	//this.markEmployeeData = response.data
-      //this.markEmployeeLoaderOff();
-      /* loadingMarkEmployeed.dismiss();
-
-      this.buttonDisabled = false
-
-      if(response.status) {
-        this.markEmployeeResponseAlert('Marca satisfactoria');
-        this.buttonDisabled = false;
-
-        let options: NativeTransitionOptions = {
-          duration: 800
-        }
-
-        this.nativePageTransitions.fade(options);
-        this.navController.navigateRoot(['members', 'mymark'])
-
-      } else {
-        this.markEmployeeResponseAlert(response.Message);
-        this.buttonDisabled = false;
-      }
-    }, (err) => {
-      //this.markEmployeeLoaderOff()
-      loadingMarkEmployeed.dismiss();
-      this.badRequestAlert();
-      this.buttonDisabled = false;
-    }); */
+		switch(response['status']){
+			case '200':
+					this.markEmployeeData=response;
+					loadingMarkEmployeed.dismiss();
+					this.buttonDisabled=false;
+					this.markEmployeeResponseAlert('Marca satisfactoria');
+					this.buttonDisabled = false;
+					let options: NativeTransitionOptions = {
+					  duration: 800
+					}
+					this.nativePageTransitions.fade(options);
+					this.navController.navigateRoot(['members', 'mymark']);
+				break;
+			case '0':
+					this.badRequestAlert();
+					this.buttonDisabled = false;
+				break;
+			case '400':
+					loadingMarkEmployeed.dismiss();
+					this.markEmployeeResponseAlert(response['Message']);
+					this.buttonDisabled = false;
+				break;
+			case '408':
+					loadingMarkEmployeed.dismiss();
+					this._function.requireAlert('Tiempo agotado para la respuesta.', 'De Acuerdo');
+					this.buttonDisabled = false;
+				break;
+		}
 	})
 	}
 
   showLocalLatLong() {
-    console.log('showLocalLatLong --')
     this.storage.get('localLat').then((val) => {
-      console.log('localLat', val);
       if(val != null && val != undefined) {
         this.localLat = val;
       }
     })
 
     this.storage.get('localLong').then((val) => {
-      console.log('localLong', val);
       if(val != null && val != undefined) {
         this.localLong = val;
       }
     })
 
     this.storage.get('localisBuffer').then((val) => {
-      console.log('localisBuffer', val);
     })
 
     this.storage.get('localDate').then((val) => {
-      console.log('localDate', val);
     })
   }
 
   removeLocalLatLong() {
-    console.log('removeLocalLatLong --');
     this.storage.remove('localLat').then(() => {
     })
   }
@@ -349,60 +332,32 @@ export class EntermarkPage implements OnInit {
   deleteStoreLocation() {
     this.backgroundGeolocation.deleteAllLocations()
     .then((deleteAllLocationsData) => {
-        console.log('deleteAllLocationsData --', deleteAllLocationsData);
     });
   }
 
-  getCurrentLocationWeb() {
+ async getCurrentLocationWeb() {
+	let getCurrentLocationWeb = await this.loadingController.create({
+		message: 'Verificando Localizacion Web...',
+		spinner: 'crescent',
+		cssClass:'transparent'
+	  });
+	  getCurrentLocationWeb.present();
     this.getLocationLoaderOn();
     let option = {
       timeout: 30000,
       enableHighAccuracy: true
     }
     this.geolocation.getCurrentPosition(option).then((resp) => {
-
-      //this.getLocationLoaderOff()
-
+	  getCurrentLocationWeb.dismiss();
       if(resp.coords) {
-
-        console.log('resp --', resp);
-        // resp.coords.latitude
-        // resp.coords.longitude
         this.locationData = 'Lat: ' + resp.coords.latitude + '<br>' + 'Long: ' + resp.coords.longitude;
       }
 
      }).catch((error) => {
        if(error) {
-        //this.getLocationLoaderOff()
+		getCurrentLocationWeb.dismiss();
         this.locationErrorAlert(error.message);
        }
-       console.log('Error getting location', error);
      });
   }
-
-  /*testParams() {
-
-    this.localDate = new Date();
-
-    this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);
-
-    if(this.network.type == 'none') {
-      this.localisBuffer = false;
-    } else {
-      this.localisBuffer = true;
-    }
-
-    let params = {
-      "lat": this.lat,
-      "lon": this.long,
-      "employeeId": this.employeeId,
-      "imei": this.deviceId,
-      "isBuffer": this.localisBuffer,
-      "date": this.localDate
-    }
-
-    console.log('this.network.type --', this.network.type);
-    console.log('testparams params --', params);
-  }*/
-
 }

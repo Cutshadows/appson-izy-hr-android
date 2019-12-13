@@ -1,30 +1,18 @@
   <app-header titulo="MENU">
   </app-header>
 <ion-content fullscreen="true"  class="custom-background ion-padding">
-  <!-- <ion-toolbar class="custom-background-transparent">
-    <ion-title text-center color="light">MENÚ</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
-      </ion-button>
-      </ion-buttons>    
-  </ion-toolbar> -->
-  
   <div class="custom-padding-left-right center custom-white" *ngIf="userInfoItems">
-
-    <h4 color="light" class="custom-bold-text custom-font-light ion-text-center">Bienvenido 
+    <h4 color="light" class="custom-bold-text custom-font-light ion-text-center">Bienvenido
       <span>
         {{ userInfoItems.FirstName }} {{ userInfoItems.LastName }}
       </span>
-    </h4>    
-
+    </h4>
     <ion-grid >
-
-      <!-- first row start -->      
+      <!-- first row start -->
       <ion-row class="custom-sm-margin">
 
         <ion-col size="4" size-sm>
-          
+
           <div (click)="calendarGo()">
             <ion-img [src]="my_calendar_menu" class="custom-img-7 custom-margin-auto"></ion-img>
 
@@ -40,18 +28,17 @@
 
             <h6 class="custom-font-sm custom-bold-text">MIS EVENTOS</h6>
           </div>
-                    
-        </ion-col>
-        
+
+		</ion-col>
         <ion-col size="4" size-sm>
-          
-          <div (click)="mymarkGo()">            
+
+          <div (click)="mymarkGo()">
             <ion-img [src]="my_marks_menu" class="custom-img-7 custom-margin-auto"></ion-img>
-          
+
             <h6 class="custom-font-sm custom-bold-text">MIS MARCAS</h6>
           </div>
-                    
-        </ion-col>   
+
+        </ion-col>
 
       </ion-row>
       <!-- first row end -->
@@ -60,51 +47,42 @@
       <ion-row class="custom-s-margin">
 
         <ion-col size="4" size-sm>
-          
+
           <div (click)="profileGo()">
             <ion-img [src]="my_profile_menu" class="custom-img-7 custom-margin-auto"></ion-img>
 
             <h6 class="custom-font-sm custom-bold-text">MI PERFIL</h6>
           </div>
-
         </ion-col>
-
-        <ion-col size="4" size-sm *ngIf="userInfoItems.HasCasino">
-
+        <!--<ion-col size="4" size-sm *ngIf="userInfoItems.HasCasino">
           <div (click)="casinoGo()">
             <ion-img [src]="casino_menu" class="custom-img-7 custom-margin-auto"></ion-img>
-
             <h6 class="custom-font-sm custom-bold-text">CASINO</h6>
           </div>
-                    
-        </ion-col>
-        
+        </ion-col>-->
         <ion-col size="4" size-sm *ngIf="userInfoItems.HasGeolocationMarks">
-          
-          <div (click)="entermarkGo()">            
+          <div (click)="entermarkGo()">
             <ion-img [src]="enter_mark_menu" class="custom-img-7 custom-margin-auto"></ion-img>
-          
             <h6 class="custom-font-sm custom-bold-text">INGRESAR MARCA</h6>
           </div>
-                    
-        </ion-col>   
+        </ion-col>
 
-      </ion-row>            
-      <!-- second row end -->      
+      </ion-row>
+      <!-- second row end -->
 
-    </ion-grid>      
+    </ion-grid>
 
   </div>
 
   <!-- <ion-button (click)="getData()">Click</ion-button> -->
- 
+
 </ion-content>
 
 <!-- footer start -->
 <app-footer></app-footer>
 <!-- footer end -->
-<app-menu-footer 
-id="dashboardPage" 
-[valCapa]="currentVal" 
+<app-menu-footer
+id="dashboardPage"
+[valCapa]="currentVal"
 (logout)="logout()">
 </app-menu-footer>

@@ -6,6 +6,9 @@ import { ToastController, NavController, NavParams, AlertController, LoadingCont
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Network } from '@ionic-native/network/ngx';
+import { DatabaseService } from '../../services/database.service';
+import { FunctionsService } from '../../services/functions.service';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -48,53 +51,47 @@ export class DashboardPage implements OnInit {
     private network: Network,
     public http: HttpClient,
     public alertController: AlertController,
-    public loadingController: LoadingController
+	public loadingController: LoadingController,
+	private __serviceData:DatabaseService,
+	private __function:FunctionsService
     ) { }
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
-		//(val != null && val != undefined)?this.userInfoItems = val:undefined;
-      //if(val != null && val != undefined) {
+      if(val != null && val != undefined) {
         this.userInfoItems = val;
-        console.log('this.userInfoItems --', this.userInfoItems);
-      //}
+      }
     });
     this.storage.get(this.userLoginResDetail).then((val) => {
-		this.employeeId = val['EmployeeId'];
-      /* if(val != null && val != undefined) {
+      if(val != null && val != undefined) {
 		    this.employeeId = val['EmployeeId'];
-      } */
+      }
     })
 
     this.storage.get('liveUserCode').then((val) => {
+      if(val != null && val != undefined) {
 		this.liveUserCode = val;
-      /* if(val != null && val != undefined) {
-		this.liveUserCode = val;
-      } */
+      }
     })
     this.storage.get('deviceIdLocalStorage').then((val) => {
-		this.deviceId = val;
-	/* if(val != null && val != undefined) {
-		this.deviceId = val;
-      } */
+		if(val != null && val != undefined) {
+			this.deviceId = val;
+      	}
     })
     this.storage.get('localLat').then((val) => {
+      if(val != null && val != undefined) {
 		this.localLat = val;
-      /* if(val != null && val != undefined) {
-		this.localLat = val;
-      } */
+      }
     })
     this.storage.get('localisBuffer').then((val) => {
+      if(val != null && val != undefined) {
 		this.localisBuffer = val;
-      /* if(val != null && val != undefined) {
-		this.localisBuffer = val;
-      } */
+      }
     })
     this.storage.get('localDate').then((val) => {
-		this.localDate = val;
-      /* if(val != null && val != undefined) {
+      if(val != null && val != undefined) {
 		this.localDate = val
 
-      } */
+      }
     })
 
     this.storage.get('localLong').then((val) => {
@@ -102,27 +99,12 @@ export class DashboardPage implements OnInit {
         this.localLong = val
         if(this.network.type != 'none') {
           if(this.localLat != null && this.localLat != undefined && this.localLong != null && this.localLong != undefined) {
-            // this.markEmployee()
+            this.markEmployee();
           }
         }
       }
     });
   }
-
-  getData() {
-    //console.log('Testing data transfer --', this.navParams.get('title'))
-    console.log('Testing data transfer --')
-  }
-/**
-  async signOutToast() {
-    const toast = await this.toastController.create({
-      message: 'You are now signed out',
-      position: 'middle',
-      duration: 2500
-    })
-    toast.present()
-  }
-  */
 
   entermarkGo() {
     let options: NativeTransitionOptions = {
@@ -164,8 +146,13 @@ export class DashboardPage implements OnInit {
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'mymark'])
   }
- /*  markEmployee() {
-    this.markEmployeeLoaderOn()
+  async markEmployee() {
+	let cargandoMarca=await this.loadingController.create({
+		message:'Procesando marca pendiente...',
+		spinner:'crescent',
+		cssClass:'transparent'
+	});
+	cargandoMarca.present();
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
     let params = {
       "lat": this.localLat,
@@ -174,49 +161,39 @@ export class DashboardPage implements OnInit {
       "imei": this.deviceId,
       "isBuffer": this.localisBuffer,
       "date": this.localDate
-    }
-    this.data = this.http.post(url, params, this.header);
-    this.data.subscribe((response) => {
-      this.markEmployeeLoaderOff()
-      if(response.status) {
-        this.markEmployeeResponseAlert('Marca satisfactoria')
-        this.removeLocalLatLong()
-      } else {
-        this.markEmployeeResponseAlert(response.Message)
-        this.removeLocalLatLong()
-      }
-    }, (err) => {
-		this.markEmployeeLoaderOff()
-      this.badRequestAlert()
-    });
-  } */
-  /* async markEmployeeLoaderOn() {
-    this.loadingElement = await this.loadingController.create({
-      message: 'Por favor espere servicio de marca...',
-      spinner: 'crescent'
-    })
-    this.loadingElement.present()
-    setTimeout(() => {
-      this.loadingElement.dismiss()
-    }, 3000)
-  } */
+	}
+	this.__serviceData.markEmployee(url, params).then((responseMarkPending)=>{
+		switch(responseMarkPending['status']){
+			case '200':
+					cargandoMarca.dismiss();
+					this.markEmployeeResponseAlert('Marca satisfactoria');
+					this.removeLocalLatLong();
+				break;
+			case '0':
+					cargandoMarca.dismiss();
+					this.markEmployeeResponseAlert(responseMarkPending['Message']);
+					this.removeLocalLatLong();
+				break;
+			case '400':
+					cargandoMarca.dismiss();
+					this.badRequestAlert();
+				break;
+			case '408':
+					cargandoMarca.dismiss();
+					this.__function.requireAlert('Tiempo agotado para la respuesta','De acuerdo');
+				break;
+			}
+	})
+  }
 
   async markEmployeeLoaderOff() {
     this.loadingElement.dismiss();
   }
   async markEmployeeResponseAlert(responseMsg) {
-    const alert = await this.alertController.create({
-      message: responseMsg,
-      buttons: ['De acuerdo']
-    });
-    await alert.present();
+   this.__function.requireAlert(responseMsg, 'De acuerdo');
   }
   async badRequestAlert() {
-    const alert = await this.alertController.create({
-      message: 'Error de servicio',
-      buttons: ['De acuerdo']
-    });
-    await alert.present();
+  	this.__function.requireAlert('Error de servicio', 'De acuerdo');
   }
   removeLocalLatLong() {
     this.storage.remove('localLat').then(() => {});
@@ -238,4 +215,5 @@ export class DashboardPage implements OnInit {
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'casino'])
   }
+
 }

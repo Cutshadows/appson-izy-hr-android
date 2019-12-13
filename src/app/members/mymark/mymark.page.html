@@ -2,124 +2,75 @@
 </app-header>
 <ion-content fullscreen="true"  class="custom-background ion-padding">
 
-  <!-- <ion-toolbar class="custom-background-transparent">
-    <ion-buttons slot="start">
-      <ion-button (click)="dashboardGo()">
-        <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
-      </ion-button>
-    </ion-buttons>    
-    <ion-title text-center color="light">MIS MARCAS</ion-title>
-    <ion-buttons slot="end">
-        <ion-button (click)="logout()">
-          <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
-        </ion-button>
-      </ion-buttons>     
-  </ion-toolbar> -->
-  
   <div class="custom-padding-left-right custom-white">
-
-    <ion-grid class="ion-text-uppercase" *ngIf="employeeMarkLeftRight">
-
-      <ion-row>
-        <ion-toolbar class="custom-background-transparent">
-
-          <ion-buttons slot="start">
-
-            <ion-button *ngIf="rightCount" (click)="rightMark()">
-              <ion-icon slot="icon-only" name="arrow-dropleft" color="light" size="large"></ion-icon>
-            </ion-button>
-
-            <ion-button *ngIf="!rightCount">
-              <ion-icon slot="icon-only" name="arrow-dropleft" size="large"></ion-icon>
-            </ion-button>               
-
-          </ion-buttons>
-   
-          <ion-button shape="round" expand="block" color="light" size="large">{{ employeeMarkLeftRight.Date }}</ion-button>
-
-          <ion-buttons slot="end">  
-
-            <ion-button *ngIf="leftCount" (click)="leftMark()">
-              <ion-icon slot="icon-only" name="arrow-dropright" color="light" size="large"></ion-icon>
-            </ion-button>
-
-            <ion-button *ngIf="!leftCount">
-              <ion-icon slot="icon-only" name="arrow-dropright" size="large"></ion-icon>
-            </ion-button>            
-
-          </ion-buttons>
-
-        </ion-toolbar>        
-      </ion-row>   
-
-      <ion-row class="ion-margin-top">
-        <ion-col class="col-6 ion-text-center">
-
-          <div>            
-            <ion-img [src]="entry_hour_img" class="custom-img-9 custom-margin-auto"></ion-img>
-          </div>
-          
-          <h6>HORA INGRESO</h6>
-          <h6>{{ employeeMarkLeftRight.EntryDate }}</h6>          
-        
-        </ion-col>
-
-        <ion-col class="col-6 ion-text-center">
-        
-          <div>            
-            <ion-img [src]="exit_hour_img" class="custom-img-9 custom-margin-auto"></ion-img>
-          </div> 
-          
-          <h6>HORA SALIDA</h6>
-          <h6>{{ employeeMarkLeftRight.ExitDate }}</h6>
-        
-        </ion-col>
-
-      </ion-row>
-
-      <ion-row>
-        
-        <ion-col class="col-6 ion-text-center">
-
-          <div>            
-            <ion-img [src]="entry_lunch_img" class="custom-img-9 custom-margin-auto"></ion-img>
-          </div>
-          
-          <h6>SALIDA COLACIÓN</h6>
-          <h6>{{ employeeMarkLeftRight.GoOutForLunch }}</h6>          
-        
-        </ion-col>
-
-        <ion-col class="col-6 ion-text-center">
-        
-          <div>            
-            <ion-img [src]="exit_lunch_img" class="custom-img-9 custom-margin-auto"></ion-img>
-          </div> 
-          
-          <h6>VUELTA COLACIÓN</h6>
-          <h6>{{ employeeMarkLeftRight.ArriveFromLunch }}</h6>
-        
-        </ion-col>
-
-      </ion-row>     
-      
-      <ion-row class="ion-margin-top">
-
-        <ion-col class="col-6 ion-text-center">
-        
-          <div>            
-            <ion-img [src]="location_img" class="custom-img-7 custom-margin-auto"></ion-img>
-          </div> 
-          
-          <h6>Ubicación</h6>
-          <h6>{{ employeeMarkLeftRight.BranchName }}</h6>
-        
-        </ion-col>
-
-      </ion-row>
-
-    </ion-grid>    
-
+		<ion-slides #slidesMark pager="false" dir="rtl" (ionSlidePrevEnd)="slideLefMark()" (ionSlideNextEnd)="slideRightMark()">
+				<ion-slide class="slide-style" *ngFor="let count of arrayDaysforSlide" >
+				<ion-grid class="ion-text-uppercase" *ngIf="employeeMarkLeftRight">
+				<ion-row dir="ltr">
+					<ion-toolbar class="custom-background-transparent">
+					<ion-buttons slot="start">
+						<ion-button *ngIf="rightCount" (click)="rightMark()">
+						<ion-icon slot="icon-only" name="arrow-dropleft" color="light" size="large"></ion-icon>
+						</ion-button>
+						<ion-button *ngIf="!rightCount">
+						<ion-icon slot="icon-only" name="arrow-dropleft" size="large"></ion-icon>
+						</ion-button>
+					</ion-buttons>
+					<ion-button shape="round" expand="block" color="light" size="large">{{ employeeMarkLeftRight.Date }}</ion-button>
+					<ion-buttons slot="end">
+						<ion-button *ngIf="leftCount" (click)="leftMark()">
+						<ion-icon slot="icon-only" name="arrow-dropright" color="light" size="large"></ion-icon>
+						</ion-button>
+						<ion-button *ngIf="!leftCount">
+						<ion-icon slot="icon-only" name="arrow-dropright" size="large"></ion-icon>
+						</ion-button>
+					</ion-buttons>
+					</ion-toolbar>
+				</ion-row>
+				<ion-row class="ion-margin-top"  dir="ltr">
+					<ion-col class="col-6 ion-text-center">
+					<div>
+						<ion-img [src]="entry_hour_img" class="custom-img-6 custom-margin-auto"></ion-img>
+					</div>
+					<h6>HORA INGRESO</h6>
+					<h6>{{ employeeMarkLeftRight.EntryDate }}</h6>
+					</ion-col>
+					<ion-col class="col-6 ion-text-center">
+					<div>
+						<ion-img [src]="exit_hour_img" class="custom-img-6 custom-margin-auto"></ion-img>
+					</div>
+					<h6>HORA SALIDA</h6>
+					<h6>{{ employeeMarkLeftRight.ExitDate }}</h6>
+					</ion-col>
+				</ion-row>
+				<ion-row dir="ltr">
+					<ion-col class="col-6 ion-text-center">
+					<div>
+						<ion-img [src]="entry_lunch_img" class="custom-img-6 custom-margin-auto"></ion-img>
+					</div>
+					<h6>SALIDA COLACIÓN</h6>
+					<h6>{{ employeeMarkLeftRight.GoOutForLunch }}</h6>
+					</ion-col>
+					<ion-col class="col-6 ion-text-center">
+					<div>
+						<ion-img [src]="exit_lunch_img" class="custom-img-6 custom-margin-auto"></ion-img>
+					</div>
+					<h6>VUELTA COLACIÓN</h6>
+					<h6>{{ employeeMarkLeftRight.ArriveFromLunch }}</h6>
+					</ion-col>
+				</ion-row>
+				<ion-row class="ion-margin-top">
+					<ion-col class="col-6 ion-text-center">
+					<div>
+						<ion-img [src]="location_img" class="custom-img-7 custom-margin-auto"></ion-img>
+					</div>
+					<h6>Ubicación</h6>
+					<h6>{{ employeeMarkLeftRight.BranchName }}</h6>
+					</ion-col>
+				</ion-row>
+				</ion-grid>
+			</ion-slide>
+	</ion-slides>
     <!-- <ion-button (click)="employeeMarkService()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large">Employee mark service</ion-button> -->
 
   </div>

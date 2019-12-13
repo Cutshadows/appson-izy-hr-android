@@ -50,14 +50,12 @@ export class ModalPage implements OnInit {
       if(val != null && val != undefined) {
         this.casinoItemStoreA = val
       }
-      //console.log('this.casinoItemStoreA --', this.casinoItemStoreA)
     })
 
     this.storage.get(this.casinoItemService).then((val) => {
       if(val != null && val != undefined) {
         this.casinoItemServiceStoreA = val
       }
-      //console.log('this.casinoItemServiceStoreA --', this.casinoItemServiceStoreA)
     })
 
     this.servicesDetail = this.navParams.get('itemData')

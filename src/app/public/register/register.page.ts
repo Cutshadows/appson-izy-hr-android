@@ -17,7 +17,7 @@ export class RegisterPage implements OnInit {
   code: string
 
   userLoginEmpty: string = ''
-  
+
   data: Observable<any>
   loadingElement: any
 
@@ -25,7 +25,7 @@ export class RegisterPage implements OnInit {
 
   storageData: any
 
-  codeArray: any = []  
+  codeArray: any = []
 
   constructor(
     private authService: AuthenticationService,
@@ -40,25 +40,17 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
     this.storage.get(this.userLoginEmpty).then((val) => {
-      //console.log('val --', val);
-      //this.storageData = val['FirstName'];
-      //console.log('this.storageData --', this.storageData) 
     });
-    
+
     this.storage.get('userCode').then((val) => {
       if(val != null && val != undefined) {
-        
-        //console.log('userCode -- val', val)
-        
         for(let j = 0; j < val.length; j++) {
           this.codeArray.push(val[j])
         }
-        
-      }      
+      }
     });
-    //console.log('this.codeArray ngOnInit --', this.codeArray)        
   }
-  
+
   async passwordValid() {
     const toast = await this.toastController.create({
       message: 'Password must be number',
@@ -75,10 +67,10 @@ export class RegisterPage implements OnInit {
     });
     this.loadingElement.present()
   }
-  
+
   async loginLoaderOff() {
     this.loadingElement.dismiss()
-  }  
+  }
 
   async requireAlert() {
     const alert = await this.alertController.create({
@@ -87,7 +79,7 @@ export class RegisterPage implements OnInit {
     });
 
     await alert.present()
-  }  
+  }
 
   async wrongInputAlert(resMessage) {
     const alert = await this.alertController.create({
@@ -97,7 +89,7 @@ export class RegisterPage implements OnInit {
 
     await alert.present()
   }
-  
+
   async badRequestAlert() {
     const alert = await this.alertController.create({
       message: '400 Bad Request',
@@ -106,25 +98,23 @@ export class RegisterPage implements OnInit {
 
     await alert.present()
   }
-  
+
   clearStorage() {
     this.storage.clear().then(() => {
-    })    
+    })
   }
 
   login() {
 
-    /*console.log('this.code', this.code)
-    console.log('this.codeArray', this.codeArray)
-    
+    /*
+
     this.codeArray.push(this.code)
 
-    console.log('this.codeArray --', this.codeArray)
 
     this.storage.set('userCode', this.codeArray)*/
 
     if(this.username == undefined && this.password == undefined && this.code == undefined) {
-      this.requireAlert()   
+      this.requireAlert()
     } else if(this.username == '') {
       this.requireAlert()
     } else if(isNaN(this.password)) {
@@ -136,13 +126,13 @@ export class RegisterPage implements OnInit {
     }
     else {
       this.loginLoaderOn()
-      let header = { 
+      let header = {
         "headers": {
           "Content-Type": "application/json",
           "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-        } 
+        }
       };
-      
+
       let url = 'https://demo.izytimecontrol.com/api/external/ValidateEmployee';
 
       let params = {
@@ -166,7 +156,7 @@ export class RegisterPage implements OnInit {
             Department: responseData.Department,
             EmployeeId: responseData.EmployeeId
           }
-          
+
           this.storage.set(this.userLoginEmpty, userLoginData)
 
           this.codeArray.push(this.code)
@@ -176,7 +166,7 @@ export class RegisterPage implements OnInit {
           this.authService.login()
         } else {
           this.wrongInputAlert(response.Message)
-        }        
+        }
       }, (err) => {
         /*this.loginLoaderOff()
         this.badRequestAlert()*/
@@ -190,12 +180,12 @@ export class RegisterPage implements OnInit {
           Department: 'department',
           EmployeeId: 'employeeId'
         }
-        
+
         this.storage.set(this.userLoginEmpty, userLoginData)
 
         this.codeArray.push(this.code)
 
-        this.storage.set('userCode', this.codeArray)        
+        this.storage.set('userCode', this.codeArray)
 
         this.authService.login()
 
