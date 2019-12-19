@@ -10,6 +10,7 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
 import { FCM } from '@ionic-native/fcm/ngx';
 import { Router } from '@angular/router';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { IntroductionService } from './services/introduction.service';
 
 @Component({
   selector: 'app-root',
@@ -30,11 +31,28 @@ export class AppComponent {
 	private fcm:FCM,
 	private router:Router,
 	private localNotifications:LocalNotifications,
+    private _tutorial:IntroductionService,
   ) {
     this.initializeApp();
   }
   initializeApp() {
     this.platform.ready().then(() => {
+		this._tutorial.cargar_storage()
+		.then(()=>{
+		  if(this._tutorial.introduccion.mostrar_tutorial){
+			let options: NativeTransitionOptions = {
+			  duration: 800
+			}
+			this.nativePageTransitions.fade(options);
+			this.router.navigate(['Introduction']);
+		  }else{
+			let options: NativeTransitionOptions = {
+			  duration: 800
+			}
+			this.nativePageTransitions.fade(options);
+			this.router.navigate(['login']);
+		  }
+		});
 		this.fcm.onNotification().subscribe((notification) => {
 			this.fcmTitle = notification.title;
 			this.fcmMessage = notification.body;

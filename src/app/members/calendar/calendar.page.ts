@@ -84,7 +84,7 @@ export class CalendarPage implements OnInit {
   }
 
   noDataToast() {
-    this._function.MessageToast('Datos no encontrados','bottom',2000);
+    this._function.MessageToast('Horario no cargado, contactar al administrador','middle',4000);
   }
   badRequestTimeoutAlert() {
     this._function.requireAlert('Tiempo de Respuesta Agotado','De acuerdo');
@@ -122,7 +122,10 @@ export class CalendarPage implements OnInit {
         break;
 		case '400':
             loadingMessage.dismiss();
-            this.noDataToast();
+			this.noDataToast();
+			setTimeout(()=>{
+				this.dashboardGo();
+			}, 6000);
 		break;
 		case '408':
 		  loadingMessage.dismiss();

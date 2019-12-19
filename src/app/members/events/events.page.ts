@@ -16,13 +16,6 @@ import { DatabaseService } from 'src/app/services/database.service';
 })
 export class EventsPage implements OnInit {
 
- /*  header: any = {
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    }
-  }   */
-
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
   employeeId: any
@@ -32,9 +25,11 @@ export class EventsPage implements OnInit {
   deviceId: any
   getEventsItems: any
   EventStatus:any;
-  my_events_page: string = 'assets/img/page/my_events_page.png'
-  my_marks_info: string = 'assets/img/my_marks_info.png'
-  my_marks_tic: string = 'assets/img/my_marks_tic.png'
+  my_events_page: string = 'assets/img/page/my_events_page.png';
+  my_marks_info: string = 'assets/img/my_marks_info.png';
+  my_marks_tic: string = 'assets/img/my_marks_tic.png';
+  my_marks_disabled: string = 'assets/img/my_marks_disabled.png';
+  my_marks_rejected: string = 'assets/img/my_marks_rejected.png';
   imgStatus:string;
   constructor(
     private authService: AuthenticationService,
@@ -66,41 +61,10 @@ export class EventsPage implements OnInit {
       }
     });
   }
-  /* dummyData() {
-    this.getEventsItems = [
-      {
-        "Id": 12,
-        "From": "2019-01-16T03:00:00",
-        "To": "2019-01-17T03:00:00",
-        "TypeEvent": "Dia del churrasco",
-        "Description": "asdfsdfasdfasdf",
-        "FullName": "TEST 2 APE",
-        "Branch": "IZYTECH DEMO 1 GPS",
-        "CanDeleteByEmployee": false,
-        "EventRequestStatus": 1,
-        "GlosaApproved": "",
-        "InsertBy": 0
-      },
-      {
-        "Id": 13,
-        "From": "2019-01-19T03:00:00",
-        "To": "2019-01-20T03:00:00",
-        "TypeEvent": "Dia del churrasco 2",
-        "Description": "asdfsdfasdfasdf 2",
-        "FullName": "TEST 3 APE",
-        "Branch": "IZYTECH DEMO 2 GPS",
-        "CanDeleteByEmployee": false,
-        "EventRequestStatus": 1,
-        "GlosaApproved": "",
-        "InsertBy": 0
-      }
-    ]
-  } */
   async getEventsService() {
   let LoadingEvents = await this.toastController.create({
     	message: 'Cargando Eventos...',
 		position:'bottom',
-	    //spinner: 'crescent',
         cssClass:'my-custom-toast'
     });
     LoadingEvents.present();
@@ -141,10 +105,10 @@ export class EventsPage implements OnInit {
 				this.imgStatus=this.my_marks_tic;
 			break;
 			case 2:
-				this.imgStatus=this.my_events_page;
+				this.imgStatus=this.my_marks_rejected;
 			break;
 			case 3:
-				this.imgStatus=this.my_events_page;
+				this.imgStatus=this.my_marks_disabled;
 			break;
 		}
 		return this.imgStatus;
@@ -154,7 +118,7 @@ export class EventsPage implements OnInit {
   }
 
   noDataToast() {
-    this._function.MessageToast('No hay información de eventos','bottom',2000);
+    this._function.MessageToast('No hay información de eventos','middle',2000);
   }
   badRequestTimeoutAlert() {
     this._function.requireAlert('Tiempo de Respuesta Agotado','De acuerdo');

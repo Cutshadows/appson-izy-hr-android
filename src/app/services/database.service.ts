@@ -86,7 +86,7 @@ export class DatabaseService {
 						status,
 						response
 					}
-					if(response){
+					if((Object.keys(response).length !=0)==true){
 						if(response==408){
 							jsonRespond.status="408";
 							jsonRespond.response=response;
@@ -96,7 +96,7 @@ export class DatabaseService {
 							jsonRespond.response=response;
 							resolve(jsonRespond);
 						}
-					}else if(!response){
+					}else if((Object.keys(response).length ==0)==true){
 						jsonRespond.status="400";
 						jsonRespond.response=response;
 						resolve(jsonRespond);

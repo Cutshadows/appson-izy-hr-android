@@ -1,0 +1,45 @@
+  :root {
+    --ion-safe-area-top: 20px;
+    --ion-safe-area-bottom: 22px;
+    --swiper-scrollbar:#ff0000!important;
+  }
+  .swiper-slide {
+    display: block;
+  }
+  ion-slide > h2 {
+    margin-top: 1.8rem;
+  }
+  ion-slide > img {
+    max-height: 50%;
+    max-width: 60%;
+  }
+  ion-slides.swiper-container{
+    top:3%!important;
+  }
+  .slide-title {
+    margin-top: 1rem;
+    color:rgb(255, 255, 255);
+  }
+ .button-introduction{
+    margin-left:70%!important;
+  }
+  .slide-image {
+    max-height: 60%;
+    max-width: 70%;
+    padding-bottom: 19%;
+    padding-top: 10%;
+  }
+  b {
+    font-weight: 500;
+    padding: 0 80% 80% 0;
+  }
+  p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgb(255, 255, 255);
+    padding-bottom: 20%!important;
+    b {
+      color: #000000;
+    }
+   
+  }

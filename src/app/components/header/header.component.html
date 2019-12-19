@@ -1,11 +1,16 @@
 <ion-header>
   <ion-toolbar class="custom-background-transparent">
-    <ion-buttons slot="start">
-    </ion-buttons>    
-    <ion-text color="light" class="ion-text-center">
-      <h4 class="custom-color-white custom-bold-text ion-text-capitalize" >{{titulo}}</h4>
-    </ion-text>
     <ion-buttons slot="end">
-    </ion-buttons>     
+    	</ion-buttons>
+   		 <ion-text color="light" dir="rtl"><!-- class="ion-text-center" -->
+      		<h4 class="custom-color-white custom-bold-text ion-text-capitalize" style="margin-left: 20%!important; margin-right: 5%!important;">{{titulo}}</h4>
+    	</ion-text>
+    	<ion-buttons slot="start" color="rgb(0, 0, 0, 0)">
+				<ion-toolbar color="rgb(0, 0, 0, 0)" style="--border-width: 0 0 0px!important;"><!-- footer-background-color  footer-min-height-->
+						<div class="center" class="footer-img-width footer-fix-bottom" style="margin-left: 10%!important; margin-top:5%!important;" >
+						  <img [src]="footer_izy_hr" >
+						</div>
+				</ion-toolbar>
+    	</ion-buttons>
   </ion-toolbar>
   </ion-header>

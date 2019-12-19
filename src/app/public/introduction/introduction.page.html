@@ -1,0 +1,19 @@
+<ion-header style="position: static!important;">
+  </ion-header>
+<ion-content  fullscreen="true" padding class="custom-background" scroll-y="false" >
+  <ion-slides pager="true" [options]="slidesOpts"  style="--bullet-background-active: #ff3838!important; bottom:20px!important;" >
+      <ion-slide *ngFor="let slide of slides">
+          <img [src]="slide.image" class="slide-image" />
+        <h2 class="slide-title" [innerHTML]="slide.title"></h2>
+        <p [innerHTML]="slide.description"></p>
+      </ion-slide>
+      <ion-slide>
+        <img src="assets/img/logo.png" style="max-width: 100%!important;" class="slide-image"/>
+        <h2 style="color:rgb(255, 255, 255);">¿Comenzamos?</h2>
+          <ion-button fill="clear" (click)="saltar_tutorial()" style="color:#ff5959!important;--color-activated: #ff3838!important;--color-focused:#ff3838!important;">Continuar <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
+      </ion-slide>
+    </ion-slides>
+    <ion-button  (click)="saltar_tutorial()" color="light" fill="clear" class="button-introduction"  >
+      SALTAR
+    </ion-button>
+</ion-content>

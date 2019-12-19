@@ -38,12 +38,6 @@
             <h6 class="custom-font-sm custom-bold-text">MI PERFIL</h6>
           </div>
         </ion-col>
-        <ion-col size="4" size-sm *ngIf="userInfoItems.HasCasino">
-          <div (click)="casinoGo()">
-            <ion-img [src]="casino_menu" class="custom-img-7 custom-margin-auto"></ion-img>
-            <h6 class="custom-font-sm custom-bold-text">CASINO</h6>
-          </div>
-        </ion-col>
         <ion-col size="4" size-sm *ngIf="userInfoItems.HasGeolocationMarks">
           <div (click)="entermarkGo()">
             <ion-img [src]="enter_mark_menu" class="custom-img-7 custom-margin-auto"></ion-img>
@@ -57,9 +51,6 @@
   </div>
   <!-- <ion-button (click)="getData()">Click</ion-button> -->
 </ion-content>
-<!-- footer start -->
-<app-footer></app-footer>
-<!-- footer end -->
 <app-menu-footer
 id="dashboardPage"
 [valCapa]="currentVal"

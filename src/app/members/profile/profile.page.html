@@ -3,11 +3,11 @@
 <ion-content fullscreen="true"  class="custom-background ion-padding">
   <div class="custom-padding-left-right center custom-white">
     <div>
-      <ion-img [src]="my_profile_page" class="custom-img-7 custom-margin-auto custom-p-t-sm"></ion-img>       
-    </div>    
-    
+      <ion-img [src]="my_profile_page" class="custom-img-7 custom-margin-auto custom-p-t-sm"></ion-img>
+    </div>
+
     <ion-grid>
-      <!-- row start -->      
+      <!-- row start -->
       <ion-row>
         <ion-col size="12" *ngIf="userInfoItems" class="backgroundTarget">
             <div class="divProfile">
@@ -30,17 +30,14 @@
               <h6 class="custom-m-t-md" class="titleEmployed">DEPARTAMENTO</h6>
               <span class="detailEmployed">{{ userInfoItems.Department }}</span>
             </div>
-        </ion-col>    
+        </ion-col>
 
       </ion-row>
-      <!-- row end -->        
+      <!-- row end -->
     </ion-grid>
     <ion-button (click)="changepasswordGo()" class="custom-s-margin" shape="round" fill="outline" expand="block" color="light" size="large">CAMBIAR PASSWORD</ion-button>
   </div>
 </ion-content>
-<!-- footer start -->
-<app-footer *ngIf="currentVal!=2"></app-footer>
-<!-- footer end -->
 <app-menu-footer
 [valCapa]="currentVal"
 id="myprofile"

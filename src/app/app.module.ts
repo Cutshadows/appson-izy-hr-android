@@ -27,7 +27,7 @@ import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module'
 
 import { FCM } from '@ionic-native/fcm/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-
+import { IntroductionService } from './services/introduction.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,6 +49,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
     LocationAccuracy,
 	UniqueDeviceID,
 	LocalNotifications,
+	IntroductionService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NativePageTransitions,
     SQLite,

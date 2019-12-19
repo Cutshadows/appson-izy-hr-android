@@ -1,24 +1,9 @@
 <app-header titulo="MIS MARCAS">
 </app-header>
 <ion-content fullscreen="true"  class="custom-background ion-padding">
-
-  <!-- <ion-toolbar class="custom-background-transparent">
-    <ion-buttons slot="start">
-      <ion-button (click)="dashboardGo()">
-        <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title text-center color="light">MIS MARCAS</ion-title>
-    <ion-buttons slot="end">
-        <ion-button (click)="logout()">
-          <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-  </ion-toolbar> -->
-
   <div class="custom-padding-left-right custom-white">
-		<ion-slides #slidesMymark  pager="false" dir="rtl" (ionSlidePrevEnd)="slideLeftMark()" (ionSlideNextEnd)="slideRightMark()"   > <!-- #slidesAttendance (ionSlideDidChange)="onSlideMoved($event)"-->
-			<ion-slide class="slide-style" *ngFor="let count of arregloNumbers"  > <!--class="slide-style" *ngFor="let cantTotal of branchByUserResumeData"  *ngIf="employeeMarkLeftRight" -->
+		<ion-slides #slidesMymark  pager="false" dir="rtl" (ionSlidePrevEnd)="slideLeftMark()" (ionSlideNextEnd)="slideRightMark()"   >
+			<ion-slide class="slide-style" *ngFor="let count of arregloNumbers"  >
 				<ion-grid class="ion-text-uppercase" *ngIf="employeeMarkLeftRight" >
 					<!-- inicio del row de control dia -->
 					<ion-row dir="ltr" >
@@ -96,9 +81,6 @@
     <!-- <ion-button (click)="employeeMarkService()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large">Employee mark service</ion-button> -->
   </div>
 </ion-content>
-<!-- footer start -->
-<app-footer *ngIf="currentVal!=2"></app-footer>
-<!-- footer end -->
 <app-menu-footer
 [valCapa]="currentVal"
 id="mymark"
