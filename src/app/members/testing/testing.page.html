@@ -5,15 +5,15 @@
       <ion-button (click)="dashboardGo()">
         <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
       </ion-button>
-    </ion-buttons>    
+    </ion-buttons>
     <ion-title class="ion-text-center" color="light">INGRESO DE MARCAS</ion-title>
     <ion-buttons slot="end">
         <ion-button (click)="logout()">
           <ion-icon slot="icon-only" name="log-out" color="light"></ion-icon>
         </ion-button>
-      </ion-buttons>     
+      </ion-buttons>
   </ion-toolbar>
-  
+
   <div class="custom-padding-left-right">
 
     <ion-button *ngIf="false" (click)="getCurrentLocation()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large">MARCA</ion-button>
@@ -22,14 +22,10 @@
 
     <ion-button (click)="checkInternetConnection()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large" >Internet Connection</ion-button>
 
-    <ion-button (click)="dashboardGo()" class="custom-m-margin" shape="round" fill="outline" expand="block" color="light" size="large">VOLVER</ion-button>    
+    <ion-button (click)="dashboardGo()" class="custom-m-margin" shape="round" fill="outline" expand="block" color="light" size="large">VOLVER</ion-button>
 
   </div>
 
 
 
 </ion-content>
-
-<!-- footer start -->
-<app-footer></app-footer>
-<!-- footer end -->

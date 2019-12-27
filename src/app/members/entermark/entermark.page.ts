@@ -101,6 +101,20 @@ export class EntermarkPage implements OnInit {
     this._function.requireAlert(errorMsg,'De acuerdo');
   }
 
+  enableLocation() {
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
+      .then(
+        () => {
+          this.getLatLongMobile();
+          this.buttonDisabled = true;
+        },(error)=> {
+          this.locationErrorAlert(error);
+        }
+      );
+    });
+  }
+
   async getCurrentLocation() {
     let loadingGeolocation = await this.loadingController.create({
       message: 'Verificando ubicación...',
@@ -110,8 +124,8 @@ export class EntermarkPage implements OnInit {
     loadingGeolocation.present();
 
     let option = {
-      timeout: 30000,
-      enableHighAccuracy: true
+      timeout: 8000,
+	  enableHighAccuracy: true,
     }
     this.geolocation.getCurrentPosition(option)
     .then((resp) => {
@@ -141,19 +155,7 @@ export class EntermarkPage implements OnInit {
     this._function.requireAlert('Dispositivo de uso de ubicación simulada por favor desactivado', 'De acuerdo');
   }
 
-  enableLocation() {
-    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
-      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
-      .then(
-        () => {
-          this.getLatLongMobile();
-          this.buttonDisabled = true;
-        },(error)=> {
-          this.locationErrorAlert(error);
-        }
-      );
-    });
-  }
+
 
 
   async getLatLongMobile(){
@@ -165,11 +167,12 @@ export class EntermarkPage implements OnInit {
 	   loadingLatLongElement.present();
 
     let option = {
-      timeout: 10000,
+      timeout: 30000,
       enableHighAccuracy: true
 	}
 
-    this.geolocation.getCurrentPosition(option).then((resp) => {
+	this.geolocation.getCurrentPosition(option)
+	.then((resp) => {
       if(resp.coords) {
 		loadingLatLongElement.dismiss();
         this.lat = resp.coords.latitude;
@@ -186,45 +189,45 @@ export class EntermarkPage implements OnInit {
   }
   checkMockLocation(){
     const config: BackgroundGeolocationConfig = {
-			desiredAccuracy: 10,
-            stationaryRadius: 100,
-			distanceFilter: 200,
-			notificationText: 'Habilitado',
-            debug: true,
-            notificationTitle:'Geolocalización activada',
+			desiredAccuracy: 65,
+			stationaryRadius: 20,
+			distanceFilter: 30,
+			debug: false,
 			stopOnTerminate: false,
-			activityType:"OtherNavigation",
-			pauseLocationUpdates:false,
-			saveBatteryOnBackground:false
+      		postTemplate: null,
+      		notificationsEnabled:false
 	};
+
+
+
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {
 		this.backgroundGeolocation.start();
-    this.backgroundGeolocation.stop();
-	this.backgroundGeolocation.getLocations()
-	.then((validgetLocationData) => {
-		if(validgetLocationData.length > 0) {
-		  this.validgetLocationDataArray = validgetLocationData[validgetLocationData.length - 1];
-		  this.mockLocationCheck();
-		} else {
-		  this.getLatLongMobile();
-		}
-	  });
+    	this.backgroundGeolocation.stop();
+		this.backgroundGeolocation.getLocations()
+		.then((validgetLocationData) => {
+			if(validgetLocationData.length > 0) {
+		  	this.validgetLocationDataArray = validgetLocationData[validgetLocationData.length - 1];
+		  	this.mockLocationCheck();
+			} else {
+		  	this.getLatLongMobile();
+			}
+	  	});
       this.backgroundGeolocation.finish();
 	});
+
+
+
+
+
+
   }
 
   async offlineAlert() {
-    this._function.requireAlert('Tu marca es capturada','De acuerdo');
+    this._function.requireAlert('Marca capturada, será validada una vez encontremos conexión al sistema','De acuerdo');
   }
 
-  async mockLocationCheck() {
-	let loadingMockLocation = await this.loadingController.create({
-		message: 'Chequeando ubicación...',
-		spinner: 'crescent',
-		cssClass:'transparent'
-	  })
-	  loadingMockLocation.present();
+mockLocationCheck() {
 
 
     this.localDate = new Date();
@@ -232,25 +235,18 @@ export class EntermarkPage implements OnInit {
 
 	if(this.validgetLocationDataArray.isFromMockProvider) {
 	  this.buttonDisabled = false;
-	  loadingMockLocation.dismiss();
-
       this.deleteStoreLocation();
-      this.mockLocationErrorAlert();
-
+	  this.mockLocationErrorAlert();
 	} else if(this.network.type == 'none') {
 	  this.buttonDisabled = false;
-	  loadingMockLocation.dismiss();
-
 	  this.deleteStoreLocation();
-
       this.storage.set('localLat', this.lat);
       this.storage.set('localLong', this.long);
       this.storage.set('localisBuffer', 'true');
       this.storage.set('localDate', this.localDate);
       this.offlineAlert();
-	} else {
+	} else if(this.network.type!='none') {
 	  this.buttonDisabled = false;
-	  loadingMockLocation.dismiss();
       this.deleteStoreLocation();
       this.markEmployee();
     }
@@ -263,7 +259,7 @@ export class EntermarkPage implements OnInit {
       cssClass:'transparent'
     });
     loadingMarkEmployeed.present();
-    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
+	let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
     let params = {
       "lat": this.lat,
       "lon": this.long,
@@ -278,7 +274,7 @@ export class EntermarkPage implements OnInit {
 					this.markEmployeeData=response;
 					loadingMarkEmployeed.dismiss();
 					this.buttonDisabled=false;
-					this.markEmployeeResponseAlert('Marca satisfactoria');
+					this.markEmployeeResponseAlert(response['onmessage']);
 					this.buttonDisabled = false;
 					let options: NativeTransitionOptions = {
 					  duration: 800
@@ -287,12 +283,13 @@ export class EntermarkPage implements OnInit {
 					this.navController.navigateRoot(['members', 'mymark']);
 				break;
 			case '0':
+					loadingMarkEmployeed.dismiss();
 					this.badRequestAlert();
 					this.buttonDisabled = false;
 				break;
 			case '400':
 					loadingMarkEmployeed.dismiss();
-					this.markEmployeeResponseAlert(response['Message']);
+					this.markEmployeeResponseAlert(response['response']);
 					this.buttonDisabled = false;
 				break;
 			case '408':

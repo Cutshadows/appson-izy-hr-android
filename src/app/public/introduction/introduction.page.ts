@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IntroductionService } from '../../services/introduction.service';
-import {NativePageTransitions } from '@ionic-native/native-page-transitions/ngx';
-import { Router } from '@angular/router';
+//import {NativePageTransitions } from '@ionic-native/native-page-transitions/ngx';
+//import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 
 
@@ -43,14 +44,18 @@ export class Introduction implements OnInit {
     initialSlide: 0,
     speed: 400
   };
-    constructor(private _tutorial:IntroductionService, private nativePageTransitions: NativePageTransitions, private router: Router) { }
+	constructor(private _tutorial:IntroductionService,
+		//private nativePageTransitions: NativePageTransitions,
+		//private router: Router,
+		public navController: NavController) { }
 
   ngOnInit() {
   }
   saltar_tutorial(){
     this._tutorial.introduccion.mostrar_tutorial=false;
     this._tutorial.guardar_storage();
-    this.router.navigate(['login']);
+	//this.router.navigate(['login']);
+	this.navController.navigateRoot(['login']);
   }
 
 }

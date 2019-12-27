@@ -28,6 +28,7 @@ import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module'
 import { FCM } from '@ionic-native/fcm/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { IntroductionService } from './services/introduction.service';
+import { Badge } from '@ionic-native/badge/ngx';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { IntroductionService } from './services/introduction.service';
     SQLite,
 	Network,
 	IntroductionService,
-	FCM
+	FCM,
+	Badge
   ],
   bootstrap: [AppComponent]
 })

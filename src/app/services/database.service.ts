@@ -350,19 +350,30 @@ export class DatabaseService {
 			 (response)=>{
 		   let jsonRespondEvents={
 			   status,
-			   response
+			   response,
+			   onmessage
 		   }
 		   if((Object.keys(response).length != 0)==true){
-			   jsonRespondEvents.status="200";
-				   jsonRespondEvents.response=response['data'];
-				   resolve(jsonRespondEvents);
-		   }else if((Object.keys(response).length == 0)==true && response != 408 ){
-			   jsonRespondEvents.status="400";
-			   jsonRespondEvents.response=response['Message'];
-			   resolve(jsonRespondEvents);
+			   if(response['status']==1){
+					if(response['data'].Response=="Ok"){
+						jsonRespondEvents.status="200";
+						jsonRespondEvents.response=response['data'];
+						response['data'].Response="Marca satisfactoria";
+						jsonRespondEvents.onmessage=response['data'].Response;
+						resolve(jsonRespondEvents);
+					}else{
+						jsonRespondEvents.status="200";
+						jsonRespondEvents.response=response['data'];
+						jsonRespondEvents.onmessage=response['data'].Response;
+						resolve(jsonRespondEvents);
+					}
+			   }else if(response['status']==0){
+					jsonRespondEvents.status="400";
+				   	jsonRespondEvents.response=response['Message'];
+				   	resolve(jsonRespondEvents);
+			   }
 		   }else if(response == 408){
 			   jsonRespondEvents.status="408";
-			   jsonRespondEvents.response=response;
 			   resolve(jsonRespondEvents);
 		   }
    },

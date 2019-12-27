@@ -8,6 +8,7 @@ import { FCM } from '@ionic-native/fcm/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import {FunctionsService} from '../app/services/functions.service';
 import {IntroductionService} from '../app/services/introduction.service';
+import { Badge } from '@ionic-native/badge/ngx';
 
 
 
@@ -31,12 +32,14 @@ export class AppComponent {
 	private localNotifications:LocalNotifications,
 	private _function:FunctionsService,
 	private _tutorial:IntroductionService,
-	private toastController:ToastController
+	private toastController:ToastController,
+	private badge: Badge
   ) {
 	this.initializeApp();
   }
   initializeApp() {
     this.platform.ready().then(() => {
+		this.badge.clear();
 		this._tutorial.cargar_storage()
 		.then(()=>{
 			if(this._tutorial.introduccion.mostrar_tutorial){
@@ -80,7 +83,7 @@ export class AppComponent {
 									icon: 'star',
 									text: 'Aceptar',
 									handler: () => {
-										console.log('Favorite clicked');
+										this._function.MessageToast("has hecho clic en ver notification", "top", 2000);
 									}
 									}
 								]

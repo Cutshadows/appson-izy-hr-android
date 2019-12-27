@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { FunctionsService } from '../../services/functions.service';
 import {DatabaseService} from '../../services/database.service';
+import { Network } from '@ionic-native/network/ngx';
 
 
 
@@ -48,7 +49,8 @@ export class LoginPage implements OnInit {
     public platform: Platform,
     private uniqueDeviceID: UniqueDeviceID,
     private _function:FunctionsService,
-	private _services:DatabaseService
+	private _services:DatabaseService,
+	private network:Network
     ) {  }
   ngOnInit() {
     this.storage.get('userCode').then((val) => {
@@ -232,39 +234,51 @@ export class LoginPage implements OnInit {
         spinner: 'crescent',
         cssClass: 'transparent',
       });
-      this.loadingElement.present();
-      var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
-      let params = {
-        "rut": this.username,
-        "password": this.password,
-        "imei": this.deviceId
-      }
-      //this.data = this.http.post(url, params, this.header);
-      this._services.validateLogin(url, params).then(response=>{
-        switch(response['status']){
-          case '200':
-              var responseData = response['response']['data'];
-              this.storage.set(this.userLoginResDetail, responseData);
-              this.storage.set('liveUserCode', this.code);
-              this.authService.login();
-              this.resetInput();
-              this.loadingElement.dismiss();
-          break;
-          case '400':
-              this.loadingElement.dismiss();
-              this.wrongInputAlert(response['response']['Message']);
-          break;
-          case '408':
-              this.loadingElement.dismiss();
-              this.badRequestTimeoutAlert();
-              //this.wrongInputAlert(response['response']['Message']);
-          break;
-          case '0':
-              this.loadingElement.dismiss();
-              this.badRequestAlert();
-          break;
-        }
-      })
+	  this.loadingElement.present();
+	  if(this.network.type=='none'){
+		this.storage.get(this.userLoginResDetail).then((val)=>{
+			if(val != null && val != undefined){
+				if(this.username == val['Rut']){
+					setTimeout(()=>{
+						this.loadingElement.dismiss();
+						this.authService.login();
+					},3000)
+				}
+			}
+		})
+	  }else if(this.network.type!='none'){
+		var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
+		let params = {
+		  "rut": this.username,
+		  "password": this.password,
+		  "imei": this.deviceId
+		}
+		this._services.validateLogin(url, params).then(response=>{
+		  switch(response['status']){
+			case '200':
+				var responseData = response['response']['data'];
+				this.storage.set(this.userLoginResDetail, responseData);
+				this.storage.set('liveUserCode', this.code);
+				this.authService.login();
+				this.resetInput();
+				this.loadingElement.dismiss();
+			break;
+			case '400':
+				this.loadingElement.dismiss();
+				this.wrongInputAlert(response['response']['Message']);
+			break;
+			case '408':
+				this.loadingElement.dismiss();
+				this.badRequestTimeoutAlert();
+				//this.wrongInputAlert(response['response']['Message']);
+			break;
+			case '0':
+				this.loadingElement.dismiss();
+				this.badRequestAlert();
+			break;
+		  }
+		})
+	  }
     }
   }
 
@@ -285,38 +299,51 @@ export class LoginPage implements OnInit {
         cssClass: 'transparent',
 
       });
-      this.loadingElement.present();
-      var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
+	  this.loadingElement.present();
+	  if(this.network.type=='none'){
+		this.storage.get(this.userLoginResDetail).then((val)=>{
+			if(val != null && val != undefined){
+				if(this.username == val['Rut']){
+					setTimeout(()=>{
+						this.loadingElement.dismiss();
+						this.authService.login();
+					},3000)
+				}
+			}
+		})
+	  }else if(this.network.type!='none'){
+			var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
 
-      let params = {
-        "rut": this.username,
-        "password": this.password,
-        "imei": this.deviceId
-      }
-      this._services.validateLogin(url, params).then(response=>{
-        switch(response['status']){
-          case '200':
-            var responseData = response['response']['data'];
-            this.storage.set(this.userLoginResDetail, responseData);
-            this.authService.login();
-            this.resetInput();
-            this.loadingElement.dismiss();
-          break;
-          case '400':
-              this.loadingElement.dismiss();
-              this.wrongInputAlert(response['response']['Message']);
-          break;
-          case '408':
-              this.loadingElement.dismiss();
-              this.badRequestTimeoutAlert();
-              //this.wrongInputAlert(response['response']['Message']);
-          break;
-          case '0':
-              this.loadingElement.dismiss();
-              this.badRequestAlert();
-          break;
-        }
-      })
+			let params = {
+				"rut": this.username,
+				"password": this.password,
+				"imei": this.deviceId
+			}
+			this._services.validateLogin(url, params).then(response=>{
+				switch(response['status']){
+				case '200':
+					var responseData = response['response']['data'];
+					this.storage.set(this.userLoginResDetail, responseData);
+					this.authService.login();
+					this.resetInput();
+					this.loadingElement.dismiss();
+				break;
+				case '400':
+					this.loadingElement.dismiss();
+					this.wrongInputAlert(response['response']['Message']);
+				break;
+				case '408':
+					this.loadingElement.dismiss();
+					this.badRequestTimeoutAlert();
+					//this.wrongInputAlert(response['response']['Message']);
+				break;
+				case '0':
+					this.loadingElement.dismiss();
+					this.badRequestAlert();
+				break;
+				}
+			})
+		}
     }
   }
   resetInput() {
