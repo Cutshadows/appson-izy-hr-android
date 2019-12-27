@@ -8,6 +8,8 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { FunctionsService } from '../../services/functions.service';
 import {DatabaseService} from '../../services/database.service';
 import { FCM } from '@ionic-native/fcm/ngx';
+import { Network } from '@ionic-native/network/ngx';
+
 
 
 @Component({
@@ -42,7 +44,8 @@ export class LoginPage implements OnInit {
     private uniqueDeviceID: UniqueDeviceID,
     private _function:FunctionsService,
 	private _services:DatabaseService,
-	private fcm:FCM
+	private fcm:FCM,
+    private network: Network
     ) {  }
   ngOnInit() {
     this.storage.get('userCode').then((val) => {
@@ -204,7 +207,8 @@ export class LoginPage implements OnInit {
     this.code = undefined
   }
  async loginWithSelectCode() {
-    if(this.username == undefined || this.username == '') {
+
+	if(this.username == undefined || this.username == '') {
       this.requireAlert()
     } else if(this.password == undefined) {
       this.requireAlert()
@@ -220,7 +224,19 @@ export class LoginPage implements OnInit {
         spinner: 'crescent',
         cssClass: 'transparent',
       });
-      this.loadingElement.present();
+	  this.loadingElement.present();
+	  if(this.network.type == 'none') {
+		this.storage.get(this.userLoginResDetail).then((val) => {
+			if(val != null && val != undefined) {
+			  if(this.username == val['Rut'] ){
+				setTimeout(()=>{
+					this.loadingElement.dismiss();
+					this.authService.login();
+				}, 3000);
+			  }
+			}
+		  })
+	}else if(this.network.type!='none'){
       var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
       let params = {
         "rut": this.username,
@@ -251,7 +267,8 @@ export class LoginPage implements OnInit {
               this.badRequestAlert();
           break;
         }
-      })
+	  })
+	}
     }
   }
 
@@ -266,44 +283,58 @@ export class LoginPage implements OnInit {
       this.getDeviceId();
     }
     else {
-      this.loadingElement = await this.loadingController.create({
-        message: 'Por favor espera...',
-        spinner: 'crescent',
-        cssClass: 'transparent',
+		this.loadingElement = await this.loadingController.create({
+			message: 'Por favor espera...',
+			spinner: 'crescent',
+			cssClass: 'transparent',
 
-      });
-      this.loadingElement.present();
-      var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
+		  });
+		  this.loadingElement.present();
+			if(this.network.type == 'none') {
+				this.storage.get(this.userLoginResDetail).then((val) => {
+					if(val != null && val != undefined) {
+					  if(this.username == val['Rut'] ){
+						setTimeout(()=>{
+							this.loadingElement.dismiss();
+							this.authService.login();
+						}, 3000);
+					  }
+					}
+				  })
+			}else if(this.network.type!='none'){
+				var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
+				let params = {
+					"rut": this.username,
+					"password": this.password,
+						"imei": this.deviceId,
+						"tokenFcm":this.fcmToken
+				}
+				this._services.validateLogin(url, params).then(response=>{
+					switch(response['status']){
+					case '200':
+						var responseData = response['response']['data'];
+						this.storage.set(this.userLoginResDetail, responseData);
+						this.authService.login();
+						this.resetInput();
+						this.loadingElement.dismiss();
+					break;
+					case '400':
+						this.loadingElement.dismiss();
+						this.wrongInputAlert(response['response']['Message']);
+					break;
+					case '408':
+						this.loadingElement.dismiss();
+						this.badRequestTimeoutAlert();
+					break;
+					case '0':
+						this.loadingElement.dismiss();
+						this.badRequestAlert();
+					break;
+					}
+				})
+			}
 
-      let params = {
-        "rut": this.username,
-        "password": this.password,
-		    "imei": this.deviceId,
-		    "tokenFcm":this.fcmToken
-      }
-      this._services.validateLogin(url, params).then(response=>{
-        switch(response['status']){
-          case '200':
-            var responseData = response['response']['data'];
-            this.storage.set(this.userLoginResDetail, responseData);
-            this.authService.login();
-            this.resetInput();
-            this.loadingElement.dismiss();
-          break;
-          case '400':
-              this.loadingElement.dismiss();
-              this.wrongInputAlert(response['response']['Message']);
-          break;
-          case '408':
-              this.loadingElement.dismiss();
-              this.badRequestTimeoutAlert();
-          break;
-          case '0':
-              this.loadingElement.dismiss();
-              this.badRequestAlert();
-          break;
-        }
-      })
+
     }
   }
   resetInput() {

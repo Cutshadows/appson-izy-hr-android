@@ -186,17 +186,15 @@ export class EntermarkPage implements OnInit {
   }
   checkMockLocation(){
     const config: BackgroundGeolocationConfig = {
-			desiredAccuracy: 10,
-            stationaryRadius: 100,
-			distanceFilter: 100,
+			desiredAccuracy: 65,
+            stationaryRadius: 20,
+			distanceFilter: 30,
 			notificationText: 'Habilitado',
-            debug: true,
+            debug: false,
             notificationTitle:'Geolocalización activada',
             stopOnTerminate: true,
 			postTemplate: null,
-			interval: 1000,
-			fastestInterval: 5000,
-			activitiesInterval: 1000,
+			notificationsEnabled:false
 	};
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {
@@ -217,32 +215,23 @@ export class EntermarkPage implements OnInit {
 	});
   }
 
-  async offlineAlert() {
-    this._function.requireAlert('Tu marca es capturada','De acuerdo');
+  offlineAlert() {
+    this._function.requireAlert('Marca Capturada, será validada una vez encontremos conexión al sistema.','De acuerdo');
   }
 
   async mockLocationCheck() {
-	let loadingMockLocation = await this.loadingController.create({
-		message: 'Chequeando ubicación...',
-		spinner: 'crescent',
-		cssClass:'transparent'
-	  })
-	  loadingMockLocation.present();
-
 
     this.localDate = new Date();
     this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);
 
 	if(this.validgetLocationDataArray.isFromMockProvider) {
 	  this.buttonDisabled = false;
-	  loadingMockLocation.dismiss();
 
       this.deleteStoreLocation();
       this.mockLocationErrorAlert();
 
 	} else if(this.network.type == 'none') {
 	  this.buttonDisabled = false;
-	  loadingMockLocation.dismiss();
 
 	  this.deleteStoreLocation();
 
@@ -252,9 +241,8 @@ export class EntermarkPage implements OnInit {
       this.storage.set('localDate', this.localDate);
       this.offlineAlert();
 
-	} else {
+	} else if(this.network.type!='none'){
 	  this.buttonDisabled = false;
-	  loadingMockLocation.dismiss();
       this.deleteStoreLocation();
       this.markEmployee();
     }
@@ -282,7 +270,7 @@ export class EntermarkPage implements OnInit {
 					this.markEmployeeData=response;
 					loadingMarkEmployeed.dismiss();
 					this.buttonDisabled=false;
-					this.markEmployeeResponseAlert('Marca satisfactoria');
+					this.markEmployeeResponseAlert(response['onmessage']);
 					this.buttonDisabled = false;
 					let options: NativeTransitionOptions = {
 					  duration: 800
@@ -296,7 +284,7 @@ export class EntermarkPage implements OnInit {
 				break;
 			case '400':
 					loadingMarkEmployeed.dismiss();
-					this.markEmployeeResponseAlert(response['Message']);
+					this.markEmployeeResponseAlert(response['response']);
 					this.buttonDisabled = false;
 				break;
 			case '408':

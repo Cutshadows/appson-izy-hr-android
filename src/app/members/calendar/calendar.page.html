@@ -19,10 +19,12 @@
     </ion-grid>
     <!-- left right button end -->
     <div *ngIf="employeeScheduleLeftRight">
-      <div class="ion-padding-top ion-padding-bottom">
-        <ion-text color="light" class="ion-text-uppercase">
-          <span>Semana {{ employeeScheduleLeftRight.WeekNumber }} &nbsp; &bull; &nbsp;</span>
-        </ion-text>
+      <div class="ion-padding-top ">
+        	<ion-text color="light" class="ion-text-uppercase">
+         	 <span>Semana {{ employeeScheduleLeftRight.WeekNumber }} </span><!-- &nbsp; &bull; &nbsp; -->
+			</ion-text>
+		</div>
+		<div class="ion-padding-bottom">
         <ion-text color="light" class="ion-text-uppercase">
           <span>{{ dateConvertFrom[0] }} </span>
         </ion-text>
