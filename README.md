@@ -1,2 +1,2 @@
-# izyhr_android
+# IZYHR_IOS
  izy-android
