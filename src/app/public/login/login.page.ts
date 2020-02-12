@@ -18,12 +18,6 @@ import { Network } from '@ionic-native/network/ngx';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  /* header: any = {
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    }
-  }  */
   username: string;
   password: number;
   code: string;
@@ -71,22 +65,16 @@ export class LoginPage implements OnInit {
       }
     })
     this.storage.get('deviceIdLocalStorage').then((val) => {
-      if(val != null && val != undefined) {
-        this.deviceId = val
-      }
-  })
-  //this.getFcmToken();
+      	if(val != null && val != undefined) {
+        	this.deviceId = val
+    	  }
+	  })
+	  this.storage.get('deviceFcmToken').then((val) => {
+		if(val != null && val != undefined) {
+		  this.fcmToken = val
+		}
+	})
   }
-  //getFcmToken(){
-  //  this.fcm.getToken().then(token => {
-  //    	this.storage.set('deviceFcmToken', token);
-  //    	this.fcmToken = token;
-  //  });
-  //  this.fcm.onTokenRefresh().subscribe(token => {
-  //    	this.storage.set('deviceFcmToken', token);
-  //    	this.fcmToken = token;
-  //  });
-  //}
 
   async loginWithCode() {
     if(this.code != undefined && this.code != '') {
@@ -127,7 +115,8 @@ export class LoginPage implements OnInit {
       let params = {
         "rut": this.username,
         "password": this.password,
-        "imei": this.deviceId
+		"imei": this.deviceId,
+		"tokenFcm":this.fcmToken
       }
         this._services.validateLogin(url, params).then(response=>{
         switch(response['status']){
@@ -251,7 +240,8 @@ export class LoginPage implements OnInit {
 		let params = {
 		  "rut": this.username,
 		  "password": this.password,
-		  "imei": this.deviceId
+		  "imei": this.deviceId,
+		  "tokenFcm":this.fcmToken
 		}
 		this._services.validateLogin(url, params).then(response=>{
 		  switch(response['status']){
@@ -270,7 +260,6 @@ export class LoginPage implements OnInit {
 			case '408':
 				this.loadingElement.dismiss();
 				this.badRequestTimeoutAlert();
-				//this.wrongInputAlert(response['response']['Message']);
 			break;
 			case '0':
 				this.loadingElement.dismiss();
@@ -317,7 +306,8 @@ export class LoginPage implements OnInit {
 			let params = {
 				"rut": this.username,
 				"password": this.password,
-				"imei": this.deviceId
+				"imei": this.deviceId,
+				"tokenFcm":this.fcmToken
 			}
 			this._services.validateLogin(url, params).then(response=>{
 				switch(response['status']){
@@ -335,7 +325,6 @@ export class LoginPage implements OnInit {
 				case '408':
 					this.loadingElement.dismiss();
 					this.badRequestTimeoutAlert();
-					//this.wrongInputAlert(response['response']['Message']);
 				break;
 				case '0':
 					this.loadingElement.dismiss();

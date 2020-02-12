@@ -65,6 +65,7 @@ export class AppComponent {
 				}).catch(error=>{
 				})
 					this.fcm.getToken().then(token => {
+						this.storage.set('deviceFcmToken', token);
 						this.fcmToken = token;
 					  });
 					this.fcm.onNotification()
@@ -89,7 +90,6 @@ export class AppComponent {
 								]
 							})
 							toastNotification.present();
-						 // this.localNotificationFcm(this.fcmTitle, this.fcmMessage);
 						}
 					  });
 					  this.fcm.onTokenRefresh().subscribe(token => {

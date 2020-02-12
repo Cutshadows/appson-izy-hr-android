@@ -16,12 +16,6 @@ import { DatabaseService } from '../../services/database.service';
   styleUrls: ['./calendar.page.scss'],
 })
 export class CalendarPage implements OnInit {
-  /* header: any = {
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    }
-  }  */
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
   employeeId: any
@@ -93,8 +87,6 @@ export class CalendarPage implements OnInit {
 
     this.dateTestFrom = '17/04/2019';
     this.dateTestTo = '20/04/2019';
-    // this.dateConvertFrom = this.dateTestFrom.split('/')
-    // this.dateConvertTo = this.dateTestTo.split('/')
     this.dateConvertFrom = this.testDateRangeSplit[0].split('/');
     this.dateConvertTo = this.testDateRangeSplit[1].split('/');
     if(this.employeeScheduleListDatas.length > 1) {
@@ -135,7 +127,6 @@ export class CalendarPage implements OnInit {
     });
     loadingMessage.present();
     let currentDate = new Date();
-    //let weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     let weekdays = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
     this.currentday = weekdays[currentDate.getDay()];
     let employeeId = this.employeeId;

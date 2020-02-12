@@ -14,16 +14,10 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 import { SQLite } from '@ionic-native/sqlite/ngx';
-
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
-
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
-
 import { NativePageTransitions } from '@ionic-native/native-page-transitions/ngx';
-
 import { Network } from '@ionic-native/network/ngx';
-import { ModalPageModule } from './members/modal/modal.module';
-import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module';
 
 import { FCM } from '@ionic-native/fcm/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
@@ -40,8 +34,6 @@ import { Badge } from '@ionic-native/badge/ngx';
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),
-    ModalPageModule,
-    OptionmodalPageModule
   ],
   providers: [
 	BackgroundGeolocation,

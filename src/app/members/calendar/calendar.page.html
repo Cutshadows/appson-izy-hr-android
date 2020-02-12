@@ -1,25 +1,20 @@
 <app-header titulo="MI CALENDARIO">
 </app-header>
 <ion-content fullscreen="true"  class="custom-background ion-padding">
-  <div class="custom-white center"><!-- custom-padding-left-right -->
-
+  <div class="custom-white center">
     <!-- left right button start -->
     <ion-grid>
       <ion-row>
         <ion-col size="1" offset="2">
           <ion-icon *ngIf="leftCount" name="arrow-dropleft" color="light" size="large" (click)="leftSchedule()" class="custom-p-t-md"></ion-icon>
         </ion-col>
-
         <ion-col size="7">
           <ion-img [src]="my_calendar_page" class="custom-img-7 custom-margin-auto"></ion-img>
         </ion-col>
-
         <ion-col size="1">
           <ion-icon *ngIf="rightCount" name="arrow-dropright" color="light" size="large" (click)="rightSchedule()" class="custom-p-t-md custom-p-r-sm"></ion-icon>
         </ion-col>
-
         <ion-col size="1"></ion-col>
-
       </ion-row>
     </ion-grid>
     <!-- left right button end -->
@@ -27,7 +22,7 @@
     <div *ngIf="employeeScheduleLeftRight">
       <div class="ion-padding-top">
         <ion-text color="light" class="ion-text-uppercase">
-          <span>Semana {{ employeeScheduleLeftRight.WeekNumber }} </span> <!-- &nbsp; &bull; &nbsp; -->
+          <span>Semana {{ employeeScheduleLeftRight.WeekNumber }} </span>
 		</ion-text>
       </div>
 		<div class="ion-padding-bottom">
@@ -84,11 +79,8 @@
       <div   class="animated flash slow infinite center" >
         <div style="padding-left:20%!important">
             <ion-text color="light" class="ion-text-uppercase">
-                <span ><ion-skeleton-text  class="animated" style="width:80%; height:37px!important; background-color:white!important;"></ion-skeleton-text > &nbsp; <!-- &bull; --> &nbsp;</span>
+                <span ><ion-skeleton-text  class="animated" style="width:80%; height:37px!important; background-color:white!important;"></ion-skeleton-text > &nbsp; &nbsp;</span>
               </ion-text>
-              <!-- <ion-text>
-                <span>&nbsp;&nbsp; <ion-skeleton-text animated style="--background-rgb:rgb(255,255,255);width:10%;"></ion-skeleton-text> &nbsp;&nbsp;</span>
-              </ion-text> -->
               <ion-text color="light" class="ion-text-uppercase">
                 <span><ion-skeleton-text class="animated" style="--background-rgb:rgb(255,255,255);width:10%;"></ion-skeleton-text> </span>
               </ion-text>
@@ -104,7 +96,6 @@
       </ion-grid>
     </div>
   </div>
-    <!-- <ion-button (click)="EmployeeScheduleList()" class="custom-margin" shape="round" fill="outline" expand="block" color="light" size="large">Check service</ion-button> -->
 </ion-content>
 <!-- footer start -->
 <!-- footer end -->

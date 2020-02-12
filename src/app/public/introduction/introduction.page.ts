@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { IntroductionService } from '../../services/introduction.service';
-//import {NativePageTransitions } from '@ionic-native/native-page-transitions/ngx';
-//import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 
 
@@ -25,17 +23,17 @@ export class Introduction implements OnInit {
 	},
 	{
 		title: "Notificación de marcas",
-		description: "<b>Cada cierto tiempo se enviara una notificación al colaborador sí, se encuentra con el tiempo accedido para marcar.</b>",
+		description: "<b>Cada cierto tiempo se enviará una notificación al colaborador si se encuentra con el tiempo accedido para marcar.</b>",
 		image: "assets/img/introduction/ica-slidebox-img-2.png",
 	  },
 	  {
 		title: "Control de marcas",
-		description: "<b>El colaborador tendra a disposición el control de marcas que ah realizado durante los últimos días.</b>",
+		description: "<b>El colaborador tendra a disposición el control de marcas que ha realizado durante los últimos días.</b>",
 		image: "assets/img/introduction/ica-slidebox-img-3.png",
 	  },
     {
       title: "Control de horarios y eventos",
-      description: "<b>IZY HR TEAM, permite al colaborador revisar el horario y calendario que tiene para la semana, ademas de revisar sí, tiene algún evento programado y el estado en que se encuentra.</b>",
+      description: "<b>IZY HR TEAM, permite al colaborador revisar el horario y calendario que tiene para la semana, además de revisar si tiene algún evento programado y el estado en que se encuentra.</b>",
       image: "assets/img/introduction/ica-slidebox-img-4.png",
     },
 
@@ -45,8 +43,6 @@ export class Introduction implements OnInit {
     speed: 400
   };
 	constructor(private _tutorial:IntroductionService,
-		//private nativePageTransitions: NativePageTransitions,
-		//private router: Router,
 		public navController: NavController) { }
 
   ngOnInit() {
@@ -54,7 +50,6 @@ export class Introduction implements OnInit {
   saltar_tutorial(){
     this._tutorial.introduccion.mostrar_tutorial=false;
     this._tutorial.guardar_storage();
-	//this.router.navigate(['login']);
 	this.navController.navigateRoot(['login']);
   }
 

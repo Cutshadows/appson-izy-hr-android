@@ -42,25 +42,4 @@ export class FunctionsService {
       loadingElement.dismiss()
     }, time)
   }
-  //loading login personalizado
-  /* async startLoginVerify(){
-    let loadingElementMessage = await this.loadingController.create({
-      message: 'Verificando Usuario',
-      spinner: 'crescent',
-      cssClass: 'transparent',
-    });
-    loadingElementMessage.present();
-    setTimeout(() => {
-      loadingElementMessage.dismiss()
-    }, 1200)
-  } */
-  /* let loadingElement = this.loadingController.create({
-    message: 'Verificando Usuario',
-    spinner: 'dots',
-    cssClass: 'transparent',
-  });
-
-  //CARGA EL LOADING
-   loadingElement.present();
-   loadingElement.dismiss(); */
 }

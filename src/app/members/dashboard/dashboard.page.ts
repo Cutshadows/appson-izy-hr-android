@@ -41,12 +41,12 @@ export class DashboardPage implements OnInit {
   my_profile_menu: string = 'assets/img/menu/my_profile_menu.png';
   casino_menu: string = 'assets/img/menu/casino_menu.png';
   enter_mark_menu: string = 'assets/img/menu/enter_mark_menu.png';
+  submit_event:string='assets/img/menu/submit_event.png';
   constructor(
     private authService: AuthenticationService,
     private storage: Storage,
     public toastController: ToastController,
     public navController: NavController,
-    //public navParams: NavParams,
     private nativePageTransitions: NativePageTransitions,
     private network: Network,
     public http: HttpClient,
@@ -137,6 +137,13 @@ export class DashboardPage implements OnInit {
     }
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'testing'])
+  }
+  eventSubmitGO(){
+	  let options:NativeTransitionOptions={
+		 duration:800
+	  }
+	  this.nativePageTransitions.fade(options);
+	  this.navController.navigateRoot(['members', 'eventsubmit']);
   }
 
   mymarkGo() {

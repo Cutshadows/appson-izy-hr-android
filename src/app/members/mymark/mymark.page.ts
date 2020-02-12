@@ -15,14 +15,6 @@ import { DatabaseService } from 'src/app/services/database.service';
   styleUrls: ['./mymark.page.scss'],
 })
 export class MymarkPage implements OnInit {
-
-  /* header: any = {
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    }
-  }   */
-
   userLoginResDetail: string = 'userLoginResDetail'
   currentVal=2;
   employeeId: any
@@ -85,46 +77,8 @@ export class MymarkPage implements OnInit {
       }
     })
 
-    //this.dummyData()
   }
 
-  dummyData() {
-    this.employeeMarkItems = [
-      {
-        "BranchName": "TRANSLOGIC",
-        "Date": "29-01-2019",
-        "EntryDate": "09:51",
-        "GoOutForLunch": "13:37",
-        "ArriveFromLunch": "14:02",
-        "ExitDate": "19:55"
-      },
-      {
-        "BranchName": "TRANSLOGIC",
-        "Date": "30-01-2019",
-        "EntryDate": "09:49",
-        "GoOutForLunch": "13:41",
-        "ArriveFromLunch": "14:06",
-        "ExitDate": "19:14"
-      },
-      {
-        "BranchName": "TRANSLOGIC",
-        "Date": "31-01-2019",
-        "EntryDate": "09:42",
-        "GoOutForLunch": "13:37",
-        "ArriveFromLunch": "15:01",
-        "ExitDate": "19:47"
-      }
-    ]
-
-    this.employeeMarkLeftRight = this.employeeMarkItems[0]
-
-    if(this.employeeMarkItems.length > 1) {
-      this.rightCount = this.employeeMarkItems.length - 1
-    } else {
-      this.rightCount = 0
-      this.leftCount = 0
-    }
-  }
 
   dashboardGo() {
     let options: NativeTransitionOptions = {
@@ -163,14 +117,6 @@ export class MymarkPage implements OnInit {
   }
 
   async employeeMarkService() {
-    //this.employeeMarkServiceLoaderOn()
-
-    //let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeMarks'
-
-    /*let url = 'https://dimercqa.izytimecontrol.com/api/external/EmployeeMarks'
-
-    let employeeId = "sgV8tUf7wmezDF7PZnF8oQ=="
-    let imei = "01dfbf8c-0afb-2fdd-f356-060071893881"*/
     let loadingMarkEmployed = await this.loadingController.create({
       message: 'Por favor espera...',
       spinner: 'crescent',
@@ -183,9 +129,6 @@ export class MymarkPage implements OnInit {
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeMarks?employeeId='+employeeId+'&imei='+imei;
 
 
-    //this.data = this.http.get(url+'?employeeId='+employeeId+'&imei='+imei, this.header)
-
-    //this.data.subscribe((response) => {
     this._socketService.serviceMarkEmployeed(url).then((response)=>{
       switch(response['status']){
         case '200':
@@ -213,23 +156,6 @@ export class MymarkPage implements OnInit {
             this.badRequestAlert();
             break;
         }
-      /* this.employeeMarkItems = response['response'];
-
-      if(this.employeeMarkItems.length == 0) {
-        this.noDataToast()
-      }
-
-      this.employeeMarkLeftRight = this.employeeMarkItems[0]
-
-      if(this.employeeMarkItems.length > 1) {
-        this.rightCount = this.employeeMarkItems.length - 1
-      } else {
-        this.rightCount = 0
-        this.leftCount = 0
-      }
-    }, (err) => {
-      this.employeeMarkServiceLoaderOff()
-      this.badRequestAlert() */
     })
   }
 

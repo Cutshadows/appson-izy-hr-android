@@ -22,12 +22,6 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 })
 export class EntermarkPage implements OnInit {
 
-  header: any = {
-    "headers": {
-      "Content-Type": "application/json",
-      "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    }
-  }
   currentVal=2;
   locationData: string = '';
   data: Observable<any>;
@@ -203,7 +197,6 @@ export class EntermarkPage implements OnInit {
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {
 		this.backgroundGeolocation.start();
-    	this.backgroundGeolocation.stop();
 		this.backgroundGeolocation.getLocations()
 		.then((validgetLocationData) => {
 			if(validgetLocationData.length > 0) {
@@ -212,7 +205,8 @@ export class EntermarkPage implements OnInit {
 			} else {
 		  	this.getLatLongMobile();
 			}
-	  	});
+      });
+    	this.backgroundGeolocation.stop();
       this.backgroundGeolocation.finish();
 	});
 
