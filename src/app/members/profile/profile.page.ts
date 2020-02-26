@@ -14,7 +14,7 @@ export class ProfilePage implements OnInit {
 
   userInfoItems:any
   currentVal=2;
- 
+
   userLoginResDetail: string = 'userLoginResDetail'
 
   my_profile_page: string = 'assets/img/page/my_profile_page.png'
@@ -23,24 +23,24 @@ export class ProfilePage implements OnInit {
     private authService: AuthenticationService,
     private storage: Storage,
     public navController: NavController,
-    private nativePageTransitions: NativePageTransitions    
-    ) { 
+    private nativePageTransitions: NativePageTransitions
+    ) {
 
   }
 
   ngOnInit() {
-    this.storage.get(this.userLoginResDetail).then((val) => {  
-      if(val != null && val != undefined) {    
-        this.userInfoItems = val 
+    this.storage.get(this.userLoginResDetail).then((val) => {
+      if(val != null && val != undefined) {
+		this.userInfoItems = val
       }
-    })   
+    })
   }
 
   dashboardGo() {
     let options: NativeTransitionOptions = {
       duration: 800
     }
-  
+
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'dashboard'])
   }
@@ -48,12 +48,12 @@ export class ProfilePage implements OnInit {
   logout() {
     this.authService.logout();
   }
-  
+
   changepasswordGo() {
     let options: NativeTransitionOptions = {
       duration: 800
     }
-  
+
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'changepassword'])
   }

@@ -71,6 +71,7 @@ export class ChangepasswordPage implements OnInit {
     this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'profile'])
   }
+
   async changePasswordLoaderOn() {
     this._function.requireLoading('Por favor espera...',2000);
   }

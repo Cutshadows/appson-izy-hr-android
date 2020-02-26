@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'testing', loadChildren: './testing/testing.module#TestingPageModule' },
   { path: 'mymark', loadChildren: './mymark/mymark.module#MymarkPageModule' },
   { path: 'events', loadChildren: './events/events.module#EventsPageModule' },
+  { path: 'eventsubmit', loadChildren: './eventsubmit/eventsubmit.module#EventsubmitPageModule' },
   //{ path: 'casino', loadChildren: './casino/casino.module#CasinoPageModule' },
   //{ path: 'casinoservice', loadChildren: './casinoservice/casinoservice.module#CasinoservicePageModule' },
   //{ path: 'casinooption', loadChildren: './casinooption/casinooption.module#CasinooptionPageModule' },

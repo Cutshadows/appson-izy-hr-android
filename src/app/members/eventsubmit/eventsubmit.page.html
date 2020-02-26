@@ -1,0 +1,55 @@
+<app-header titulo="SOLICITAR EVENTO">
+</app-header>
+
+<ion-content fullscreen="true"  class="custom-background ion-padding">
+	<div class="custom-padding-left-right center custom-white">
+		<div>
+		  <ion-img [src]="submit_event" class="custom-img-9 custom-margin-bottom custom-p-t-sm"></ion-img>
+		</div>
+	<form onsubmit="processForm(event)">
+		<ion-list class="custom-padding-left-right center custom-white backgroundTarget">
+			<ion-list-header class="titleEvent" > Agregar Evento</ion-list-header>
+			<ion-item color="background-color: rgba(0,0,0,0.1);" class="border-input-form">
+			<ion-label color="light" style="border-bottom-color: white!important;" class="input-form-latter" >Eventos</ion-label>
+			<ion-select
+			#SelectOptionEvents
+			cancelText="Cancelar"
+			okText="Aceptar"
+			class="alert-button"
+			style="color: #ffffff!important;"
+			(ionChange)="validate_select()">
+				<ion-select-option  *ngFor="let events of eventsType"
+				style="--color:#FF3F22!important;" [value]="events.Id"
+				>{{events.Name}}
+			</ion-select-option>
+			</ion-select>
+			</ion-item>
+
+
+	  <!-- DATETIME PICKER SELECCIONAR FECHA INICIO -->
+			<ion-item  color="background-color: rgba(0,0,0,0.1);" class="border-input-form">
+				<ion-label color="light" class="input-form-latter">Fecha Inicio</ion-label>
+				<ion-datetime displayFormat="DD-MM-YYYY" #SelectDateStart [disabled]='true' placeholder="Seleccionar fecha" style="color: #ffffff!important;"   (ionChange)="validate_date_start($event)"></ion-datetime><!-- value="2012-12-15T13:47:20.789" [min]="date_start"-->
+			</ion-item>
+			<ion-item  color="background-color: rgba(0,0,0,0.1);" class="border-input-form">
+				<ion-label color="light" class="input-form-latter">Fecha Termino</ion-label>
+				<ion-datetime displayFormat="DD-MM-YYYY" #SelectDateEnd [disabled]='true' placeholder="Seleccionar fecha" style="color: #ffffff!important;" (ionChange)="validate_date_end($event)" ></ion-datetime>
+			</ion-item>
+	  <!-- DATETIME PICKER SELECCIONAR FECHA TERMINO -->
+	  <!-- Textarea in an item with a floating label -->
+			<ion-item  color="background-color: rgba(0,0,0,0.1);" style="--highlight-background:rgba(0, 0, 0, 0)!important;" class="border-input-form">
+				<ion-label position="floating" color="light"  style="--ion-color-primary: rgb(255, 255, 255)!important;"  class="input-form-latter">Agregar comentarios de solicitud</ion-label>
+				<ion-textarea rows="6" cols="20" #textAreaDetail (ionChange)="validate_textarea($event)" style="color: #ffffff!important;" [disabled]='true'></ion-textarea>
+			</ion-item>
+		</ion-list>
+		  <div class="ion-padding">
+			<ion-button class="custom-s-margin" #buttonSendEvent [disabled]='true' shape="round" fill="outline" expand="block" color="light" size="large" (click)="send_event_request()">Agregar</ion-button><!--  expand="block" type="submit" class="ion-no-margin" -->
+		  </div>
+		</form>
+	</div>
+</ion-content>
+<app-menu-footer
+[valCapa]="currentVal"
+id="eventsubmit"
+(goDashboard)="dashboardGo()"
+(logout)="logout()"></app-menu-footer>

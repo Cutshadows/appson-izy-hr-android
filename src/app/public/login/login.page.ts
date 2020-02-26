@@ -122,9 +122,9 @@ export class LoginPage implements OnInit {
       let params = {
         "rut": this.username,
         "password": this.password,
-		"imei": this.deviceId,
+		"imei":this.deviceId,
 		"tokenFcm":this.fcmToken
-      }
+	  }
         this._services.validateLogin(url, params).then(response=>{
         switch(response['status']){
           case '200':
@@ -306,8 +306,8 @@ export class LoginPage implements OnInit {
 				let params = {
 					"rut": this.username,
 					"password": this.password,
-						"imei": this.deviceId,
-						"tokenFcm":this.fcmToken
+					"imei": this.deviceId,
+					"tokenFcm":this.fcmToken
 				}
 				this._services.validateLogin(url, params).then(response=>{
 					switch(response['status']){

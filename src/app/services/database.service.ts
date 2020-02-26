@@ -31,23 +31,21 @@ export class DatabaseService {
 			status,
 			response
 			}
-			if(response || response['status']==1){
-				if(response==408){
-					jsonRespond.status="408";
-					jsonRespond.response=response;
-					this.response=jsonRespond;
-					resolve(jsonRespond);
-				}else{
-					jsonRespond.status="200";
-					jsonRespond.response=response;
-					this.response=jsonRespond;
-					resolve(jsonRespond);
-				}
+			if(response && response['status']==1){
+				jsonRespond.status="200";
+				jsonRespond.response=response;
+				this.response=jsonRespond;
+				resolve(jsonRespond);
 			}else if(response && response['status']==0){
 				jsonRespond.status="400";
 				jsonRespond.response=response;
 				this.response=jsonRespond;
 				resolve(this.response);
+			}else if(response ==408){
+				jsonRespond.status="408";
+				jsonRespond.response=response;
+				this.response=jsonRespond;
+				resolve(jsonRespond);
 			}
       },
       (error: HttpErrorResponse)=>{

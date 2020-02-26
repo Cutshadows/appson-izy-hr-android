@@ -189,10 +189,8 @@ export class EntermarkPage implements OnInit {
 			desiredAccuracy: 65,
             stationaryRadius: 20,
 			distanceFilter: 30,
-			notificationText: 'Habilitado',
             debug: false,
-            notificationTitle:'Geolocalización activada',
-            stopOnTerminate: true,
+            stopOnTerminate: false,
 			postTemplate: null,
 			notificationsEnabled:false
 	};
@@ -200,8 +198,8 @@ export class EntermarkPage implements OnInit {
     .then((location: BackgroundGeolocationResponse) => {
       this.backgroundGeolocation.finish();
 	});
-    this.backgroundGeolocation.start();
-    this.backgroundGeolocation.stop();
+	this.backgroundGeolocation.start();
+	this.backgroundGeolocation.stop();
     this.backgroundGeolocation.getLocations()
     .then((validgetLocationData) => {
       if(validgetLocationData.length > 0) {
@@ -209,14 +207,12 @@ export class EntermarkPage implements OnInit {
         this.mockLocationCheck();
       } else {
         this.getLatLongMobile();
-      }
-    }).finally(()=>{
-		this.backgroundGeolocation.stop();
-	});
+	  }
+    });
   }
 
   offlineAlert() {
-    this._function.requireAlert('Marca Capturada, será validada una vez encontremos conexión al sistema.','De acuerdo');
+    this._function.requireAlert('Marca capturada, será validada una vez encontremos conexión al sistema.','De acuerdo');
   }
 
   async mockLocationCheck() {
@@ -264,7 +260,8 @@ export class EntermarkPage implements OnInit {
       "isBuffer": 'false',
       "date": this.localDate
 	}
-	this._socketService.markEmployee(url, params).then((response)=>{
+	this._socketService.markEmployee(url, params)
+	.then((response)=>{
 		switch(response['status']){
 			case '200':
 					this.markEmployeeData=response;

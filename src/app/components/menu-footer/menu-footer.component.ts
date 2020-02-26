@@ -45,7 +45,10 @@ export class MenuFooterComponent implements OnInit {
       break;
       case 'changePassword':
         this.profileEmployed.emit();
-      break;
+	  break;
+	  case 'eventsubmit':
+		this.goDashboard.emit();
+
     }
   }
   Logout() {
