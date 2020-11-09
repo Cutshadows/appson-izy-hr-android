@@ -11,6 +11,10 @@ import { FCM } from '@ionic-native/fcm/ngx';
 import { Router } from '@angular/router';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { IntroductionService } from './services/introduction.service';
+import { DarkthemeService } from './services/darktheme.service';
+import { CodePush, SyncStatus } from '@ionic-native/code-push/ngx';
+import { FunctionsService } from './services/functions.service';
+
 
 @Component({
   selector: 'app-root',
@@ -31,11 +35,15 @@ export class AppComponent {
 	private fcm:FCM,
 	private router:Router,
 	private localNotifications:LocalNotifications,
-    private _tutorial:IntroductionService,
+	private _tutorial:IntroductionService,
+	private darkTheme:DarkthemeService,
+	private codePush:CodePush,
+	private _function:FunctionsService
   ) {
     this.initializeApp();
   }
   initializeApp() {
+
     this.platform.ready().then(() => {
 		this._tutorial.cargar_storage()
 		.then(()=>{
@@ -64,8 +72,26 @@ export class AppComponent {
 		this.fcm.getToken().then((tokn)=>{
 	  	});
 		this.statusBar.styleDefault();
-      	this.splashScreen.hide();
+		  this.splashScreen.hide();
+			if(this.platform.is('android')){
+				this.codePush.sync({}, (progress)=>{
 
+				}).subscribe((status)=>{
+					if(status==SyncStatus.CHECKING_FOR_UPDATE)
+						this._function.requireLoading('Verificando actualizaciones', 1000);
+					if(status==SyncStatus.DOWNLOADING_PACKAGE)
+						this._function.requireLoading('Descargando paquetes', 1000);
+					if(status==SyncStatus.IN_PROGRESS)
+						this._function.requireLoading('En proceso', 1000);
+					if(status==SyncStatus.INSTALLING_UPDATE)
+						this._function.requireLoading('Instalando actualización', 1000);
+					if(status==SyncStatus.UPDATE_INSTALLED)
+						this._function.requireLoading('Actualización instalada', 1000);
+					if(status==SyncStatus.ERROR)
+						this._function.requireLoading('Error', 1000);
+				})
+			}
+		  //this.darkTheme.checkDarkTheme();
       this.authService.authenticationState.subscribe(state => {
         if(state) {
           let options: NativeTransitionOptions = {
@@ -83,6 +109,7 @@ export class AppComponent {
 	  });
 	});
   }
+
   localNotificationFcm(fcmTitle, fcmMessage) {
 	this.localNotifications.schedule({
 	  title: fcmTitle,

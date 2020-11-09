@@ -23,7 +23,7 @@ export class MymarkPage implements OnInit {
     }
   }   */
   @ViewChild('slidesMymark')slide: IonSlides;
-  userLoginResDetail: string = 'userLoginResDetail'
+  userLoginResDetail: string ='userLoginResDetail';
   currentVal=2;
   employeeId: any
   liveUserCode: any

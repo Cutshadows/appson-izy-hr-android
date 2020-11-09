@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Observable } from 'rxjs';
 import { Storage } from '@ionic/storage';
-import { ToastController, NavController, NavParams, AlertController, LoadingController } from '@ionic/angular';
+import { ToastController, NavController, NavParams, AlertController, LoadingController, Platform } from '@ionic/angular';
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Network } from '@ionic-native/network/ngx';
 import { DatabaseService } from '../../services/database.service';
 import { FunctionsService } from '../../services/functions.service';
+// import { CodePush, SyncStatus } from '@ionic-native/code-push/ngx';
 
 @Component({
   selector: 'app-dashboard',
@@ -46,7 +47,7 @@ export class DashboardPage implements OnInit {
     public alertController: AlertController,
 	public loadingController: LoadingController,
 	private __serviceData:DatabaseService,
-	private _function:FunctionsService
+	private _function:FunctionsService,
     ) { }
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
@@ -95,7 +96,7 @@ export class DashboardPage implements OnInit {
           }
         }
       }
-    });
+	});
   }
 
 

@@ -29,11 +29,23 @@
 	  <!-- DATETIME PICKER SELECCIONAR FECHA INICIO -->
 			<ion-item  color="background-color: rgba(0,0,0,0.1);" class="border-input-form">
 				<ion-label color="light" class="input-form-latter">Fecha Inicio</ion-label>
-				<ion-datetime displayFormat="DD-MM-YYYY" #SelectDateStart [disabled]='true' placeholder="Seleccionar fecha" style="color: #ffffff!important;"   (ionChange)="validate_date_start($event)"></ion-datetime><!-- value="2012-12-15T13:47:20.789" [min]="date_start"-->
+				<ion-datetime
+				displayFormat="DD-MM-YYYY"
+				#SelectDateStart
+				[disabled]='true'
+				placeholder="Seleccionar fecha"
+				style="color: #ffffff!important;"
+				(ionChange)="validate_date_start($event)"></ion-datetime><!-- value="2012-12-15T13:47:20.789" [min]="date_start"-->
 			</ion-item>
 			<ion-item  color="background-color: rgba(0,0,0,0.1);" class="border-input-form">
 				<ion-label color="light" class="input-form-latter">Fecha Termino</ion-label>
-				<ion-datetime displayFormat="DD-MM-YYYY" #SelectDateEnd [disabled]='true' placeholder="Seleccionar fecha" style="color: #ffffff!important;" (ionChange)="validate_date_end($event)" ></ion-datetime>
+				<ion-datetime
+				displayFormat="DD-MM-YYYY"
+				#SelectDateEnd
+				[disabled]='true'
+				placeholder="Seleccionar fecha"
+				style="color: #ffffff!important;"
+				(ionChange)="validate_date_end($event)" ></ion-datetime>
 			</ion-item>
 	  <!-- DATETIME PICKER SELECCIONAR FECHA TERMINO -->
 	  <!-- Textarea in an item with a floating label -->
@@ -43,7 +55,16 @@
 			</ion-item>
 		</ion-list>
 		  <div class="ion-padding">
-			<ion-button class="custom-s-margin" #buttonSendEvent [disabled]='true' shape="round" fill="outline" expand="block" color="light" size="large" (click)="send_event_request()">Agregar</ion-button><!--  expand="block" type="submit" class="ion-no-margin" -->
+			<ion-button
+			class="custom-s-margin button-pulse-mark"
+			#buttonSendEvent
+			[disabled]='true'
+			shape="round"
+			fill="outline"
+			expand="block"
+			color="light"
+			size="large"
+			(click)="send_event_request()">Agregar</ion-button><!--  expand="block" type="submit" class="ion-no-margin" -->
 		  </div>
 		</form>
 	</div>

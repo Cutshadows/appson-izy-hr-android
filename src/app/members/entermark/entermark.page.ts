@@ -190,9 +190,9 @@ export class EntermarkPage implements OnInit {
             stationaryRadius: 20,
 			distanceFilter: 30,
             debug: false,
-            stopOnTerminate: false,
+            stopOnTerminate: true,
 			postTemplate: null,
-			notificationsEnabled:false
+			//notificationsEnabled:false
 	};
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {

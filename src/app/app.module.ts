@@ -29,6 +29,8 @@ import { FCM } from '@ionic-native/fcm/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { IntroductionService } from './services/introduction.service';
 
+import {CodePush} from '@ionic-native/code-push/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -54,7 +56,8 @@ import { IntroductionService } from './services/introduction.service';
     NativePageTransitions,
     SQLite,
 	Network,
-	FCM
+	FCM,
+	CodePush
   ],
   bootstrap: [AppComponent]
 })

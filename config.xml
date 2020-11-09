@@ -1,5 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.izyhrteam" version="1.1.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <platform name="android">
+        <preference name="CodePushDeploymentKey" value="s0HI-ciLcggFochraqcX17ZVm230wSaXgOoiI" />
+    </platform>
     <name>IZY HR TEAM</name>
     <description>Aplicación de recursos humanos que verifica la asistencia y tiempo de trabajo de los empleados,a través de la marcación validada por GPS</description>
     <author email="cwerner@izytech.com" href="http://www.izytech.com">IZY TECH</author>

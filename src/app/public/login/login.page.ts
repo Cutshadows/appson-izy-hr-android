@@ -111,6 +111,7 @@ export class LoginPage implements OnInit {
       this.getDeviceId();
     }
     else {
+		console.log(this.deviceId);
       // save code start
      this.loadingElement = await this.loadingController.create({
       message: 'Por favor espera...',

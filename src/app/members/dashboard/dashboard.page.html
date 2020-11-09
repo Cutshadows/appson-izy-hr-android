@@ -11,26 +11,26 @@
       <!-- first row start -->
       <ion-row class="custom-sm-margin">
         <ion-col size="4" class="size-sm">
-          <div (click)="calendarGo()">
-            <ion-img [src]="my_calendar_menu" class="custom-img-7 custom-margin-auto"></ion-img>
+          <div (click)="calendarGo()" class="button-pulse">
+            <div class="custom-img-7 custom-margin-auto my_calendar_menu"></div><!--  button-pulse [src]="my_calendar_menu" -->
+		  </div>
+		  <div>
             <h6 class="custom-font-sm custom-bold-text">MI CALENDARIO</h6>
-          </div>
+		  </div>
         </ion-col>
-        <ion-col size="4" class="size-sm">
-          <div (click)="myeventsGo()">
-            <ion-img [src]="my_events_menu" class="custom-img-7 custom-margin-auto"></ion-img>
+        <ion-col size="4" class="size-sm" >
+          <div (click)="myeventsGo()"  style="border:none!important;"  class="button-pulse">
+			<div  class="custom-img-7 custom-margin-auto my_events_menu"></div><!-- [src]="my_events_menu" -->
+		  </div>
+		  <div>
             <h6 class="custom-font-sm custom-bold-text">MIS EVENTOS</h6>
           </div>
 		</ion-col>
-		<!-- <ion-col size="4" class="size-sm">
-			<div (click)="mymarkGo()">
-			  <ion-img [src]="my_marks_menu" class="custom-img-7 custom-margin-auto"></ion-img>
-			  <h6 class="custom-font-sm custom-bold-text">MIS MARCAS</h6>
-			</div>
-		  </ion-col> -->
         <ion-col size="4" class="size-sm" >
-			<div (click)="eventSubmitGO()">
-			  <ion-img [src]="submit_event" class="custom-img-7 custom-margin-auto"></ion-img>
+			<div (click)="eventSubmitGO()" class="button-pulse">
+			  <div  class="custom-img-7 custom-margin-auto submit_event"></div> <!-- [src]="submit_event" -->
+			   </div>
+		  		<div>
 			  <h6 class="custom-font-sm custom-bold-text">SOLICITAR EVENTO</h6>
 			</div>
 		  </ion-col>
@@ -40,22 +40,28 @@
       <ion-row class="custom-s-margin">
 		<ion-col
 		 size="4" size-sm>
-          <div (click)="profileGo()">
-            <ion-img [src]="my_profile_menu" class="custom-img-7 custom-margin-auto"></ion-img>
+          <div (click)="profileGo()" class="button-pulse">
+			<div  class="custom-img-7 custom-margin-auto my_profile_menu"></div><!--[src]="my_profile_menu"  -->
+			 	</div>
+		  		<div>
             <h6 class="custom-font-sm custom-bold-text">MI PERFIL</h6>
           </div>
 		</ion-col>
 		<ion-col size="4" class="size-sm">
-			<div (click)="mymarkGo()">
-			  <ion-img [src]="my_marks_menu" class="custom-img-7 custom-margin-auto"></ion-img>
+			<div (click)="mymarkGo()" class="button-pulse">
+			  <div  class="custom-img-7 custom-margin-auto my_marks_menu"></div><!-- [src]="my_marks_menu" -->
+			  </div>
+		  		<div>
 			  <h6 class="custom-font-sm custom-bold-text">MIS MARCAS</h6>
 			</div>
 		  </ion-col>
         <ion-col size="4" class="size-sm" *ngIf="userInfoItems.HasGeolocationMarks">
-          <div (click)="entermarkGo()">
-            <ion-img [src]="enter_mark_menu" class="custom-img-7 custom-margin-auto"></ion-img>
-            <h6 class="custom-font-sm custom-bold-text">INGRESAR MARCA</h6>
-          </div>
+          <div (click)="entermarkGo()" class="button-pulse">
+					<div  class="custom-img-7 custom-margin-auto enter_mark_menu"></div><!-- [src]="enter_mark_menu" -->
+				</div>
+		  		<div>
+            		<h6 class="custom-font-sm custom-bold-text">INGRESAR MARCA</h6>
+          	</div>
 		</ion-col>
       </ion-row>
       <!-- second row end -->

@@ -22,6 +22,7 @@
     "@angular/router": "^7.2.2",
     "@ionic-native/android-permissions": "^4.20.0",
     "@ionic-native/background-geolocation": "^5.16.0",
+    "@ionic-native/code-push": "^5.29.0",
     "@ionic-native/core": "^5.16.0",
     "@ionic-native/fcm": "^5.16.0",
     "@ionic-native/geolocation": "^5.16.0",
@@ -38,6 +39,7 @@
     "@ionic/storage": "^2.2.0",
     "@mauron85/cordova-plugin-background-geolocation": "^3.1.0",
     "com.telerik.plugins.nativepagetransitions": "0.6.5",
+    "cordova": "^10.0.0",
     "cordova-android": "^8.1.0",
     "cordova-ios": "4.5.5",
     "cordova-plugin-badge": "^0.8.8",
@@ -73,8 +75,14 @@
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "^2.0.8",
     "@types/node": "~10.12.0",
+    "code-push": "^3.0.1",
     "codelyzer": "~4.5.0",
+    "cordova-plugin-advanced-http": "^3.1.0",
+    "cordova-plugin-code-push": "^2.0.0",
+    "cordova-plugin-dialogs": "^2.0.2",
+    "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-geolocation": "^4.0.2",
+    "cordova-plugin-zip": "^3.1.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.1.4",
@@ -125,7 +133,8 @@
         "GRADLE_TOOLS_VERSION": "5.4.1",
         "GOOGLE_SERVICES_VERSION": "4.2.0"
       },
-      "cordova-plugin-local-notification": {}
+      "cordova-plugin-local-notification": {},
+      "cordova-plugin-code-push": {}
     },
     "platforms": [
       "ios",

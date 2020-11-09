@@ -4,6 +4,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavController } from '@ionic/angular';
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
+import { DarkthemeService } from '../../services/darktheme.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +15,7 @@ export class ProfilePage implements OnInit {
 
   userInfoItems:any
   currentVal=2;
+  darkMode: boolean=false;
 
   userLoginResDetail: string = 'userLoginResDetail'
 
@@ -23,9 +25,10 @@ export class ProfilePage implements OnInit {
     private authService: AuthenticationService,
     private storage: Storage,
     public navController: NavController,
-    private nativePageTransitions: NativePageTransitions
+	private nativePageTransitions: NativePageTransitions,
+	private darkModetheme:DarkthemeService
     ) {
-
+		this.darkMode=this.darkModetheme.checkDarkTheme();
   }
 
   ngOnInit() {
@@ -35,6 +38,10 @@ export class ProfilePage implements OnInit {
       }
     })
   }
+  valDarkMode(){
+	this.darkMode=!this.darkMode;
+	document.body.classList.toggle('dark');
+	}
 
   dashboardGo() {
     let options: NativeTransitionOptions = {
