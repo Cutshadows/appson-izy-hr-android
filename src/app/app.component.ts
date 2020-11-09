@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { IntroductionService } from './services/introduction.service';
 import { DarkthemeService } from './services/darktheme.service';
-import { CodePush, SyncStatus } from '@ionic-native/code-push/ngx';
+//import { CodePush, SyncStatus } from '@ionic-native/code-push/ngx';
 import { FunctionsService } from './services/functions.service';
 
 
@@ -37,7 +37,7 @@ export class AppComponent {
 	private localNotifications:LocalNotifications,
 	private _tutorial:IntroductionService,
 	private darkTheme:DarkthemeService,
-	private codePush:CodePush,
+	//private codePush:CodePush,
 	private _function:FunctionsService
   ) {
     this.initializeApp();
@@ -73,7 +73,7 @@ export class AppComponent {
 	  	});
 		this.statusBar.styleDefault();
 		  this.splashScreen.hide();
-			if(this.platform.is('android')){
+			/* if(this.platform.is('android')){
 				this.codePush.sync({}, (progress)=>{
 
 				}).subscribe((status)=>{
@@ -90,7 +90,7 @@ export class AppComponent {
 					if(status==SyncStatus.ERROR)
 						this._function.requireLoading('Error', 1000);
 				})
-			}
+			} */
 		  //this.darkTheme.checkDarkTheme();
       this.authService.authenticationState.subscribe(state => {
         if(state) {
