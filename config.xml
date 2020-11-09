@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.izyhr" version="8.1.10" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.izyhr" version="9.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>IZY-HR-TEAM</name>
     <description>Aplicación de recursos humanos que verifica la asistencia y tiempo de trabajo de los empleados,a través de la marcación validada por GPS</description>
     <author email="cwerner@izytech.com" href="http://www.izytech.com">IZY TECH</author>
@@ -104,9 +104,9 @@
                 <string>remote-notification</string>
             </array>
         </config-file>
-		<config-file platform="ios" target="*-Info.plist" parent="NSMotionUsageDescription">
-			<string>IZY HR TEAM needs access to motion data to display steps.</string>
-		</config-file>
+        <config-file parent="NSMotionUsageDescription" platform="ios" target="*-Info.plist">
+            <string>IZY HR TEAM needs access to motion data to display steps.</string>
+        </config-file>
         <config-file parent="NSLocationWhenInUseUsageDescription" target="*-Info.plist">
             <string>LOCATION_WHEN_IN_USE_USAGE_DESCRIPTION</string>
         </config-file>
@@ -129,5 +129,4 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
         <string>Necesitamos tu ubicacion</string>
     </edit-config>
-
 </widget>
