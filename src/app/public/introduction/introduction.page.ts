@@ -50,7 +50,6 @@ export class Introduction implements OnInit {
   saltar_tutorial(){
     this._tutorial.introduccion.mostrar_tutorial=false;
     this._tutorial.guardar_storage();
-	this.navController.navigateRoot(['login']);
+	  this.navController.navigateRoot(['login']);
   }
-
 }

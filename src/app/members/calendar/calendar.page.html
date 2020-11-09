@@ -6,13 +6,25 @@
     <ion-grid>
       <ion-row>
         <ion-col size="1" offset="2">
-          <ion-icon *ngIf="leftCount" name="arrow-dropleft" color="light" size="large" (click)="leftSchedule()" class="custom-p-t-md"></ion-icon>
+		  <ion-icon
+			  *ngIf="leftCount"
+			  name="arrow-dropleft"
+			  color="light"
+			  size="large"
+			  (click)="leftSchedule()"
+			  class="custom-p-t-m button-pulse-left-arrow"></ion-icon>
         </ion-col>
         <ion-col size="7">
           <ion-img [src]="my_calendar_page" class="custom-img-7 custom-margin-auto"></ion-img>
         </ion-col>
         <ion-col size="1">
-          <ion-icon *ngIf="rightCount" name="arrow-dropright" color="light" size="large" (click)="rightSchedule()" class="custom-p-t-md custom-p-r-sm"></ion-icon>
+		  <ion-icon
+		  	*ngIf="rightCount"
+			  name="arrow-dropright"
+			  color="light"
+			  size="large"
+			  (click)="rightSchedule()"
+			  class="custom-p-t-md custom-p-r-sm button-pulse-right-arrow"></ion-icon>
         </ion-col>
         <ion-col size="1"></ion-col>
       </ion-row>

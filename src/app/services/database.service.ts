@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { delay, timeout, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 
 @Injectable({
@@ -18,55 +18,33 @@ export class DatabaseService {
 
   constructor(public http: HttpClient,){}
   validateLogin(url, params){
+
     let Promesa=new Promise((resolve)=>{
+		let jsonRespond:any={
+			status:String,
+			response:JSON
+			}
 	  	this.http.post(url, params, this.header)
 			.pipe(
 				timeout(10000),
 				catchError(
-					error=>of(408)
+					error=>throwError(error)
 				)
 			).subscribe((response)=>{
-			let jsonRespond={
-			status,
-			response
-			}
 			if(response && response['status']==1){
-				if(response==408){
-					jsonRespond.status="408";
-					jsonRespond.response=response;
-					this.response=jsonRespond;
-					resolve(jsonRespond);
-				}else{
-					jsonRespond.status="200";
-					jsonRespond.response=response;
-					this.response=jsonRespond;
-					resolve(jsonRespond);
-				}
+				jsonRespond.status="200";
+				jsonRespond.response=response['data'];
+				resolve(jsonRespond);
 			}else if(response && response['status']==0){
 				jsonRespond.status="400";
 				jsonRespond.response=response;
-				this.response=jsonRespond;
-				resolve(this.response);
+				resolve(jsonRespond);
 			}
       },
       (error: HttpErrorResponse)=>{
-        	for (const key in error) {
-          		switch(key){
-					case 'status':
-						if (error.hasOwnProperty(key)) {
-						const element = error[key];
-							if(element==0){
-								let jsonResponseError={
-								status
-								}
-								jsonResponseError.status="0";
-								this.response=jsonResponseError;
-								resolve(this.response);
-							}
-						}
-					break;
-          		}
-        	}
+		  jsonRespond.status=`${error.status}`;
+		  jsonRespond.response=error.error;
+		  resolve(jsonRespond);
       });
     })
     return Promesa;
@@ -85,8 +63,6 @@ export class DatabaseService {
 						status,
 						response
 					}
-					//(Object.keys(response).length == 0)==true
-					//if(response){
 					if((Object.keys(response).length != 0)==true){
 						if(response==408){
 							jsonRespond.status="408";
@@ -97,7 +73,6 @@ export class DatabaseService {
 							jsonRespond.response=response;
 							resolve(jsonRespond);
 						}
-					//}else if(!response){
 					}else if((Object.keys(response).length == 0)==true){
 						jsonRespond.status="400";
 						jsonRespond.response=response;

@@ -121,14 +121,14 @@ export class LoginPage implements OnInit {
         this._services.validateLogin(url, params).then(response=>{
         switch(response['status']){
           case '200':
-            var responseData = response['response']['data'];
+            this.loadingElement.dismiss();
+            var responseData = response['response'];
             this.storage.set(this.userLoginResDetail, responseData);
             this.codeArray.push(this.codeLowerCase);
             this.storage.set('userCode', this.codeArray);
             this.storage.set('liveUserCode', this.codeLowerCase);
             this.authService.login();
             this.resetInput();
-            this.loadingElement.dismiss();
           break;
           case '400':
               this.loadingElement.dismiss();
@@ -246,7 +246,7 @@ export class LoginPage implements OnInit {
 		this._services.validateLogin(url, params).then(response=>{
 		  switch(response['status']){
 			case '200':
-				var responseData = response['response']['data'];
+				var responseData = response['response'];
 				this.storage.set(this.userLoginResDetail, responseData);
 				this.storage.set('liveUserCode', this.code);
 				this.authService.login();
@@ -302,7 +302,6 @@ export class LoginPage implements OnInit {
 		})
 	  }else if(this.network.type!='none'){
 			var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
-
 			let params = {
 				"rut": this.username,
 				"password": this.password,
@@ -312,7 +311,7 @@ export class LoginPage implements OnInit {
 			this._services.validateLogin(url, params).then(response=>{
 				switch(response['status']){
 				case '200':
-					var responseData = response['response']['data'];
+					var responseData = response['response'];
 					this.storage.set(this.userLoginResDetail, responseData);
 					this.authService.login();
 					this.resetInput();

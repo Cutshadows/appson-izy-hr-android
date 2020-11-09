@@ -205,7 +205,7 @@
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	margin: auto;  
+	margin: auto;
 }
 
 .custom-border-button {
@@ -228,7 +228,7 @@
 }
 
 .custom-box-shadow {
-  box-shadow: 5px 10px 18px #c4c1c1;  
+  box-shadow: 5px 10px 18px #c4c1c1;
 }
 
 .custom-color-black {
@@ -236,19 +236,19 @@
 }
 
 .custom-back-color-white {
-  background-color: #f4f5f8;  
+  background-color: #f4f5f8;
 }
 
 .custom-back-color-green {
-  background-color: #a3f296;  
+  background-color: #a3f296;
 }
 
 .custom-back-color-green-light {
-  background-color: #c4f5bb;  
+  background-color: #c4f5bb;
 }
 
 .custom-back-color-yello {
-  background-color: #faf586;  
+  background-color: #faf586;
 }
 
 .custom-back-color-sky-light {
@@ -258,7 +258,7 @@
 .classAlert{
   --background:rgb(255, 255, 255);
   color:rgb(215, 36, 66)!important;
-  
+
 }
 .cssAlert{
 background-color: rgb(215, 36, 66)!important;
@@ -288,9 +288,9 @@ background-color: rgba(200, 200, 200, 0.5);
   --spinner-color:rgb(215, 36, 66)!important;
   .spinner-crescent circle {
     stroke-width: 80px;
-    
+
   }
-  
+
 }
 }
 .custom-background-red{
@@ -359,28 +359,29 @@ background: rgb(215, 36, 66)!important;
 //EFECTO DE LOS BOTONES EN EL DASHBOARD
 .button-pulse {
   display: inline-flex;
-  box-shadow: 0 3px 2px 0 rgba(0,0,0,0.1);
+  box-shadow: 4px 8px 5px 4px rgba(0,0,0,0.1);
   border-width: 100%!important;
   border-radius: 100%!important;
   color: #fff;
   font-family: Lato, Arial, sans-serif;
   text-transform: uppercase;
   text-decoration: none;
-  transition: background .3s, transform .3s, box-shadow .3s;
+  transition: background .1s, transform .2s, box-shadow .1s;
    will-change: transform;
-  
+
   &:hover {
     background: darken(rgba(29, 27, 28, 0.353),10%);
-    transform: translate3d(0, -4px, 0);
+    transform: translate3d(0, -2px, 0);
   }
   &:active {
     box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
-    transform: translate3d(0, 4px, 0);
+    transform: translate3d(0, 2px, 0);
   }
 }
 
-.pulse-button {
+/*.pulse-button {
   position: relative;
+
   &:before, &:after {
     content: '';
     position: absolute;
@@ -404,4 +405,172 @@ background: rgb(215, 36, 66)!important;
   &:hover:before, &:hover:after {
     display: none;
   }
+}*/
+//EFECTO DE LOS BOTONES EN EL DASHBOARD
+.button-pulse {
+	display: inline-flex;
+	box-shadow: 4px 8px 5px 4px rgba(0,0,0,0.1);
+	border-width: 100%!important;
+	border-radius: 100%!important;
+	color: #fff;
+	font-family: Lato, Arial, sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: background .1s, transform .2s, box-shadow .1s;
+	 will-change: transform;
+
+	&:hover {
+	  background: darken(rgba(29, 27, 28, 0.353),10%);
+	  transform: translate3d(0, -2px, 0);
+	}
+	&:active {
+	  background: darken(rgba(247, 231, 4, 0.589), 5%);
+	  box-shadow: 4px 8px 5px 4px rgba(0,0,0,0.1);
+	  transform: translate3d(0, 2px, 0);
+	}
+  }
+  .button-pulse-mark {
+	  //display: inline-flex;
+	  box-shadow: 0 3px 2px 0 rgba(0,0,0,0.1);
+	  // border-width: 100%!important;
+	  // border-radius: 100%!important;
+	  color: #fff;
+	  font-family: Lato, Arial, sans-serif;
+	  text-transform: uppercase;
+	  text-decoration: none;
+	  transition: background .3s, transform .3s, box-shadow .3s;
+	   will-change: transform;
+
+	  &:hover {
+			background: darken(rgba(29, 27, 28, 0.353),10%);
+			transform: translate3d(0, -2px, 0);
+	  }
+	  &:active {
+			box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+			transform: translate3d(0, 2px, 0);
+	  }
+	}
+
+	.button-pulse-right-arrow {
+	  //display: inline-flex;
+	  //box-shadow: 0 3px 2px 0 rgba(0,0,0,0);
+	  // border-width: 100%!important;
+	  // border-radius: 100%!important;
+	  color: #fff;
+	  font-family: Lato, Arial, sans-serif;
+	  text-transform: uppercase;
+	  text-decoration: none;
+	  transition: background .3s, transform .3s, box-shadow .3s;
+	   will-change: transform;
+
+	  &:hover {
+		//background: darken(rgba(29, 27, 28, 0.353),10%);
+		transform: translate3d(-4px, 0, 0);
+	  }
+	  &:active {
+		box-shadow: 0 1px 1px 0 rgba(0,0,0,0);
+		transform: translate3d(4px, 0, 0);
+	  }
+	}
+	.button-pulse-left-arrow {
+	  //display: inline-flex;
+	  //box-shadow: 0 3px 2px 0 rgba(0,0,0,0);
+	  // border-width: 100%!important;
+	  // border-radius: 100%!important;
+	  color: #fff;
+	  font-family: Lato, Arial, sans-serif;
+	  text-transform: uppercase;
+	  text-decoration: none;
+	  transition: background .3s, transform .3s, box-shadow .3s;
+	   will-change: transform;
+
+	  &:hover {
+	   // background: darken(rgba(29, 27, 28, 0.353),10%);
+		transform: translate3d(4px, 0, 0);
+	  }
+	  &:active {
+		box-shadow: 0 1px 1px 0 rgba(0,0,0,0);
+		transform: translate3d(-4px, 0, 0);
+	  }
+	}
+
+  .pulse-button {
+	position: relative;
+	&:before, &:after {
+	  content: '';
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  border-width: 100%!important;
+	  border-radius: 100%!important;
+	  width: 20px;
+	  height: 20px;
+	  opacity: 0;
+	  margin: auto;
+	}
+	&:before {
+	  animation: pulse 1.5s infinite linear;
+	}
+	&:after {
+	  animation: pulse 2s .4s infinite linear;
+	}
+	&:hover:before, &:hover:after {
+	  display: none;
+	}
+  }
+  div.my_calendar_menu{
+	background-image: url("./assets/img/menu/my_calendar_menu.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
+	transform: background-image 300ms;
+}
+div.my_calendar_menu:active{
+	background-image: url("./assets/img/menu/my_calendar_menu_click.png");
+}
+div.my_events_menu{
+	background-image: url("./assets/img/menu/my_events_menu.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
+	transform: background-image 300ms;
+}
+div.my_events_menu:active{
+	background-image: url("./assets/img/menu/my_events_menu_click.png");
+}
+div.submit_event{
+	background-image: url("./assets/img/menu/submit_event.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
+	transform: background-image 300ms;
+}
+div.submit_event:active{
+	background-image: url("./assets/img/menu/submit_event_click.png");
+}
+div.my_profile_menu{
+	background-image: url("./assets/img/menu/my_profile_menu.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
+	transform: background-image 300ms;
+}
+div.my_profile_menu:active{
+	background-image: url("./assets/img/menu/my_profile_menu_click.png");
+}
+div.my_marks_menu{
+	background-image: url("./assets/img/menu/my_marks_menu.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
+	transform: background-image 300ms;
+}
+div.my_marks_menu:active{
+	background-image: url("./assets/img/menu/my_marks_menu_click.png");
+}
+div.enter_mark_menu{
+	background-image: url("./assets/img/menu/enter_mark_menu.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
+	transform: background-image 300ms;
+}
+div.enter_mark_menu:active{
+	background-image: url("./assets/img/menu/enter_mark_menu_click.png");
 }

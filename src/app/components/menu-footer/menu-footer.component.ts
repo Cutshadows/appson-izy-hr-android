@@ -26,22 +26,13 @@ export class MenuFooterComponent implements OnInit {
   clickBack() {
     switch (this.id) {
       case 'calendar':
-        this.goDashboard.emit();
-        break;
       case 'casino':
-        this.goDashboard.emit();
-      break;
-      case 'events':
-          this.goDashboard.emit();
-      break;
-      case 'mymark':
-        this.goDashboard.emit();
-      break;
-      case  'myprofile':
-        this.goDashboard.emit();
-        break;
       case 'enterMark':
-        this.goDashboard.emit();
+	  case 'events':
+	  case 'eventsubmit':
+	  case 'mymark':
+	  case  'myprofile':
+          this.goDashboard.emit();
       break;
       case 'changePassword':
         this.profileEmployed.emit();
