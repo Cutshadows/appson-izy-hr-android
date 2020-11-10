@@ -379,33 +379,7 @@ background: rgb(215, 36, 66)!important;
   }
 }
 
-/*.pulse-button {
-  position: relative;
 
-  &:before, &:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-width: 100%!important;
-    border-radius: 100%!important;
-    width: 20px;
-    height: 20px;
-    opacity: 0;
-    margin: auto;
-  }
-  &:before {
-    animation: pulse 1.5s infinite linear;
-  }
-  &:after {
-    animation: pulse 2s .4s infinite linear;
-  }
-  &:hover:before, &:hover:after {
-    display: none;
-  }
-}*/
 //EFECTO DE LOS BOTONES EN EL DASHBOARD
 .button-pulse {
 	display: inline-flex;
@@ -493,7 +467,33 @@ background: rgb(215, 36, 66)!important;
 		transform: translate3d(-4px, 0, 0);
 	  }
 	}
+/*.pulse-button {
+  position: relative;
 
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-width: 100%!important;
+    border-radius: 100%!important;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    margin: auto;
+  }
+  &:before {
+    animation: pulse 1.5s infinite linear;
+  }
+  &:after {
+    animation: pulse 2s .4s infinite linear;
+  }
+  &:hover:before, &:hover:after {
+    display: none;
+  }
+}*/
   .pulse-button {
 	position: relative;
 	&:before, &:after {
