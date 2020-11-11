@@ -23,9 +23,9 @@ export class EventSubmitService {
 	  		.pipe(
         		delay(450),
 				timeout(10000),
-				catchError(
+				/*catchError(
 					  error=>of(408)
-				)
+				)*/
         	).subscribe((response)=>{
         	let jsonRespondEvents={
         	  status,
@@ -40,20 +40,26 @@ export class EventSubmitService {
 
       },
       (error: HttpErrorResponse)=>{
+
         for (const key in error) {
           switch(key){
              case 'status':
-                if (error.hasOwnProperty(key)) {
                   const element = error[key];
                   if(element==0){
                     let jsonResponseError={
                       status
                     }
-                    jsonResponseError.status="0";
-                    this.response=jsonResponseError;
+					jsonResponseError.status=`${key}`;
+					this.response=jsonResponseError;
                     resolve(this.response);
-                  }
-                }
+				  }else if(element===473){
+					  let jsonResponseError={
+						  status
+					  }
+					  jsonResponseError.status=`${473}`;
+					  this.response=jsonResponseError;
+					  resolve(this.response);
+				  }
               break;
           }
         }

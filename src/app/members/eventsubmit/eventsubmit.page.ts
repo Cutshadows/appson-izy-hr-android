@@ -208,6 +208,17 @@ export class EventsubmitPage implements OnInit {
 				setTimeout(()=>{
 					this.dashboardGo()}, 2000)
 			break;
+			case '0':
+				ElementLoading.dismiss();
+				this._functionService.MessageToast('Existe de conexion intente mas tarde', 'middle', 1500);
+				setTimeout(()=>{
+					this.dashboardGo()}, 2000)
+				break;
+			case '473':
+				ElementLoading.dismiss();
+				this._functionService.MessageToast('Existe evento para rango de fechas seleccionadas', 'middle', 1500);
+
+			break;
 		}
 	  })
 
