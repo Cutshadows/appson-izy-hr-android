@@ -4,7 +4,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NavController } from '@ionic/angular';
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions/ngx';
-import { DarkthemeService } from '../../services/darktheme.service';
+//import { DarkthemeService } from '../../services/darktheme.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,9 +26,9 @@ export class ProfilePage implements OnInit {
     private storage: Storage,
     public navController: NavController,
 	private nativePageTransitions: NativePageTransitions,
-	private darkModetheme:DarkthemeService
+	//private darkModetheme:DarkthemeService
     ) {
-		this.darkMode=this.darkModetheme.checkDarkTheme();
+		//this.darkMode=this.darkModetheme.checkDarkTheme();
   }
 
   ngOnInit() {

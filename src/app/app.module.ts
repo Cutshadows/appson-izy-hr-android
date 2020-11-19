@@ -15,7 +15,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 import { SQLite } from '@ionic-native/sqlite/ngx';
 
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
+//import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
 
@@ -28,8 +28,11 @@ import { OptionmodalPageModule } from './members/optionmodal/optionmodal.module'
 import { FCM } from '@ionic-native/fcm/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { IntroductionService } from './services/introduction.service';
-
-//import {CodePush} from '@ionic-native/code-push/ngx';
+// import { Uid } from '@ionic-native/uid/ngx';
+// import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
+import {Device} from '@ionic-native/device/ngx';
+// import {Diagnostic} from '@ionic-native/diagnostic/ngx';
+// import {HTTP} from '@ionic-native/http/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -47,9 +50,8 @@ import { IntroductionService } from './services/introduction.service';
     BackgroundGeolocation,
     StatusBar,
     SplashScreen,
-    Geolocation,
-    LocationAccuracy,
-	UniqueDeviceID,
+	Geolocation,
+	LocationAccuracy,
 	LocalNotifications,
 	IntroductionService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -57,7 +59,8 @@ import { IntroductionService } from './services/introduction.service';
     SQLite,
 	Network,
 	FCM,
-	//CodePush
+	Device,
+	// Diagnostic
   ],
   bootstrap: [AppComponent]
 })

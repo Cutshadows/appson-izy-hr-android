@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+// import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { delay, timeout, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+// import { HTTP } from '@ionic-native/http/ngx';
 
 //import { BehaviourSubject } from 'rxjs';
 
@@ -16,8 +18,8 @@ export class DatabaseService {
       "Authorization":"BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
     }
   }
-
-  constructor(public http: HttpClient,){}
+// , private httpdos:HTTP
+  constructor(private http: HttpClient){}
   validateLogin(url, params){
     let Promesa=new Promise((resolve)=>{
 	  	this.http.post(url, params, this.header)
@@ -70,6 +72,7 @@ export class DatabaseService {
     })
     return Promesa;
   }
+
   serviceEmployeeScheduleList(url){
     	let Promesa=new Promise((resolve)=>{
 	  		this.http.get(url, this.header)

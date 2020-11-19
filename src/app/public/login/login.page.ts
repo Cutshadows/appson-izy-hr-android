@@ -1,14 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { HttpClient } from '@angular/common/http';
-import { AlertController, LoadingController, ToastController, Platform } from '@ionic/angular';
+import {
+	AlertController,
+	LoadingController,
+	ToastController,
+	Platform
+} from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Storage } from '@ionic/storage';
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
+// import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { FunctionsService } from '../../services/functions.service';
 import {DatabaseService} from '../../services/database.service';
 import { FCM } from '@ionic-native/fcm/ngx';
 import { Network } from '@ionic-native/network/ngx';
+import {Device} from '@ionic-native/device/ngx';
+
 
 
 
@@ -41,11 +48,13 @@ export class LoginPage implements OnInit {
     public loadingController: LoadingController,
     public toastController: ToastController,
     public platform: Platform,
-    private uniqueDeviceID: UniqueDeviceID,
+    // private uniqueDeviceID: UniqueDeviceID,
     private _function:FunctionsService,
 	private _services:DatabaseService,
 	private fcm:FCM,
-    private network: Network
+	private network: Network,
+	private plt:Platform,
+	private device:Device
     ) {  }
   ngOnInit() {
     this.storage.get('userCode').then((val) => {
@@ -367,22 +376,43 @@ export class LoginPage implements OnInit {
     this.storage.clear().then(() => {
     })
   }
-  getDeviceId() {
-    this.uniqueDeviceID.get().then((uuid: any) => {
+  getDeviceId(){
+
+	if(this.plt.is('android')){
+		console.log("DEVICE UID: "+this.device.uuid);
+		console.log("DEVICE UID: "+this.device.version);
+		if(this.device.uuid!=null){
+			this.deviceId=this.device.uuid;
+			this.setDeviceLocal();
+        	this.loginWithCode();
+		}
+	}else{
+			this.deviceId = 'personal_computer_login';
+			this.setDeviceLocal();
+			this.loginWithCode();
+	}
+
+
+
+   /*  this.uniqueDeviceID.get().then((uuid: any) => {
+		console.log("UUID DE UNIQUE ID: "+uuid);
       if(this.deviceId != undefined && this.deviceId != uuid) {
       }else if(this.deviceId== undefined){
-		this.deviceId = uuid;
-		this.setDeviceLocal();
-        this.loginWithCode();
+
+		// this.deviceId = uuid;
+		// this.setDeviceLocal();
+        // this.loginWithCode();
 	  }
 
     }).catch((error: any) => {
-      if(error == 'cordova_not_available') {
-        this.deviceId = 'personal_computer_login';
-        this.setDeviceLocal();
-        this.loginWithCode();
-      }
-    })
+		console.log(error);
+        if(error == 'cordova_not_available') {
+			// this.deviceId = 'personal_computer_login';
+			// this.setDeviceLocal();
+			// this.loginWithCode();
+		}
+
+    }) */
   }
   setDeviceLocal() {
     this.storage.set('deviceIdLocalStorage', this.deviceId);

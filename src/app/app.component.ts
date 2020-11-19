@@ -11,7 +11,7 @@ import { FCM } from '@ionic-native/fcm/ngx';
 import { Router } from '@angular/router';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { IntroductionService } from './services/introduction.service';
-import { DarkthemeService } from './services/darktheme.service';
+//import { DarkthemeService } from './services/darktheme.service';
 //import { CodePush, SyncStatus } from '@ionic-native/code-push/ngx';
 import { FunctionsService } from './services/functions.service';
 
@@ -36,8 +36,6 @@ export class AppComponent {
 	private router:Router,
 	private localNotifications:LocalNotifications,
 	private _tutorial:IntroductionService,
-	private darkTheme:DarkthemeService,
-	//private codePush:CodePush,
 	private _function:FunctionsService
   ) {
     this.initializeApp();

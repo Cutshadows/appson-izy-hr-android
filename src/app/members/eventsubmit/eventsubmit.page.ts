@@ -71,7 +71,6 @@ export class EventsubmitPage implements OnInit {
 				}
 			})
 			this.storage.get('liveUserCode').then((val) => {
-				console.log(val)
 				if(val != null && val != undefined) {
 					this.liveUserCode = val
 				}
@@ -135,7 +134,6 @@ export class EventsubmitPage implements OnInit {
 
 
   validate_select(){
-	  console.log(this.selectEvents.value)
 	  if(this.selectEvents.value!=''){
 		this.selectDateStart.disabled=false;
 		if(this.selectDateStart.disabled==false){
@@ -212,12 +210,21 @@ export class EventsubmitPage implements OnInit {
 				this._functionService.MessageToast('Evento ingresado con exito', 'middle', 1500);
 				setTimeout(()=>{
 					this.dashboardGo()}, 2000)
-			break;
+				break;
+			case '0':
+				ElementLoading.dismiss();
+				this._functionService.MessageToast('Error de conexion intente mas tarde', 'middle', 1500);
+				setTimeout(()=>{
+					this.dashboardGo()}, 2000)
+				break;
+			case '473':
+				ElementLoading.dismiss();
+				this._functionService.MessageToast('Existe evento para rango de fechas seleccionadas', 'middle', 1500);
+				break;
 		}
 	  })
 
   }
-
 
   dashboardGo() {
     let options: NativeTransitionOptions = {

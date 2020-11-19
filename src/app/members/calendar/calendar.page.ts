@@ -51,19 +51,20 @@ export class CalendarPage implements OnInit {
   ) {   }
 
   ngOnInit() {
-    this.storage.get(this.userLoginResDetail).then((val) => {
-      if(val != null && val != undefined) {
-        this.employeeId = val['EmployeeId']
+    this.storage.get(this.userLoginResDetail).then((valulrd) => {
+      if(valulrd != null && valulrd != undefined) {
+
+        this.employeeId = valulrd['EmployeeId']
       }
     })
-    this.storage.get('liveUserCode').then((val) => {
-      if(val != null && val != undefined) {
-        this.liveUserCode = val
+    this.storage.get('liveUserCode').then(valvuc => {
+      if(valvuc != null && valvuc != undefined) {
+        this.liveUserCode = valvuc
       }
     })
-    this.storage.get('deviceIdLocalStorage').then((val) => {
-      if(val != null && val != undefined) {
-        this.deviceId = val
+    this.storage.get('deviceIdLocalStorage').then((valdls) => {
+      if(valdls != null && valdls != undefined) {
+        this.deviceId = valdls
         this.EmployeeScheduleList()
       }
     })
@@ -102,7 +103,7 @@ export class CalendarPage implements OnInit {
     this.currentday = weekdays[currentDate.getDay()];
     let employeeId = this.employeeId;
     let imei = this.deviceId;
-    let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeSchedule?employeeId='+employeeId+'&imei='+imei;
+	let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/EmployeeSchedule?employeeId='+employeeId+'&imei='+imei;
    this._socketService.serviceEmployeeScheduleList(url).then((response)=>{
       switch(response['status']){
         case '200':

@@ -23,7 +23,8 @@ export class EventsPage implements OnInit {
   data: Observable<any>
   loadingElement: any
   deviceId: any
-  getEventsItems: any
+  getEventsItems: any;
+  //getEventsTrueThings:boolean=false;
   EventStatus:any;
   my_events_page: string = 'assets/img/page/my_events_page.png';
   my_marks_info: string = 'assets/img/my_marks_info.png';
@@ -76,9 +77,10 @@ export class EventsPage implements OnInit {
       switch(response['status']){
         case '200':
             LoadingEvents.dismiss();
-			this.getEventsItems = response['response'];
+			this.getEventsItems =response['response'];
           break;
         case '400':
+			this.getEventsItems=true;
             LoadingEvents.dismiss();
 			this.noDataToast();
 			setTimeout(()=>{
@@ -119,6 +121,8 @@ export class EventsPage implements OnInit {
 
   noDataToast() {
     this._function.MessageToast('No hay información de eventos','middle',2000);
+	setTimeout(()=>this._function.MessageToast('Volviendo a vista principal','middle',2000), 3000);
+
   }
   badRequestTimeoutAlert() {
     this._function.requireAlert('Tiempo de Respuesta Agotado','De acuerdo');

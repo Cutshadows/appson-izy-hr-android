@@ -106,21 +106,35 @@
 
 // background image
 .custom-background {
-  --background: url('assets/img/back_image_y.png') no-repeat center center / cover,fixed;
-}
-
-.no-scroll .scroll-content {
-  overflow: hidden;
-}
-
-@media only screen and (max-width: 100%) {
-  .custom-background {
-    --background: url('assets/img/back_image_y.png');
+	// --background: url('assets/img/back_image_y.png') no-repeat center center / cover,fixed;
+	//--color: #fff;
+	  --background: none;
+	background:url('assets/img/back_image_y.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	  //background-size: cover;
   }
+
+  .no-scroll .scroll-content {
+	overflow: hidden;
+  }
+
+  @media only screen and (max-width: 100%) {
+	.custom-background {
+	  //--color: #fff;
+	  --background: none;
+	background:url('assets/img/back_image_y.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	  //background-size: cover;
+
+	}
 }
 
 .custom-background-transparent {
-  --background: rgba(2, 1, 1, 0.224);
+//   --background: rgba(2, 1, 1, 0.224);
+--background:rgba(1, 1, 1, 0.856);
 }
 
 .footer-background-color {

@@ -10,10 +10,14 @@ import { Network } from '@ionic-native/network/ngx';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { DatabaseService } from 'src/app/services/database.service';
 
+
 //LOCALIZATION
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+
+//diagnostic isLocationEnabled
+// import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 
 @Component({
   selector: 'app-entermark',
@@ -48,6 +52,7 @@ export class EntermarkPage implements OnInit {
   mark_button_page: string = 'assets/img/page/mark_button_page.png';
   back_button_mark_page: string = 'assets/img/page/back_button_mark_page.png';
 
+
   constructor(
     private authService: AuthenticationService,
     private storage: Storage,
@@ -61,7 +66,8 @@ export class EntermarkPage implements OnInit {
     private nativePageTransitions: NativePageTransitions,
     private network: Network,
     private _function:FunctionsService,
-    private _socketService:DatabaseService
+	private _socketService:DatabaseService,
+	// private _diagnostic:Diagnostic
     ){  }
   ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
@@ -101,7 +107,10 @@ export class EntermarkPage implements OnInit {
     this._function.requireAlert(errorMsg,'De acuerdo');
   }
 
+
+
   async getCurrentLocation() {
+
     let loadingGeolocation = await this.loadingController.create({
       message: 'Verificando ubicación...',
       spinner: 'crescent',
@@ -142,16 +151,21 @@ export class EntermarkPage implements OnInit {
   }
 
   enableLocation() {
+	let successCallback = (isAvailable) => { console.log('Is available? ' + isAvailable); }
+	let errorCallback = (e) => console.error(e);
+
+	// this._diagnostic.isLocationEnabled().then(successCallback).catch(errorCallback);
+
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
-      this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
-      .then(
-        () => {
-          this.getLatLongMobile();
-          this.buttonDisabled = true;
-        },(error)=> {
-          this.locationErrorAlert(error);
-        }
-      );
+			this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
+			.then(
+			  () => {
+				this.getLatLongMobile();
+				this.buttonDisabled = true;
+			  },(error)=> {
+				this.locationErrorAlert(error);
+			  }
+			);
     });
   }
 
@@ -192,7 +206,9 @@ export class EntermarkPage implements OnInit {
             debug: false,
             stopOnTerminate: true,
 			postTemplate: null,
-			//notificationsEnabled:false
+			notificationsEnabled:false,
+			stopOnStillActivity:true,
+			startForeground:false
 	};
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {
@@ -288,7 +304,12 @@ export class EntermarkPage implements OnInit {
 					loadingMarkEmployeed.dismiss();
 					this._function.requireAlert('Tiempo agotado para la respuesta.', 'De Acuerdo');
 					this.buttonDisabled = false;
-				break;
+					this.deleteStoreLocation();
+					this.storage.set('localLat', this.lat);
+					this.storage.set('localLong', this.long);
+					this.storage.set('localisBuffer', 'true');
+					this.storage.set('localDate', this.localDate);
+					this.offlineAlert();
 		}
 	})
 	}
