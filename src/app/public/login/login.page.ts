@@ -120,7 +120,6 @@ export class LoginPage implements OnInit {
       this.getDeviceId();
     }
     else {
-		console.log(this.deviceId);
       // save code start
      this.loadingElement = await this.loadingController.create({
       message: 'Por favor espera...',
@@ -379,8 +378,6 @@ export class LoginPage implements OnInit {
   getDeviceId(){
 
 	if(this.plt.is('android')){
-		console.log("DEVICE UID: "+this.device.uuid);
-		console.log("DEVICE UID: "+this.device.version);
 		if(this.device.uuid!=null){
 			this.deviceId=this.device.uuid;
 			this.setDeviceLocal();
@@ -391,28 +388,6 @@ export class LoginPage implements OnInit {
 			this.setDeviceLocal();
 			this.loginWithCode();
 	}
-
-
-
-   /*  this.uniqueDeviceID.get().then((uuid: any) => {
-		console.log("UUID DE UNIQUE ID: "+uuid);
-      if(this.deviceId != undefined && this.deviceId != uuid) {
-      }else if(this.deviceId== undefined){
-
-		// this.deviceId = uuid;
-		// this.setDeviceLocal();
-        // this.loginWithCode();
-	  }
-
-    }).catch((error: any) => {
-		console.log(error);
-        if(error == 'cordova_not_available') {
-			// this.deviceId = 'personal_computer_login';
-			// this.setDeviceLocal();
-			// this.loginWithCode();
-		}
-
-    }) */
   }
   setDeviceLocal() {
     this.storage.set('deviceIdLocalStorage', this.deviceId);

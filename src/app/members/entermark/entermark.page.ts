@@ -151,8 +151,8 @@ export class EntermarkPage implements OnInit {
   }
 
   enableLocation() {
-	let successCallback = (isAvailable) => { console.log('Is available? ' + isAvailable); }
-	let errorCallback = (e) => console.error(e);
+	// let successCallback = (isAvailable) => { console.log('Is available? ' + isAvailable); }
+	// let errorCallback = (e) => console.error(e);
 
 	// this._diagnostic.isLocationEnabled().then(successCallback).catch(errorCallback);
 

@@ -114,12 +114,10 @@ export class RegisterPage implements OnInit {
 
   login() {
 
-    /*console.log('this.code', this.code)
-    console.log('this.codeArray', this.codeArray)
+    /*
 
     this.codeArray.push(this.code)
 
-    console.log('this.codeArray --', this.codeArray)
 
     this.storage.set('userCode', this.codeArray)*/
 

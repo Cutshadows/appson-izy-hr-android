@@ -18,12 +18,12 @@ import { Network } from '@ionic-native/network/ngx';
 })
 export class TestingPage implements OnInit {
 
-  header: any = { 
+  header: any = {
     "headers": {
       "Content-Type": "application/json",
       "Authorization": "BE6JVujuYvtWCSilKrRF1A1Rc+Zeyl4dZOG2VCWm9Uk="
-    } 
-  }  
+    }
+  }
 
   locationData: string = ''
 
@@ -45,7 +45,7 @@ export class TestingPage implements OnInit {
   buttonDisabled: boolean = false
 
   constructor(
-    private authService: AuthenticationService, 
+    private authService: AuthenticationService,
     private storage: Storage,
     private geolocation: Geolocation,
     public alertController: AlertController,
@@ -56,10 +56,10 @@ export class TestingPage implements OnInit {
     private nativePageTransitions: NativePageTransitions,
     private network: Network
     ) {
-            
+
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.storage.get(this.userLoginResDetail).then((val) => {
       if(val != null && val != undefined) {
         this.employeeId = val['EmployeeId']
@@ -71,20 +71,20 @@ export class TestingPage implements OnInit {
         this.liveUserCode = val
       }
     })
-    
+
     this.storage.get('deviceIdLocalStorage').then((val) => {
       if(val != null && val != undefined) {
         this.deviceId = val
       }
-    })    
+    })
 
     let options: NativeTransitionOptions = {
       duration: 800
      }
-  
+
     this.nativePageTransitions.fade(options);
-    this.navController.navigateRoot(['members', 'casino'])    
-  }  
+    this.navController.navigateRoot(['members', 'casino'])
+  }
 
   async getLocationLoaderOn() {
     this.loadingElement = await this.loadingController.create({
@@ -95,19 +95,19 @@ export class TestingPage implements OnInit {
 
     setTimeout(() => {
       this.loadingElement.dismiss()
-    }, 4000)    
+    }, 4000)
   }
-  
+
   async getLocationLoaderOff() {
     this.loadingElement.dismiss()
-  }  
+  }
 
   dashboardGo() {
     let options: NativeTransitionOptions = {
       duration: 800
      }
-  
-    this.nativePageTransitions.fade(options);    
+
+    this.nativePageTransitions.fade(options);
     this.navController.navigateRoot(['members', 'dashboard'])
   }
 
@@ -123,22 +123,20 @@ export class TestingPage implements OnInit {
 
     await alert.present()
   }
-  
+
   enableLocation() {
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
-      // the accuracy option will be ignored by iOS
       this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-        () => { 
-          console.log('Request successful')
-          this.getCurrentLocation() 
+        () => {
+          this.getCurrentLocation()
         },error => {
           this.locationErrorAlert(error)
         }
       )
-    
+
     })
-  }  
-  
+  }
+
   getCurrentLocation() {
     this.buttonDisabled = true
     let option = {
@@ -154,7 +152,6 @@ export class TestingPage implements OnInit {
         this.lat = resp.coords.latitude
         this.long = resp.coords.longitude
         //this.markEmployee()
-        console.log('resp.coords --', resp.coords)
       }
 
      }).catch((error) => {
@@ -162,7 +159,6 @@ export class TestingPage implements OnInit {
         if(error) {
           this.locationErrorAlert(error.message)
         }
-        console.log('Error getting location', error)
      })
   }
 
@@ -175,9 +171,9 @@ export class TestingPage implements OnInit {
 
     setTimeout(() => {
       this.loadingElement.dismiss()
-    }, 3000)    
+    }, 3000)
   }
-  
+
   async markEmployeeLoaderOff() {
     this.loadingElement.dismiss()
   }
@@ -189,8 +185,8 @@ export class TestingPage implements OnInit {
     });
 
     await alert.present()
-  }  
-  
+  }
+
   async badRequestAlert() {
     const alert = await this.alertController.create({
       message: 'Error de servicio',
@@ -198,11 +194,11 @@ export class TestingPage implements OnInit {
     });
 
     await alert.present()
-  }  
+  }
 
-  markEmployee() {     
+  markEmployee() {
     this.markEmployeeLoaderOn()
-    
+
     let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
 
     let params = {
@@ -216,15 +212,13 @@ export class TestingPage implements OnInit {
       "lat": "-33.440385672239167",
       "lon": "-70.628768827242709",
       "employeeId": "0hwNYXS3pfjU/aZQee/xUw=="
-    }*/    
+    }*/
 
     this.data = this.http.post(url, params, this.header);
 
-    this.data.subscribe((response) => {      
+    this.data.subscribe((response) => {
 
       this.markEmployeeData = response.data
-
-      console.log('this.markEmployeeData', this.markEmployeeData)
 
       this.markEmployeeLoaderOff()
 
@@ -232,11 +226,11 @@ export class TestingPage implements OnInit {
 
       if(response.status) {
         this.markEmployeeResponseAlert('Marca satisfactoria')
-        this.buttonDisabled = false        
+        this.buttonDisabled = false
       } else {
         this.markEmployeeResponseAlert(response.Message)
         this.buttonDisabled = false
-      }        
+      }
     }, (err) => {
       this.markEmployeeLoaderOff()
       this.badRequestAlert()
@@ -251,12 +245,11 @@ export class TestingPage implements OnInit {
       enableHighAccuracy: true
     }
     this.geolocation.getCurrentPosition(option).then((resp) => {
-    
+
       this.getLocationLoaderOff()
 
-      if(resp.coords) {        
-        
-        console.log('resp --', resp)
+      if(resp.coords) {
+
         // resp.coords.latitude
         // resp.coords.longitude
         this.locationData = 'Lat: ' + resp.coords.latitude + '<br>' + 'Long: ' + resp.coords.longitude
@@ -267,18 +260,16 @@ export class TestingPage implements OnInit {
         this.getLocationLoaderOff()
         this.locationErrorAlert(error.message)
        }
-       console.log('Error getting location', error)
      });
-  }  
+  }
 
   checkInternetConnection() {
 
-    console.log('connect this.network.type--', this.network.type)
 
     if(this.network.type == 'none') {
-      console.log('local storage save to database')
+    //   console.log('local storage save to database')
     } else {
-      console.log('not save local storage')
+    //   console.log('not save local storage')
     }
 
   }
