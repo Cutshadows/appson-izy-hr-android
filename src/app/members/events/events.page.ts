@@ -77,6 +77,7 @@ export class EventsPage implements OnInit {
             this.getEventsItems = response['response'];
           break;
         case '400':
+			this.getEventsItems=true;
             LoadingEvents.dismiss();
 			this.noDataToast();
 			setTimeout(()=>{

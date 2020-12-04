@@ -8,10 +8,13 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import { FunctionsService } from '../../services/functions.service';
 import {DatabaseService} from '../../services/database.service';
 import { Network } from '@ionic-native/network/ngx';
+import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
+import { async } from '@angular/core/testing';
 
 
 
 
+const loginFinger='loginFingerCredencial';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -21,6 +24,7 @@ export class LoginPage implements OnInit {
   username: string;
   password: number;
   code: string;
+  availible:boolean;
   codeLowerCase: any;
   userLoginResDetail: string = 'userLoginResDetail';
   data: Observable<any>;
@@ -32,6 +36,9 @@ export class LoginPage implements OnInit {
   userPreviousCode: any;
   deviceId: any;
   fcmToken:any;
+  dataLogin=[];
+  regevaluateRut=new RegExp(`^0*(\\d{1,3}(\\.?\\d{3})*)\\-?([\\dkK])`, 'i');
+  regexValuateEmail=new RegExp(`/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i`);
 
   constructor(
     private authService: AuthenticationService,
@@ -44,7 +51,8 @@ export class LoginPage implements OnInit {
     private uniqueDeviceID: UniqueDeviceID,
     private _function:FunctionsService,
 	private _services:DatabaseService,
-	private network:Network
+	private network:Network,
+	private fingerPrint:FingerprintAIO
     ) {  }
   ngOnInit() {
     this.storage.get('userCode').then((val) => {
@@ -76,6 +84,7 @@ export class LoginPage implements OnInit {
 	})
   }
 
+
   async loginWithCode() {
     if(this.code != undefined && this.code != '') {
       this.codeLowerCase = this.code.toLowerCase();
@@ -102,7 +111,7 @@ export class LoginPage implements OnInit {
       this.alreadyExistCodeAlert();
     } else if(this.deviceId == undefined) {
       this.getDeviceId();
-    }
+	}
     else {
       // save code start
      this.loadingElement = await this.loadingController.create({
@@ -122,8 +131,10 @@ export class LoginPage implements OnInit {
         switch(response['status']){
           case '200':
             this.loadingElement.dismiss();
-            var responseData = response['response'];
-            this.storage.set(this.userLoginResDetail, responseData);
+			var responseData = response['response'];
+			this.storage.set(this.userLoginResDetail, responseData);
+			this.dataLogin.push({"email":this.username, "password":this.password, "code":this.code});
+			this.storage.set(loginFinger, this.dataLogin);
             this.codeArray.push(this.codeLowerCase);
             this.storage.set('userCode', this.codeArray);
             this.storage.set('liveUserCode', this.codeLowerCase);
@@ -146,6 +157,13 @@ export class LoginPage implements OnInit {
       })
     }
   }
+  ionViewWillEnter(){
+	  this.storage.keys().then((keyStorage)=>{
+		  keyStorage.map(userData=>{
+			  console.log(userData);
+		  })
+	  })
+  }
 
 
 
@@ -162,7 +180,8 @@ export class LoginPage implements OnInit {
       this.passwordValid()
     } else if(this.code == undefined || this.code == '') {
       this.requireAlert()
-    }else {
+	}
+	else {
       this.loadingElement = await this.loadingController.create({
         message: 'Por favor espera...',
         spinner: 'crescent',
@@ -217,7 +236,8 @@ export class LoginPage implements OnInit {
       this.requireAlert()
     } else if(this.deviceId == undefined) {
       this.getDeviceId()
-    }else {
+	}
+	else {
       this.loadingElement = await this.loadingController.create({
         message: 'Por favor espera...',
         spinner: 'crescent',
@@ -236,13 +256,16 @@ export class LoginPage implements OnInit {
 			}
 		})
 	  }else if(this.network.type!='none'){
-		var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
+
+    var url = 'https://'+this.code+'.izytimecontrol.com/api/external/ValidateEmployee';
+    console.log(url)
 		let params = {
 		  "rut": this.username,
 		  "password": this.password,
 		  "imei": this.deviceId,
 		  "tokenFcm":this.fcmToken
-		}
+    }
+    console.log(params)
 		this._services.validateLogin(url, params).then(response=>{
 		  switch(response['status']){
 			case '200':
@@ -272,6 +295,14 @@ export class LoginPage implements OnInit {
   }
 
   async loginWithPreviousCode() {
+	let emailUserFinger, passwordUserFinger, codeUserFinger;
+	this.storage.get(loginFinger).then((valueFinger)=>{
+		const [email, password, code]= valueFinger[0];
+		emailUserFinger=email;
+		passwordUserFinger=password;
+		codeUserFinger=code;
+	})
+
     if(this.username == undefined || this.username == '') {
       this.requireAlert();
     } else if(this.password == undefined) {
@@ -280,7 +311,7 @@ export class LoginPage implements OnInit {
       this.passwordValid();
     } else if(this.deviceId == undefined) {
       this.getDeviceId();
-    }
+	}
     else {
       this.loadingElement = await this.loadingController.create({
         message: 'Por favor espera...',
@@ -301,36 +332,205 @@ export class LoginPage implements OnInit {
 			}
 		})
 	  }else if(this.network.type!='none'){
-			var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
-			let params = {
-				"rut": this.username,
-				"password": this.password,
-				"imei": this.deviceId,
-				"tokenFcm":this.fcmToken
-			}
-			this._services.validateLogin(url, params).then(response=>{
-				switch(response['status']){
-				case '200':
-					var responseData = response['response'];
-					this.storage.set(this.userLoginResDetail, responseData);
-					this.authService.login();
-					this.resetInput();
-					this.loadingElement.dismiss();
-				break;
-				case '400':
-					this.loadingElement.dismiss();
-					this.wrongInputAlert(response['response']['Message']);
-				break;
-				case '408':
-					this.loadingElement.dismiss();
-					this.badRequestTimeoutAlert();
-				break;
-				case '0':
-					this.loadingElement.dismiss();
-					this.badRequestAlert();
-				break;
-				}
-			})
+
+      if(this.platform.is('cordova')){
+        this.fingerPrint.isAvailable().then(typeAuth=>{
+          this.availible=true;
+          switch(typeAuth){
+            case 'finger':
+              this.fingerPrint.show({
+                description:'inicie sesion con la huella biometrica',
+                fallbackButtonTitle:'Use respaldo',
+                disableBackup:true
+              }).then(async (resultFingerAuth:any)=>{
+                if(resultFingerAuth=='Success'){
+                      let loadingElementMessages=await this.loadingController.create({
+                        message: 'Verficando usuario',
+                        spinner:'crescent',
+                        cssClass:'transparent'
+                      });
+                      loadingElementMessages.present();
+
+                      var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
+                      console.log(url)
+                      let params = {
+                        "rut": this.username,
+                        "password": this.password,
+                        "imei": this.deviceId,
+                        "tokenFcm":this.fcmToken
+                      }
+                      console.log(params)
+
+                      this._services.validateLogin(url, params).then(response=>{
+                        switch(response['status']){
+                        case '200':
+                          var responseData = response['response'];
+                          this.storage.set(this.userLoginResDetail, responseData);
+                          this.authService.login();
+                          this.resetInput();
+                          this.loadingElement.dismiss();
+                          loadingElementMessages.dismiss();
+                        break;
+                        case '400':
+                          this.loadingElement.dismiss();
+                          loadingElementMessages.dismiss();
+                          this.wrongInputAlert(response['response']['Message']);
+                        break;
+                        case '408':
+                          this.loadingElement.dismiss();
+                          loadingElementMessages.dismiss();
+                          this.badRequestTimeoutAlert();
+                        break;
+                        case '0':
+                          this.loadingElement.dismiss();
+                          loadingElementMessages.dismiss();
+                          this.badRequestAlert();
+                        break;
+                        }
+                      })
+
+
+
+
+                }
+              }).then((error:any)=>{
+                this._function.MessageToast('Autentificación no valida, intente mas tarde', 'top', 2000);
+
+              })
+            break;
+            case 'face':
+              this.fingerPrint.show({
+                description:'inicie sesion con la huella biometrica',
+                fallbackButtonTitle:'Use respaldo',
+                disableBackup:true
+              }).then(async(resultFaceAuth)=>{
+                if(resultFaceAuth=='Success'){
+                  let loadingElementMessage=await this.loadingController.create({
+                        message: 'Verficando usuario',
+                        spinner:'crescent',
+                        cssClass:'transparent'
+                  })
+                  loadingElementMessage.present();
+                  var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
+                      let params = {
+                        "rut": this.username,
+                        "password": this.password,
+                        "imei": this.deviceId,
+                        "tokenFcm":this.fcmToken
+                      }
+                      this._services.validateLogin(url, params).then(response=>{
+                        switch(response['status']){
+                        case '200':
+                          var responseData = response['response'];
+                          this.storage.set(this.userLoginResDetail, responseData);
+                          this.authService.login();
+                          this.resetInput();
+                          this.loadingElement.dismiss();
+                          loadingElementMessage.dismiss();
+                        break;
+                        case '400':
+                          this.loadingElement.dismiss();
+                          loadingElementMessage.dismiss();
+                          this.wrongInputAlert(response['response']['Message']);
+                        break;
+                        case '408':
+                          this.loadingElement.dismiss();
+                          loadingElementMessage.dismiss();
+                          this.badRequestTimeoutAlert();
+                        break;
+                        case '0':
+                          this.loadingElement.dismiss();
+                          loadingElementMessage.dismiss();
+                          this.badRequestAlert();
+                        break;
+                        }
+                      })
+                }
+              }).catch(err=>{
+                  this._function.MessageToast('Autenticación no valida, intente mas tarde', 'top', 2000);
+
+              })
+            break;
+          }
+        }).catch(async(errors:any)=>{
+            console.log(errors);
+            this.loadingElement.dismiss();
+            this.availible=false;
+                const {code, message}=errors;
+                this._function.requireAlert(`Error ${code} : No tiene huella activada, inicie sesión en forma normal`, 'De acuerdo');
+                const alert=await this.alertController.create({
+                  header:'Sin huella',
+                  message: '¿Desea continuar <strong>sin registro metodo de autentificación</strong>',
+				  cssClass:'classAlert',
+				  buttons:[
+					{
+						text:'SI',
+						cssClass:'classAlert',
+						handler:async()=>{
+							if(this.username==undefined || this.username==''){
+								this.requireAlert();
+							}else if(this.password==undefined){
+								this.requireAlert();
+							}else{
+								let loadingElementMessage=await this.loadingController.create({
+									message: 'Verficando usuario',
+									spinner:'crescent',
+									cssClass:'transparent'
+							  })
+							  loadingElementMessage.present();
+							  var url = 'https://'+this.userPreviousCode+'.izytimecontrol.com/api/external/ValidateEmployee';
+								  let params = {
+									"rut": this.username,
+									"password": this.password,
+									"imei": this.deviceId,
+									"tokenFcm":this.fcmToken
+								  }
+								  this._services.validateLogin(url, params).then(response=>{
+									switch(response['status']){
+									case '200':
+									  var responseData = response['response'];
+									  this.storage.set(this.userLoginResDetail, responseData);
+									  this.authService.login();
+									  this.resetInput();
+									  this.loadingElement.dismiss();
+									  loadingElementMessage.dismiss();
+									break;
+									case '400':
+									  this.loadingElement.dismiss();
+									  loadingElementMessage.dismiss();
+									  this.wrongInputAlert(response['response']['Message']);
+									break;
+									case '408':
+									  this.loadingElement.dismiss();
+									  loadingElementMessage.dismiss();
+									  this.badRequestTimeoutAlert();
+									break;
+									case '0':
+									  this.loadingElement.dismiss();
+									  loadingElementMessage.dismiss();
+									  this.badRequestAlert();
+									break;
+									}
+								  })
+							}
+						}
+					},{
+						text:'NO',
+						cssClass:'cssAlert',
+						handler:()=>{
+							this.resetInput();
+						}
+					}
+
+				  ]
+
+				});
+				await alert.present();
+
+        })
+
+      }
+
 		}
     }
   }

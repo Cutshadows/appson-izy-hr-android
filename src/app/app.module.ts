@@ -24,6 +24,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { IntroductionService } from './services/introduction.service';
 import { Badge } from '@ionic-native/badge/ngx';
 
+import {FingerprintAIO} from '@ionic-native/fingerprint-aio/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,7 +51,8 @@ import { Badge } from '@ionic-native/badge/ngx';
 	Network,
 	IntroductionService,
 	FCM,
-	Badge
+	Badge,
+	FingerprintAIO
   ],
   bootstrap: [AppComponent]
 })

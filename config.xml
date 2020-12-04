@@ -99,17 +99,9 @@
         <splash height="1242" src="resources/ios/splash/Default-Landscape-2688h~iphone.png" width="2688" />
         <splash height="1792" src="resources/ios/splash/Default-1792h~iphone.png" width="828" />
         <splash height="828" src="resources/ios/splash/Default-Landscape-1792h~iphone.png" width="1792" />
-        <config-file parent="UIBackgroundModes" target="*-Info.plist">
-            <array>
-                <string>remote-notification</string>
-            </array>
-        </config-file>
-        <config-file parent="NSMotionUsageDescription" platform="ios" target="*-Info.plist">
-            <string>IZY HR TEAM needs access to motion data to display steps.</string>
-        </config-file>
-        <config-file parent="NSLocationWhenInUseUsageDescription" target="*-Info.plist">
-            <string>LOCATION_WHEN_IN_USE_USAGE_DESCRIPTION</string>
-        </config-file>
+        <edit-config file="*-Info.plist" mode="merge" platform="ios" target="NSLocationWhenInUseUsageDescription">
+            <string>In order to mark your current location</string>
+        </edit-config>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
@@ -126,7 +118,4 @@
     <plugin name="com.telerik.plugins.nativepagetransitions" spec="0.6.5" />
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
     <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="2.4.0" />
-    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
-        <string>Necesitamos tu ubicacion</string>
-    </edit-config>
 </widget>

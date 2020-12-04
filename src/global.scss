@@ -111,7 +111,7 @@
 	--background: none;
   background:url('assets/img/back_image_y.png');
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: cover;
 	//background-size: cover;
 }
 
@@ -125,7 +125,7 @@
 	--background: none;
   background:url('assets/img/back_image_y.png');
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: cover;
 
 	//background-size: cover;
 
@@ -133,7 +133,8 @@
 }
 
 .custom-background-transparent {
-  --background: rgba(2, 1, 1, 0.224);
+//   --background: rgba(2, 1, 1, 0.224);
+	--background:rgba(1, 1, 1, 0.856);
 }
 
 .footer-background-color {
@@ -533,57 +534,69 @@ background: rgb(215, 36, 66)!important;
 	  display: none;
 	}
   }
+//CALENDAR
   div.my_calendar_menu{
-	background-image: url("./assets/img/menu/my_calendar_menu.png");
+	background: url("./assets/img/menu/my_calendar_menu.png");
 	background-repeat: no-repeat; /* Do not repeat the image */
 	background-size: 100%;
-	transform: background-image 300ms;
 }
 div.my_calendar_menu:active{
-	background-image: url("./assets/img/menu/my_calendar_menu_click.png");
-}
-div.my_events_menu{
-	background-image: url("./assets/img/menu/my_events_menu.png");
+	background: url("./assets/img/menu/my_calendar_menu_click.png");
 	background-repeat: no-repeat; /* Do not repeat the image */
 	background-size: 100%;
-	transform: background-image 300ms;
+}
+//EVENT MENU
+div.my_events_menu{
+	background: url("./assets/img/menu/my_events_menu.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
 }
 div.my_events_menu:active{
-	background-image: url("./assets/img/menu/my_events_menu_click.png");
-}
-div.submit_event{
-	background-image: url("./assets/img/menu/submit_event.png");
+	background: url("./assets/img/menu/my_events_menu_click.png");
 	background-repeat: no-repeat; /* Do not repeat the image */
 	background-size: 100%;
-	transform: background-image 300ms;
+}
+//SUBMIT EVENTS
+div.submit_event{
+	background: url("./assets/img/menu/submit_event.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
 }
 div.submit_event:active{
-	background-image: url("./assets/img/menu/submit_event_click.png");
-}
-div.my_profile_menu{
-	background-image: url("./assets/img/menu/my_profile_menu.png");
+	background: url("./assets/img/menu/submit_event_click.png");
 	background-repeat: no-repeat; /* Do not repeat the image */
 	background-size: 100%;
-	transform: background-image 300ms;
+}
+//MY PROFIE
+div.my_profile_menu{
+	background: url("./assets/img/menu/my_profile_menu.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
 }
 div.my_profile_menu:active{
-	background-image: url("./assets/img/menu/my_profile_menu_click.png");
-}
-div.my_marks_menu{
-	background-image: url("./assets/img/menu/my_marks_menu.png");
+	background: url("./assets/img/menu/my_profile_menu_click.png");
 	background-repeat: no-repeat; /* Do not repeat the image */
 	background-size: 100%;
-	transform: background-image 300ms;
+}
+//MY MARKS
+div.my_marks_menu{
+	background: url("./assets/img/menu/my_marks_menu.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
 }
 div.my_marks_menu:active{
-	background-image: url("./assets/img/menu/my_marks_menu_click.png");
-}
-div.enter_mark_menu{
-	background-image: url("./assets/img/menu/enter_mark_menu.png");
+	background: url("./assets/img/menu/my_marks_menu_click.png");
 	background-repeat: no-repeat; /* Do not repeat the image */
 	background-size: 100%;
-	transform: background-image 300ms;
+}
+//ENTER MARKS
+div.enter_mark_menu{
+	background: url("./assets/img/menu/enter_mark_menu.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
 }
 div.enter_mark_menu:active{
-	background-image: url("./assets/img/menu/enter_mark_menu_click.png");
+	background: url("./assets/img/menu/enter_mark_menu_click.png");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: 100%;
 }

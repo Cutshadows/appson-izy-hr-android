@@ -11,7 +11,12 @@ import { FunctionsService } from 'src/app/services/functions.service';
 import { DatabaseService } from 'src/app/services/database.service';
 
 //LOCALIZATION
-import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse, BackgroundGeolocationEvents } from '@ionic-native/background-geolocation/ngx';
+import {
+	BackgroundGeolocation,
+	BackgroundGeolocationConfig,
+	BackgroundGeolocationEvents,
+	BackgroundGeolocationResponse
+ } from '@ionic-native/background-geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
@@ -96,6 +101,7 @@ export class EntermarkPage implements OnInit {
   }
 
   enableLocation() {
+
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
       this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
       .then(
@@ -109,33 +115,6 @@ export class EntermarkPage implements OnInit {
     });
   }
 
-  async getCurrentLocation() {
-    let loadingGeolocation = await this.loadingController.create({
-      message: 'Verificando ubicación...',
-      spinner: 'crescent',
-      cssClass:'transparent'
-    });
-    loadingGeolocation.present();
-
-    let option = {
-      timeout: 8000,
-	  enableHighAccuracy: true,
-    }
-    this.geolocation.getCurrentPosition(option)
-    .then((resp) => {
-      if(resp.coords) {
-        loadingGeolocation.dismiss();
-        this.lat = resp.coords.latitude;
-        this.long = resp.coords.longitude;
-        this.markEmployee();
-      }
-     }).catch((error) => {
-       if(error) {
-        loadingGeolocation.dismiss();
-        this.locationErrorAlert(error.message);
-       }
-     });
-  }
 
   async markEmployeeResponseAlert(responseMsg) {
     this._function.requireAlert(responseMsg,'De acuerdo');
@@ -153,6 +132,7 @@ export class EntermarkPage implements OnInit {
 
 
   async getLatLongMobile(){
+
 	let loadingLatLongElement = await this.loadingController.create({
 		message: 'Procesando ubicación...',
 		spinner: 'crescent',
@@ -181,39 +161,36 @@ export class EntermarkPage implements OnInit {
        }
      });
   }
-  checkMockLocation(){
+
+ checkMockLocation(){
     const config: BackgroundGeolocationConfig = {
 			desiredAccuracy: 65,
 			stationaryRadius: 20,
 			distanceFilter: 30,
 			debug: false,
-			stopOnTerminate: false,
+			stopOnTerminate: true,
       		postTemplate: null,
-      		notificationsEnabled:false
-	};
-
-
+			notificationsEnabled:false,
+			startForeground:false,
+			pauseLocationUpdates:true
+		};
 
     this.backgroundGeolocation.configure(config)
     .then((location: BackgroundGeolocationResponse) => {
-		this.backgroundGeolocation.start();
-		this.backgroundGeolocation.getLocations()
+		this.backgroundGeolocation.finish();
+	});
+	this.backgroundGeolocation.start();
+	this.backgroundGeolocation.stop();
+
+	this.backgroundGeolocation.getLocations()
 		.then((validgetLocationData) => {
 			if(validgetLocationData.length > 0) {
-		  	this.validgetLocationDataArray = validgetLocationData[validgetLocationData.length - 1];
-		  	this.mockLocationCheck();
+		  		this.validgetLocationDataArray = validgetLocationData[validgetLocationData.length - 1];
+		  		this.mockLocationCheck();
 			} else {
-		  	this.getLatLongMobile();
+		  		this.getLatLongMobile();
 			}
       });
-    	this.backgroundGeolocation.stop();
-      this.backgroundGeolocation.finish();
-	});
-
-
-
-
-
 
   }
 
@@ -222,8 +199,7 @@ export class EntermarkPage implements OnInit {
   }
 
 mockLocationCheck() {
-
-
+	this.backgroundGeolocation.finish();
     this.localDate = new Date();
     this.localDate = this.localDate.getFullYear() + "-" + ('0' + (this.localDate.getMonth() + 1)).slice(-2) + "-" + ('0' + this.localDate.getDate()).slice(-2) + " " + this.localDate.getHours() + ":" + ('0' + this.localDate.getMinutes()).slice(-2) + ":" + ('0' + this.localDate.getSeconds()).slice(-2);
 
@@ -251,7 +227,8 @@ mockLocationCheck() {
       message: 'Ingresando marca empleado...',
       spinner: 'crescent',
       cssClass:'transparent'
-    });
+	});
+
     loadingMarkEmployeed.present();
 	let url = 'https://'+this.liveUserCode+'.izytimecontrol.com/api/external/MarkEmployee';
     let params = {
@@ -263,6 +240,7 @@ mockLocationCheck() {
       "date": this.localDate
 	}
 	this._socketService.markEmployee(url, params).then((response)=>{
+		this.backgroundGeolocation.finish();
 		switch(response['status']){
 			case '200':
 					this.markEmployeeData=response;
@@ -289,7 +267,14 @@ mockLocationCheck() {
 			case '408':
 					loadingMarkEmployeed.dismiss();
 					this._function.requireAlert('Tiempo agotado para la respuesta.', 'De Acuerdo');
+					//this.buttonDisabled = false;
 					this.buttonDisabled = false;
+					this.deleteStoreLocation();
+					this.storage.set('localLat', this.lat);
+					this.storage.set('localLong', this.long);
+					this.storage.set('localisBuffer', 'true');
+					this.storage.set('localDate', this.localDate);
+					this.offlineAlert();
 				break;
 		}
 	})
@@ -326,29 +311,5 @@ mockLocationCheck() {
     });
   }
 
- async getCurrentLocationWeb() {
-	let getCurrentLocationWeb = await this.loadingController.create({
-		message: 'Verificando Localizacion Web...',
-		spinner: 'crescent',
-		cssClass:'transparent'
-	  });
-	  getCurrentLocationWeb.present();
-    this.getLocationLoaderOn();
-    let option = {
-      timeout: 30000,
-      enableHighAccuracy: true
-    }
-    this.geolocation.getCurrentPosition(option).then((resp) => {
-	  getCurrentLocationWeb.dismiss();
-      if(resp.coords) {
-        this.locationData = 'Lat: ' + resp.coords.latitude + '<br>' + 'Long: ' + resp.coords.longitude;
-      }
 
-     }).catch((error) => {
-       if(error) {
-		getCurrentLocationWeb.dismiss();
-        this.locationErrorAlert(error.message);
-       }
-     });
-  }
 }
